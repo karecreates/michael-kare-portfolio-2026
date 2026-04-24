@@ -1,0 +1,66 @@
+/* Section shell — clipping + blend stacking */
+.focusSection {
+  position: relative;
+  width: 100%;
+  padding: 0 20px 20px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.focusContent {
+  position: relative;
+  z-index: var(--focus-content-z, 1);
+}
+
+.focusGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.focusList {
+  grid-column: 2;
+  display: grid;
+  gap: 4px;
+  list-style: none;
+  font-size: clamp(2rem, 3vw, 4rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.06em;
+}
+
+/* One knob for follower diameter (px) */
+.follower {
+  --focus-follower-size: 280px;
+
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--focus-follower-size);
+  height: var(--focus-follower-size);
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: #ffffff;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  z-index: var(--focus-follower-z, 5);
+  opacity: 0;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0) translate(-50%, -50%);
+}
+
+@media (max-width: 900px) {
+  .focusSection {
+    padding: 0 14px 14px;
+  }
+
+  .focusGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .focusList {
+    grid-column: auto;
+    margin-top: 12px;
+  }
+}

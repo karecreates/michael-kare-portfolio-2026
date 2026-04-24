@@ -1,0 +1,52 @@
+/* Matches Kare_Portfolio_Hero.png (1023×830) */
+.hero {
+  padding: 0 20px;
+  padding-bottom: clamp(28px, 5vw, 48px);
+}
+
+.visual {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.imageWrap {
+  position: relative;
+  width: 100%;
+  max-width: min(920px, 82vw);
+  margin-inline: auto;
+  aspect-ratio: 1023 / 830;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+/* Figma: ~400px band, black at bottom → transparent at top */
+.imageWrap::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  height: min(400px, 52%);
+  pointer-events: none;
+  background: linear-gradient(to top, #000000 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+.image {
+  position: relative;
+  z-index: 0;
+  object-fit: cover;
+  object-position: center center;
+}
+
+@media (max-width: 640px) {
+  .hero {
+    padding: 0 14px;
+    padding-bottom: clamp(24px, 6vw, 40px);
+  }
+
+  .imageWrap {
+    max-width: 100%;
+  }
+}

@@ -1,0 +1,15 @@
+.wrap {
+  width: 100%;
+  min-width: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.video {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: bottom;
+  pointer-events: none;
+}

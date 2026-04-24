@@ -1,0 +1,103 @@
+.root {
+  width: 100%;
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 clamp(14px, 2.5vw, 20px) clamp(18px, 2.5vw, 28px);
+  box-sizing: border-box;
+}
+
+/* Use inside a parent that already applies horizontal padding (e.g. case study .media). */
+.rootFlushH {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.viewport {
+  position: relative;
+  width: 100%;
+  height: calc(100vh - var(--site-header-height));
+  height: calc(100dvh - var(--site-header-height));
+  min-height: 240px;
+  overflow: hidden;
+  border-radius: clamp(14px, 1.2vw, 20px);
+  background: #0a0a0b;
+  overscroll-behavior: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 28px 70px rgba(0, 0, 0, 0.55),
+    0 10px 24px rgba(0, 0, 0, 0.35);
+}
+
+.imageMask {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.imageRail {
+  will-change: transform;
+  transform: translate3d(0, 0, 0);
+}
+
+.imageSizer {
+  display: block;
+  width: 100%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: bottom;
+}
+
+.scrollbar {
+  pointer-events: none;
+  position: absolute;
+  top: clamp(10px, 2.2%, 18px);
+  bottom: clamp(10px, 2.2%, 18px);
+  right: clamp(8px, 1.1vw, 14px);
+  width: 10px;
+  z-index: 2;
+}
+
+.trackLine {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 1px;
+}
+
+.track {
+  position: absolute;
+  inset: 0;
+}
+
+.thumb {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 3px;
+  margin-left: -1.5px;
+  border-radius: 999px;
+  background: rgba(245, 245, 245, 0.88);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .imageRail {
+    will-change: auto;
+  }
+
+  .thumb {
+    will-change: auto;
+  }
+}

@@ -1,0 +1,50 @@
+.footer {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 20px 24px;
+  overflow-x: clip;
+  /* Size fluid type from the padded content box, not 100vw */
+  container-type: inline-size;
+}
+
+/* Full bleed like main sections — no .container max-width */
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  max-width: none;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+}
+
+.wordmark {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding-top: 20px;
+  box-sizing: border-box;
+  white-space: nowrap;
+  /* vw uses full viewport — footer content is narrower; cqw tracks the footer’s inner width */
+  font-size: clamp(3rem, 18vw, 50rem);
+  line-height: 0.88;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+}
+
+@supports (font-size: 1cqw) {
+  .wordmark {
+    /* Tuned to fill width without clipping — adjust ~15–16cqw as needed */
+    font-size: clamp(3rem, 16cqw, 50rem);
+  }
+}
+
+@media (max-width: 900px) {
+  .footer {
+    padding: 10px 14px 18px;
+  }
+}
