@@ -22,6 +22,9 @@
   display: grid;
   gap: 4px;
   list-style: none;
+  margin: 0;
+  padding: 0;
+  padding-inline-start: 0;
   font-size: clamp(2rem, 3vw, 4rem);
   font-weight: 700;
   line-height: 0.92;
@@ -61,6 +64,8 @@
 
   .focusList {
     grid-column: auto;
-    margin-top: 12px;
+    margin: 12px 0 0;
+    padding: 0;
+    padding-inline-start: 0;
   }
 }

@@ -70,10 +70,10 @@ export const siteData = {
       href: '/projects/beta-agency-redesign'
     },
     {
-      title: 'TreeSpoonz',
-      category: 'Web Development & Product Design',
-      image: '/placeholders/Michael_Portfolio_Images/Tree_Spoonz_Web_Project_Kare_Portfolio.png',
-      href: '/projects/treespoonz'
+      title: 'Cove USA',
+      category: 'Web Design',
+      image: '/placeholders/Michael_Portfolio_Images/Cove_Website_Frame_1.png',
+      href: '/projects/cove-usa'
     },
     {
       title: 'in2ai.ai',

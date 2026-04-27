@@ -2,9 +2,11 @@ import Image from 'next/image';
 import SmoothScroll from '@/components/SmoothScroll';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import SushiEnyaScrollShowcase from '@/components/SushiEnyaScrollShowcase';
 import { siteData } from '@/data/siteData';
 import styles from './page.module.css';
+import ProjectBackToProjects from '@/components/ProjectBackToProjects';
+import introLayoutStyles from '@/components/projectCaseIntro.module.css';
+
 
 const CASE_NAV = [
   { label: 'Home', href: '/' },
@@ -13,20 +15,6 @@ const CASE_NAV = [
 ];
 
 const TECH_PILLS = ['next.js', 'react', 'figma'];
-
-const FULL_SCROLL = {
-  src: '/placeholders/Michael_Portfolio_Images/Gentle_Release_Care_Website_Scroll.png',
-  alt: 'Gentle Release Care website — full-length scroll',
-  width: 3420,
-  height: 10736
-};
-
-/** Matches `Sushi_Enya_Scoll.png` height for loop duration scaling. */
-const SUSHI_REFERENCE_SCROLL_HEIGHT = 8910;
-
-const SCROLL_DURATION_MS = Math.round(
-  22500 * (FULL_SCROLL.height / SUSHI_REFERENCE_SCROLL_HEIGHT)
-);
 
 const HERO_FRAME = {
   src: '/placeholders/Michael_Portfolio_Images/Gentle_Release_Website.png',
@@ -68,19 +56,15 @@ export default function GentleReleaseCareProjectPage() {
               </ul>
             </div>
             <p className={styles.category}>Web Design &amp; Development</p>
-            <p className={styles.infoLabel}>Information</p>
-            <p className={styles.infoBody}>{INFORMATION}</p>
+            <div className={introLayoutStyles.introStack}>
+              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+              <div className={introLayoutStyles.introBack}>
+                <ProjectBackToProjects />
+              </div>
+            </div>
+            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
-
-        <SushiEnyaScrollShowcase
-          imageSrc={FULL_SCROLL.src}
-          imageAlt={FULL_SCROLL.alt}
-          intrinsicWidth={FULL_SCROLL.width}
-          intrinsicHeight={FULL_SCROLL.height}
-          sectionAriaLabel="Gentle Release Care website preview"
-          durationMs={SCROLL_DURATION_MS}
-        />
 
         <main className={styles.frames} aria-label="Gentle Release Care design frames">
           <figure className={styles.frame}>

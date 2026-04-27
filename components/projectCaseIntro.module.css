@@ -1,0 +1,49 @@
+/* Desktop: left column stacks “Information” + back link; back sits on bottom to align with tall copy. */
+.introStack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  align-self: stretch;
+  justify-content: flex-start;
+  min-width: 0;
+}
+
+.introBack {
+  margin-top: auto;
+}
+
+.introLabel {
+  margin: 0;
+}
+
+.infoBodyStretch {
+  align-self: stretch;
+}
+
+@media (max-width: 900px) {
+  /* Flatten so label, body, and back become direct grid rows (back below copy). */
+  .introStack {
+    display: contents;
+  }
+
+  .introLabel {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    text-align: left;
+    width: 100%;
+  }
+
+  .infoBodyStretch {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    text-align: left;
+    width: 100%;
+  }
+
+  .introBack {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    width: 100%;
+    margin-top: 0;
+  }
+}

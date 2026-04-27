@@ -33,13 +33,19 @@
 .paragraph {
   margin: 0 0 1.25em;
   color: #ffffff;
-  font-size: clamp(0.9375rem, 1.1vw, 1.0625rem);
+  font-size: 1.5rem;
   font-weight: 400;
-  line-height: 1.58;
+  line-height: 1.42;
 }
 
 .paragraph:last-child {
   margin-bottom: 0;
+}
+
+.revealLine {
+  display: inline-block;
+  white-space: pre;
+  will-change: opacity, transform;
 }
 
 .contact {
@@ -118,5 +124,9 @@
 
   .socials {
     gap: 6px;
+  }
+
+  .paragraph {
+    font-size: 1.5rem;
   }
 }

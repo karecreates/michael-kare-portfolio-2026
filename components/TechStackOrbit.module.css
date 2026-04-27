@@ -1,0 +1,123 @@
+.section {
+  width: 100%;
+  padding: clamp(36px, 7vw, 96px) 20px clamp(24px, 5vw, 56px);
+}
+
+.inner {
+  display: grid;
+  place-items: center;
+}
+
+.orbit {
+  --orbit-size: min(74vw, 700px);
+  --orbit-stroke: rgba(255, 255, 255, 0.35);
+  --orbit-duration: 24s;
+  --card-size: clamp(64px, 7.5vw, 96px);
+
+  position: relative;
+  width: var(--orbit-size);
+  aspect-ratio: 1 / 1;
+}
+
+.orbit::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 1px solid var(--orbit-stroke);
+  background:
+    radial-gradient(circle at 30% 28%, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 35%),
+    transparent;
+  pointer-events: none;
+}
+
+.centerText {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  line-height: 0.88;
+  letter-spacing: -0.06em;
+  font-size: clamp(2.25rem, 8vw, 6.4rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  background: linear-gradient(to bottom, #ffffff 5%, #8f8f8f 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  user-select: none;
+}
+
+.orbitSpinner {
+  position: absolute;
+  inset: 0;
+  animation: orbitSpin var(--orbit-duration) linear infinite;
+  will-change: transform;
+}
+
+.orbitTrack {
+  position: absolute;
+  inset: 0;
+  transform: rotate(var(--base-angle));
+}
+
+.logoCard {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--card-size);
+  height: var(--card-size);
+  transform: translate(-50%, -50%) rotate(calc(var(--base-angle) * -1));
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.42),
+    0 0 28px rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  animation: keepUpright var(--orbit-duration) linear infinite;
+  will-change: transform;
+}
+
+.logoImage {
+  width: clamp(30px, 3.2vw, 48px);
+  height: clamp(30px, 3.2vw, 48px);
+  object-fit: contain;
+}
+
+@keyframes orbitSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes keepUpright {
+  from {
+    transform: translate(-50%, -50%) rotate(calc(var(--base-angle) * -1));
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(calc((var(--base-angle) + 360deg) * -1));
+  }
+}
+
+@media (max-width: 900px) {
+  .section {
+    padding: 34px 14px 20px;
+  }
+
+  .orbit {
+    --orbit-size: min(88vw, 460px);
+    --orbit-duration: 20s;
+  }
+
+  .logoCard {
+    border-radius: 14px;
+  }
+}

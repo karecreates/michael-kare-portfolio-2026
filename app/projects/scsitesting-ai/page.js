@@ -3,6 +3,9 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { siteData } from '@/data/siteData';
 import styles from './page.module.css';
+import ProjectBackToProjects from '@/components/ProjectBackToProjects';
+import introLayoutStyles from '@/components/projectCaseIntro.module.css';
+
 
 const CASE_NAV = [
   { label: 'Home', href: '/' },
@@ -57,8 +60,13 @@ export default function ScsitestingAiProjectPage() {
               </ul>
             </div>
             <p className={styles.category}>Web Design</p>
-            <p className={styles.infoLabel}>Information</p>
-            <p className={styles.infoBody}>{INFORMATION}</p>
+            <div className={introLayoutStyles.introStack}>
+              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+              <div className={introLayoutStyles.introBack}>
+                <ProjectBackToProjects />
+              </div>
+            </div>
+            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 

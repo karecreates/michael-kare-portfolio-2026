@@ -42,15 +42,94 @@
   max-width: none;
 }
 
-.logo,
-.link {
-  font-size: 1.5em;
+.logo {
+  font-size: 1.5rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: -0.05em;
 }
 
-.logo {
-  font-weight: 700;
+.navArea {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.menuToggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease;
+}
+
+.menuToggle:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.menuToggle:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 2px;
+}
+
+.menuIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 20px;
+}
+
+.bar,
+.barOpen1,
+.barOpen2,
+.barOpen3 {
+  display: block;
+  width: 100%;
+  height: 2px;
+  border-radius: 1px;
+  background: currentColor;
+  transition:
+    transform 200ms ease,
+    opacity 200ms ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar,
+  .barOpen1,
+  .barOpen2,
+  .barOpen3 {
+    transition-duration: 0.01ms;
+  }
+}
+
+.barOpen1 {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.barOpen2 {
+  opacity: 0;
+}
+
+.barOpen3 {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.menuBackdrop {
+  display: none;
 }
 
 .nav {
@@ -60,12 +139,93 @@
 }
 
 .link {
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
   color: var(--muted);
   transition: color 180ms ease;
 }
 
+.linkButton {
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  color: var(--muted);
+  transition: color 180ms ease;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: -0.05em;
+}
+
 .link:hover {
   color: var(--text);
+}
+
+.linkButton:hover {
+  color: var(--text);
+}
+
+.resumeModal {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.98);
+}
+
+.resumeTopBar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.82);
+}
+
+.modalButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease;
+}
+
+.modalButton:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.48);
+}
+
+.resumeFrameWrap {
+  flex: 1;
+  min-height: 0;
+}
+
+.resumeFrame {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #111;
+}
+
+.resumeHint {
+  margin: 0;
+  padding: 8px 20px 12px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.8rem;
+  letter-spacing: 0.01em;
 }
 
 @media (max-width: 900px) {
@@ -73,14 +233,70 @@
     padding: 12px 14px;
   }
 
-  .nav {
-    gap: 40px;
-    flex-wrap: wrap;
-    justify-content: flex-end;
+  .menuToggle {
+    display: inline-flex;
+    z-index: 42;
   }
 
-  .logo,
-  .link {
-    font-size: 1.25em;
+  .menuBackdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 39;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+  }
+
+  .nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    left: auto;
+    min-width: min(280px, calc(100vw - 28px));
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px 0;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(10, 10, 10, 0.96);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+    z-index: 41;
+  }
+
+  .navOpen {
+    display: flex;
+  }
+
+  .link,
+  .linkButton {
+    padding: 14px 20px;
+    font-size: 1.2rem;
+    text-align: left;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .link:hover,
+  .linkButton:hover {
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  .logo {
+    font-size: 1.5rem;
+  }
+
+  .resumeTopBar {
+    padding: 10px 14px;
+  }
+
+  .resumeHint {
+    padding: 8px 14px 12px;
   }
 }

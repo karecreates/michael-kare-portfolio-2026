@@ -16,6 +16,11 @@
   padding-bottom: 8px;
 }
 
+.heroSectionIntro {
+  transform: translateY(-34px);
+  padding-bottom: 20px;
+}
+
 .year {
   font-size: clamp(1.5rem, 2vw, 2rem);
   color: rgba(255, 255, 255, 0.7);
@@ -40,5 +45,27 @@
 
   .sectionTitle {
     justify-self: start;
+  }
+
+  /* Hero work intro: one row — year left, “Portfolio” flush right (like desktop). */
+  .heroSectionIntro.sectionIntro {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: end;
+    gap: 4px 12px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .heroSectionIntro .sectionTitle {
+    justify-self: end;
+    text-align: right;
+    min-width: 0;
+    line-height: 0.92;
+  }
+
+  .heroSectionIntro {
+    transform: translateY(-30px);
+    padding-bottom: 0;
   }
 }
