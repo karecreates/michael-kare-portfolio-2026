@@ -183,8 +183,8 @@ export const siteData = {
     email: 'karecreates@gmail.com',
     location: 'marina del rey, ca',
     socials: [
-      { label: 'Instagram', href: '#' },
-      { label: 'LinkedIn', href: '#' },
+      { label: 'Instagram', href: 'https://www.instagram.com/michaelkare' },
+      { label: 'LinkedIn', href: 'https://www.linkedin.com/in/michael-kare-1274a0184/' },
       { label: 'Email', href: 'mailto:karecreates@gmail.com' }
     ],
     paragraphs: [

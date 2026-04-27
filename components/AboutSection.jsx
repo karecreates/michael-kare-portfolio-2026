@@ -79,7 +79,13 @@ export default function AboutSection({ data }) {
 
       <nav className={styles.socials} aria-label="Social links">
         {data.socials.map((social) => (
-          <a key={social.label} href={social.href} className={styles.social}>
+          <a
+            key={social.label}
+            href={social.href}
+            className={styles.social}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             {social.label}
           </a>
         ))}
