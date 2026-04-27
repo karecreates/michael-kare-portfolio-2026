@@ -1,0 +1,98 @@
+/* Stripe wider than pill; translate %s are of ::before width so motion clears both edges */
+.liveLink {
+  --sweep-width: 1.42;
+
+  position: relative;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
+  transition:
+    border-color 180ms ease,
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+/* Diagonal “CC” style light sweep — wide band, full left→right clip, linear cross */
+.liveLink::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: 0;
+  width: calc(100% * var(--sweep-width));
+  height: 220%;
+  background: linear-gradient(
+    118deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.03) 28%,
+    rgba(255, 255, 255, 0.14) 50%,
+    rgba(255, 255, 255, 0.03) 72%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  /* -100% = fully off left; +100%/sweep-width = one pill width to the right (fully off right) */
+  transform: translateX(-100%) skewX(-14deg);
+  animation: projectLiveSweep 6.5s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.liveLink > .label {
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 901px) {
+  .liveLink {
+    top: 0.12em;
+  }
+}
+
+.liveLink:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  background-color: rgba(255, 255, 255, 0.06);
+}
+
+.liveLink:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.45);
+  outline-offset: 3px;
+}
+
+@keyframes projectLiveSweep {
+  0% {
+    transform: translateX(-100%) skewX(-14deg);
+    opacity: 0;
+  }
+  2% {
+    opacity: 1;
+  }
+  /* Long linear leg: stripe travels fully past left clip → fully past right clip */
+  74% {
+    transform: translateX(calc(100% / var(--sweep-width))) skewX(-14deg);
+    opacity: 1;
+  }
+  78% {
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(calc(100% / var(--sweep-width))) skewX(-14deg);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .liveLink::before {
+    animation: none;
+    opacity: 0;
+  }
+}

@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { siteData } from '@/data/siteData';
 import styles from './page.module.css';
 import ProjectBackToProjects from '@/components/ProjectBackToProjects';
+import ProjectLiveLink from '@/components/ProjectLiveLink';
 import introLayoutStyles from '@/components/projectCaseIntro.module.css';
 
 
@@ -56,14 +57,7 @@ export default function KimKimbleProjectPage() {
                 <h1 id="kim-kimble-title" className={styles.projectTitle}>
                   Kim Kimble
                 </h1>
-                <a
-                  href={LIVE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.liveLink}
-                >
-                  View Project Live
-                </a>
+                <ProjectLiveLink href={LIVE_URL} />
               </div>
               <ul className={styles.techPills} aria-label="Technologies">
                 {TECH_PILLS.map((label) => (

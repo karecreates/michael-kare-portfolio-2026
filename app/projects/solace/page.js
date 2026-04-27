@@ -5,6 +5,7 @@ import Footer from '@/components/Footer';
 import { siteData } from '@/data/siteData';
 import styles from './page.module.css';
 import ProjectBackToProjects from '@/components/ProjectBackToProjects';
+import ProjectLiveLink from '@/components/ProjectLiveLink';
 import introLayoutStyles from '@/components/projectCaseIntro.module.css';
 
 
@@ -55,14 +56,7 @@ export default function SolaceProjectPage() {
                 <h1 id="solace-title" className={styles.projectTitle}>
                   Solace
                 </h1>
-                <a
-                  href={LIVE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.liveLink}
-                >
-                  View project live
-                </a>
+                <ProjectLiveLink href={LIVE_URL}>View project live</ProjectLiveLink>
               </div>
               <ul className={styles.techPills} aria-label="Technologies">
                 {TECH_PILLS.map((label) => (

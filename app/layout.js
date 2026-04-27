@@ -8,10 +8,36 @@ const dmSans = DM_Sans({
   variable: '--font-dm-sans'
 });
 
+const siteTitle = 'Michael Kare — Portfolio 2026';
+const siteDescription =
+  'Design and development portfolio — product and brand experiences, websites, creative work, and client projects.';
+
 export const metadata = {
-  title: 'Michael Kare — Portfolio 2026',
-  description:
-    'A clean, editorial portfolio template inspired by full-width product and brand design portfolios.'
+  metadataBase: new URL('https://michaelkare.com'),
+  title: siteTitle,
+  description: siteDescription,
+  openGraph: {
+    title: siteTitle,
+    description: siteDescription,
+    url: '/',
+    siteName: 'Michael Kare',
+    locale: 'en_US',
+    type: 'website',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'Michael Kare portfolio'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: siteTitle,
+    description: siteDescription,
+    images: ['/og-image.png']
+  }
 };
 
 export default function RootLayout({ children }) {

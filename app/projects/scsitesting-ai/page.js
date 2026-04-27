@@ -4,6 +4,7 @@ import Footer from '@/components/Footer';
 import { siteData } from '@/data/siteData';
 import styles from './page.module.css';
 import ProjectBackToProjects from '@/components/ProjectBackToProjects';
+import ProjectLiveLink from '@/components/ProjectLiveLink';
 import introLayoutStyles from '@/components/projectCaseIntro.module.css';
 
 
@@ -42,14 +43,7 @@ export default function ScsitestingAiProjectPage() {
                 <h1 id="scsitesting-ai-title" className={styles.projectTitle}>
                   SCSI Testing AI
                 </h1>
-                <a
-                  href={LIVE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.liveLink}
-                >
-                  View Project Live
-                </a>
+                <ProjectLiveLink href={LIVE_URL} />
               </div>
               <ul className={styles.techPills} aria-label="Technologies">
                 {TECH_PILLS.map((label) => (
