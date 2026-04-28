@@ -1,48 +1,47 @@
-import Image from 'next/image';
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import Image from "next/image";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const TECH_PILLS = ['figma'];
+const TECH_PILLS = ["figma"];
 
 const FRAMES = [
   {
-    src: '/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Design_Frame_1.png',
-    alt: 'Smile Wellness — website frame 1',
+    src: "/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Design_Frame_1.png",
+    alt: "Smile Wellness — website frame 1",
     width: 1920,
-    height: 908
+    height: 908,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Design_Frame_2.png',
-    alt: 'Smile Wellness — website frame 2',
+    src: "/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Design_Frame_2.png",
+    alt: "Smile Wellness — website frame 2",
     width: 1920,
-    height: 1047
+    height: 1047,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Design_Frame_3.png',
-    alt: 'Smile Wellness — website frame 3',
+    src: "/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Design_Frame_3.png",
+    alt: "Smile Wellness — website frame 3",
     width: 1920,
-    height: 1506
-  }
+    height: 1506,
+  },
 ];
 
 const INFORMATION =
-  'A web design system for Smile Wellness that foregrounds trust, warmth, and clinical credibility before a patient ever books. The experience was structured in Figma—type scale, color, spacing, and component states map cleanly from hero through services and contact—so messaging about care and outcomes feels calm, legible, and human. The result is a dental brand that reads as approachable expertise: clear hierarchy, generous whitespace, and a path to action that never feels rushed.';
+  "A web design system for Smile Wellness that foregrounds trust, warmth, and clinical credibility before a patient ever books. The experience was structured in Figma—type scale, color, spacing, and component states map cleanly from hero through services and contact—so messaging about care and outcomes feels calm, legible, and human. The result is a dental brand that reads as approachable expertise: clear hierarchy, generous whitespace, and a path to action that never feels rushed.";
 
 export const metadata = {
-  title: 'Smile Wellness — Michael Kare',
-  description: 'Web design case study — Smile Wellness.'
+  title: "Smile Wellness — Michael Kare",
+  description: "Web design case study — Smile Wellness.",
 };
 
 export default function SmileWellnessProjectPage() {
@@ -53,7 +52,10 @@ export default function SmileWellnessProjectPage() {
       <SmoothScroll />
       <div className={styles.page}>
         <Header links={CASE_NAV} />
-        <section className={styles.intro} aria-labelledby="smile-wellness-title">
+        <section
+          className={styles.intro}
+          aria-labelledby="smile-wellness-title"
+        >
           <div className={styles.introGrid}>
             <div className={styles.titleRow}>
               <h1 id="smile-wellness-title" className={styles.projectTitle}>
@@ -68,17 +70,34 @@ export default function SmileWellnessProjectPage() {
               ))}
             </ul>
             <p className={styles.category}>Web Design</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
+            </div>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
               </div>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 
-        <main className={styles.frames} aria-label="Smile Wellness design frames">
+        <main
+          className={styles.frames}
+          aria-label="Smile Wellness design frames"
+        >
           {FRAMES.map((frame, index) => (
             <figure key={frame.src} className={styles.frame}>
               <Image

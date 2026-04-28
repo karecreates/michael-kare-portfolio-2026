@@ -1,33 +1,32 @@
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import KnowiVideo from '@/components/KnowiVideo';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import ProjectLiveLink from '@/components/ProjectLiveLink';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import KnowiVideo from "@/components/KnowiVideo";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectLiveLink from "@/components/ProjectLiveLink";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const LIVE_URL = 'https://knowi.ai/';
+const LIVE_URL = "https://knowi.ai/";
 
-const TECH_PILLS = ['figma', 'wordpress', 'after effects'];
+const TECH_PILLS = ["figma", "wordpress", "after effects"];
 
 const SCROLL_VIDEO_SRC =
-  '/placeholders/Michael_Portfolio_Images/Knowi_Animation_Sequence.mp4';
+  "/placeholders/Michael_Portfolio_Images/Knowi_Animation_Sequence.mp4";
 
 const INFORMATION =
-  'A web and brand initiative for Knowi.ai that pairs a disciplined UI system with motion-led storytelling. Design was prototyped in Figma, the marketing surface is built on WordPress for flexible publishing, and After Effects animation carries the product narrative in a hero loop—so positioning reads clearly whether visitors land on static hero art or the full-width motion container.';
+  "A web and brand initiative for Knowi.ai that pairs a disciplined UI system with motion-led storytelling. Design was prototyped in Figma, the marketing surface is built on WordPress for flexible publishing, and After Effects animation carries the product narrative in a hero loop—so positioning reads clearly whether visitors land on static hero art or the full-width motion container.";
 
 export const metadata = {
-  title: 'Knowi.ai — Michael Kare',
-  description: 'Web development and branding case study — Knowi.ai.'
+  title: "Knowi.ai — Michael Kare",
+  description: "Web development and branding case study — Knowi.ai.",
 };
 
 export default function KnowiAiProjectPage() {
@@ -53,20 +52,38 @@ export default function KnowiAiProjectPage() {
               ))}
             </ul>
             <p className={styles.category}>Web Development &amp; Branding</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
-              <div className={introLayoutStyles.introActions}>
-                <div className={introLayoutStyles.introBack}>
-                  <ProjectBackToProjects />
-                </div>
-                <ProjectLiveLink href={LIVE_URL} className={introLayoutStyles.introLive} />
-              </div>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
+              <div className={introLayoutStyles.introBack}>
+                <ProjectBackToProjects />
+              </div>
+              <ProjectLiveLink
+                href={LIVE_URL}
+                className={introLayoutStyles.introLive}
+              />
+            </div>
           </div>
         </section>
 
-        <section className={styles.scrollMedia} aria-label="Knowi.ai website preview">
+        <section
+          className={styles.scrollMedia}
+          aria-label="Knowi.ai website preview"
+        >
           <video
             className={styles.scrollMediaVideo}
             src={SCROLL_VIDEO_SRC}

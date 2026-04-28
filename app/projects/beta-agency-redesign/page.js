@@ -1,23 +1,22 @@
-import Image from 'next/image';
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import BetaAgencyRedesignVideo from '@/components/BetaAgencyRedesignVideo';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import Image from "next/image";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import BetaAgencyRedesignVideo from "@/components/BetaAgencyRedesignVideo";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const TECH_PILLS = ['figma'];
+const TECH_PILLS = ["figma"];
 
-const FRAME_DIR = '/placeholders/Michael_Portfolio_Images/Beta_Website_Frame_';
+const FRAME_DIR = "/placeholders/Michael_Portfolio_Images/Beta_Website_Frame_";
 
 const WEBSITE_FRAMES = Array.from({ length: 9 }, (_, i) => {
   const n = i + 1;
@@ -25,17 +24,17 @@ const WEBSITE_FRAMES = Array.from({ length: 9 }, (_, i) => {
     src: `${FRAME_DIR}${n}.png`,
     alt: `Beta Agency homepage redesign — frame ${n} of 9`,
     width: 1920,
-    height: 1080
+    height: 1080,
   };
 });
 
 const INFORMATION =
-  'A homepage redesign concept for Beta Agency—structured in Figma as a single, confident narrative: clear positioning, proof-forward modules, and typography that reads like a studio site rather than a generic agency template. Motion in the deliverable is used sparingly to guide the eye and reinforce hierarchy, so stakeholders can review the full scroll rhythm without UI chrome or playback controls—just the work, looped for study and presentation.';
+  "A homepage redesign concept for Beta Agency—structured in Figma as a single, confident narrative: clear positioning, proof-forward modules, and typography that reads like a studio site rather than a generic agency template. Motion in the deliverable is used sparingly to guide the eye and reinforce hierarchy, so stakeholders can review the full scroll rhythm without UI chrome or playback controls—just the work, looped for study and presentation.";
 
 export const metadata = {
-  title: 'Beta Agency Redesign — Michael Kare',
+  title: "Beta Agency Redesign — Michael Kare",
   description:
-    'Web design case study — Beta Agency homepage redesign (Figma, motion preview).'
+    "Web design case study — Beta Agency homepage redesign (Figma, motion preview).",
 };
 
 export default function BetaAgencyRedesignProjectPage() {
@@ -61,13 +60,27 @@ export default function BetaAgencyRedesignProjectPage() {
               ))}
             </ul>
             <p className={styles.category}>Web Design</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
+            </div>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
               </div>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 

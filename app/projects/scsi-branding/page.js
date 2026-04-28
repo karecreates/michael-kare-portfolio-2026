@@ -1,42 +1,41 @@
-import Image from 'next/image';
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import Image from "next/image";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const TECH_PILLS = ['adobe illustrator', 'photoshop'];
+const TECH_PILLS = ["adobe illustrator", "photoshop"];
 
 const FRAMES = [
   {
-    src: '/placeholders/Michael_Portfolio_Images/SCSI_Branding_Frame_1.png',
-    alt: 'SCSI Testing — branding frame 1',
+    src: "/placeholders/Michael_Portfolio_Images/SCSI_Branding_Frame_1.png",
+    alt: "SCSI Testing — branding frame 1",
     width: 1920,
-    height: 1080
+    height: 1080,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/SCSI_Branding_Frame_2.png',
-    alt: 'SCSI Testing — branding frame 2',
+    src: "/placeholders/Michael_Portfolio_Images/SCSI_Branding_Frame_2.png",
+    alt: "SCSI Testing — branding frame 2",
     width: 1920,
-    height: 1080
-  }
+    height: 1080,
+  },
 ];
 
 const INFORMATION =
-  'A print-forward identity package for SCSI Testing—built to read as engineering-grade and approachable at once. Lockups, marks, and supporting layouts were drafted in Adobe Illustrator for razor-sharp vector control, then finished and proofed in Photoshop for texture, contrast, and real-world mockups. The system is meant to travel: business cards, collateral, and digital avatars all inherit the same grid, weight, and color discipline so the brand feels consistent whether it is in a wallet or on a conference badge.';
+  "A print-forward identity package for SCSI Testing—built to read as engineering-grade and approachable at once. Lockups, marks, and supporting layouts were drafted in Adobe Illustrator for razor-sharp vector control, then finished and proofed in Photoshop for texture, contrast, and real-world mockups. The system is meant to travel: business cards, collateral, and digital avatars all inherit the same grid, weight, and color discipline so the brand feels consistent whether it is in a wallet or on a conference badge.";
 
 export const metadata = {
-  title: 'SCSI Testing — Branding — Michael Kare',
-  description: 'Branding case study — SCSI Testing identity and collateral.'
+  title: "SCSI Testing — Branding — Michael Kare",
+  description: "Branding case study — SCSI Testing identity and collateral.",
 };
 
 export default function ScsiBrandingProjectPage() {
@@ -62,17 +61,34 @@ export default function ScsiBrandingProjectPage() {
               ))}
             </ul>
             <p className={styles.category}>Branding</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
+            </div>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
               </div>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 
-        <main className={styles.frames} aria-label="SCSI Testing branding frames">
+        <main
+          className={styles.frames}
+          aria-label="SCSI Testing branding frames"
+        >
           {FRAMES.map((frame, index) => (
             <figure key={frame.src} className={styles.frame}>
               <Image

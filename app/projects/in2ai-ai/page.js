@@ -1,48 +1,47 @@
-import Image from 'next/image';
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import Image from "next/image";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const TECH_PILLS = ['figma'];
+const TECH_PILLS = ["figma"];
 
 const FRAMES = [
   {
-    src: '/placeholders/Michael_Portfolio_Images/in2ai_Web_Design_Frame_1.png',
-    alt: 'in2ai.ai — website frame 1',
+    src: "/placeholders/Michael_Portfolio_Images/in2ai_Web_Design_Frame_1.png",
+    alt: "in2ai.ai — website frame 1",
     width: 1920,
-    height: 1080
+    height: 1080,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/in2ai_dashboard.png',
-    alt: 'in2ai.ai — categories, partners, and branding',
+    src: "/placeholders/Michael_Portfolio_Images/in2ai_dashboard.png",
+    alt: "in2ai.ai — categories, partners, and branding",
     width: 1920,
-    height: 1080
+    height: 1080,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/in2ai_Web_Design_Frame_2.png',
-    alt: 'in2ai.ai — website frame 2',
+    src: "/placeholders/Michael_Portfolio_Images/in2ai_Web_Design_Frame_2.png",
+    alt: "in2ai.ai — website frame 2",
     width: 3840,
-    height: 2160
-  }
+    height: 2160,
+  },
 ];
 
 const INFORMATION =
-  'A marketing web experience for in2ai.ai that distills a complex AI education story into confident, editorial layouts. The system was modeled end-to-end in Figma—typography, spacing, and component logic stay consistent across hero, proof, and conversion—so messaging about curriculum depth and outcomes reads clearly before a visitor ever reaches a form or CTA.';
+  "A marketing web experience for in2ai.ai that distills a complex AI education story into confident, editorial layouts. The system was modeled end-to-end in Figma—typography, spacing, and component logic stay consistent across hero, proof, and conversion—so messaging about curriculum depth and outcomes reads clearly before a visitor ever reaches a form or CTA.";
 
 export const metadata = {
-  title: 'in2ai.ai — Michael Kare',
-  description: 'Web design case study — in2ai.ai.'
+  title: "in2ai.ai — Michael Kare",
+  description: "Web design case study — in2ai.ai.",
 };
 
 export default function In2aiAiProjectPage() {
@@ -68,13 +67,27 @@ export default function In2aiAiProjectPage() {
               ))}
             </ul>
             <p className={styles.category}>Web Design</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
+            </div>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
               </div>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 

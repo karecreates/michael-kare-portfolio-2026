@@ -1,60 +1,59 @@
-import Image from 'next/image';
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import Image from "next/image";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const TECH_PILLS = ['figma'];
+const TECH_PILLS = ["figma"];
 
 const FRAMES = [
   {
-    src: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_1.png',
-    alt: 'Sushi Enya website — hero',
+    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_1.png",
+    alt: "Sushi Enya website — hero",
     width: 1920,
-    height: 1022
+    height: 1022,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_2.png',
-    alt: 'Sushi Enya website — our story',
+    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_2.png",
+    alt: "Sushi Enya website — our story",
     width: 1920,
-    height: 1947
+    height: 1947,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_3.png',
-    alt: 'Sushi Enya website — menu preview',
+    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_3.png",
+    alt: "Sushi Enya website — menu preview",
     width: 1920,
-    height: 2121
+    height: 2121,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_4.png',
-    alt: 'Sushi Enya website — reviews',
+    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_4.png",
+    alt: "Sushi Enya website — reviews",
     width: 1920,
-    height: 936
+    height: 936,
   },
   {
-    src: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_5.png',
-    alt: 'Sushi Enya website — join us',
+    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_5.png",
+    alt: "Sushi Enya website — join us",
     width: 1920,
-    height: 1211
-  }
+    height: 1211,
+  },
 ];
 
 const INFORMATION =
-  'A full-width web experience for Sushi Enya, pairing bold typography with high-contrast photography. The layout moves guests through story, menu, and social proof—structured for clarity and a smooth path to order online across desktop and mobile.';
+  "A full-width web experience for Sushi Enya, pairing bold typography with high-contrast photography. The layout moves guests through story, menu, and social proof—structured for clarity and a smooth path to order online across desktop and mobile.";
 
 export const metadata = {
-  title: 'Sushi Enya — Michael Kare',
-  description: 'Web design case study for Sushi Enya restaurant.'
+  title: "Sushi Enya — Michael Kare",
+  description: "Web design case study for Sushi Enya restaurant.",
 };
 
 export default function SushiEnyaProjectPage() {
@@ -78,13 +77,27 @@ export default function SushiEnyaProjectPage() {
               ))}
             </ul>
             <p className={styles.category}>Web Design</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
+            </div>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
               </div>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 
@@ -98,7 +111,7 @@ export default function SushiEnyaProjectPage() {
                 height={frame.height}
                 sizes="(max-width: 900px) calc(100vw - 28px), calc(100vw - 40px)"
                 className={styles.frameImage}
-                priority={frame.src.endsWith('Frame_1.png')}
+                priority={frame.src.endsWith("Frame_1.png")}
               />
             </figure>
           ))}

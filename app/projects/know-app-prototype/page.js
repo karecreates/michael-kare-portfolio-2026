@@ -1,29 +1,28 @@
-import Image from 'next/image';
-import SmoothScroll from '@/components/SmoothScroll';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { siteData } from '@/data/siteData';
-import styles from './page.module.css';
-import ProjectBackToProjects from '@/components/ProjectBackToProjects';
-import introLayoutStyles from '@/components/projectCaseIntro.module.css';
-
+import Image from "next/image";
+import SmoothScroll from "@/components/SmoothScroll";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { siteData } from "@/data/siteData";
+import styles from "./page.module.css";
+import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
-  { label: 'Home', href: '/' },
-  { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: "Home", href: "/" },
+  { label: "Profile", href: "/#profile" },
+  { label: "Contact", href: "/#contact" },
 ];
 
-const TECH_PILLS = ['figma'];
+const TECH_PILLS = ["figma"];
 
 const BRAND_GUIDELINES_PDF =
-  '/placeholders/Michael_Portfolio_Images/Knowi_AI_SaaS_Brand_Guidelines.pdf';
+  "/placeholders/Michael_Portfolio_Images/Knowi_AI_SaaS_Brand_Guidelines.pdf";
 
 const BRAND_GUIDELINES_COVER = {
-  src: '/placeholders/Michael_Portfolio_Images/Knowi_AI_SaaS_Brand_Guidelines_Cover_Page.png',
-  alt: 'Knowi AI SaaS brand guidelines — cover',
+  src: "/placeholders/Michael_Portfolio_Images/Knowi_AI_SaaS_Brand_Guidelines_Cover_Page.png",
+  alt: "Knowi AI SaaS brand guidelines — cover",
   width: 1920,
-  height: 1081
+  height: 1081,
 };
 
 const FRAME_WIDTH = 430;
@@ -35,16 +34,16 @@ const FRAMES = Array.from({ length: 12 }, (_, i) => {
     src: `/placeholders/Michael_Portfolio_Images/Knowi_iphone_frame_${n}.png`,
     alt: `Know App — UI/UX frame ${n}`,
     width: FRAME_WIDTH,
-    height: FRAME_HEIGHT
+    height: FRAME_HEIGHT,
   };
 });
 
 const INFORMATION =
-  'A high-fidelity mobile prototype for the Know App—Knowi’s companion experience for exploring data and workflows on the go. The entire surface was authored in Figma as a connected system: reusable components, responsive variants, and interaction notes that mirror production constraints, so flows from discovery through detail read as a real product, not a static deck. The result is prototype-grade UI/UX you can walk stakeholders through with confidence—clear hierarchy, deliberate motion cues, and a visual language that stays aligned with the core Knowi brand.';
+  "A high-fidelity mobile prototype for the Know App—Knowi’s companion experience for exploring data and workflows on the go. The entire surface was authored in Figma as a connected system: reusable components, responsive variants, and interaction notes that mirror production constraints, so flows from discovery through detail read as a real product, not a static deck. The result is prototype-grade UI/UX you can walk stakeholders through with confidence—clear hierarchy, deliberate motion cues, and a visual language that stays aligned with the core Knowi brand.";
 
 export const metadata = {
-  title: 'Know App Prototype — Michael Kare',
-  description: 'UI/UX app prototyping case study — Know App in Figma.'
+  title: "Know App Prototype — Michael Kare",
+  description: "UI/UX app prototyping case study — Know App in Figma.",
 };
 
 export default function KnowAppPrototypePage() {
@@ -70,17 +69,34 @@ export default function KnowAppPrototypePage() {
               ))}
             </ul>
             <p className={styles.category}>UI/UX App Prototyping</p>
-            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
-              <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
+            <div
+              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
+            >
+              <p
+                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
+              >
+                Information
+              </p>
+              <p
+                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
+              >
+                {INFORMATION}
+              </p>
+            </div>
+            <div
+              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
+            >
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
               </div>
             </div>
-            <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>
           </div>
         </section>
 
-        <section className={styles.brandGuidelines} aria-label="Brand guidelines">
+        <section
+          className={styles.brandGuidelines}
+          aria-label="Brand guidelines"
+        >
           <a
             href={BRAND_GUIDELINES_PDF}
             target="_blank"
