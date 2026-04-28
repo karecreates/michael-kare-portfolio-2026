@@ -48,22 +48,20 @@ export default function BetaAgencyRedesignProjectPage() {
         <Header links={CASE_NAV} />
         <section className={styles.intro} aria-labelledby="beta-redesign-title">
           <div className={styles.introGrid}>
-            <div className={styles.titleBlock}>
-              <div className={styles.titleRow}>
-                <h1 id="beta-redesign-title" className={styles.projectTitle}>
-                  Beta Agency Redesign
-                </h1>
-              </div>
-              <ul className={styles.techPills} aria-label="Tools">
-                {TECH_PILLS.map((label) => (
-                  <li key={label} className={styles.techPill}>
-                    {label}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.titleRow}>
+              <h1 id="beta-redesign-title" className={styles.projectTitle}>
+                Beta Agency Redesign
+              </h1>
             </div>
+            <ul className={styles.techPills} aria-label="Tools">
+              {TECH_PILLS.map((label) => (
+                <li key={label} className={styles.techPill}>
+                  {label}
+                </li>
+              ))}
+            </ul>
             <p className={styles.category}>Web Design</p>
-            <div className={introLayoutStyles.introStack}>
+            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
               <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
@@ -75,7 +73,7 @@ export default function BetaAgencyRedesignProjectPage() {
 
         <main className={styles.media} aria-label="Beta Agency redesign work">
           <BetaAgencyRedesignVideo />
-          {WEBSITE_FRAMES.map((frame, index) => (
+          {WEBSITE_FRAMES.slice(1).map((frame, index) => (
             <figure key={frame.src} className={styles.frame}>
               <Image
                 src={frame.src}

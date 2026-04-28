@@ -97,22 +97,20 @@ export default function CreativeProjectPage() {
         <Header links={CASE_NAV} />
         <section className={styles.intro} aria-labelledby="creative-title">
           <div className={styles.introGrid}>
-            <div className={styles.titleBlock}>
-              <div className={styles.titleRow}>
-                <h1 id="creative-title" className={styles.projectTitle}>
-                  Creative Work
-                </h1>
-              </div>
-              <ul className={styles.techPills} aria-label="Creative disciplines">
-                {TECH_PILLS.map((label) => (
-                  <li key={label} className={styles.techPill}>
-                    {label}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.titleRow}>
+              <h1 id="creative-title" className={styles.projectTitle}>
+                Creative Work
+              </h1>
             </div>
+            <ul className={styles.techPills} aria-label="Creative disciplines">
+              {TECH_PILLS.map((label) => (
+                <li key={label} className={styles.techPill}>
+                  {label}
+                </li>
+              ))}
+            </ul>
             <p className={styles.category}>Photography &amp; Motion</p>
-            <div className={introLayoutStyles.introStack}>
+            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
               <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />

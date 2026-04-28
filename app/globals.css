@@ -20,6 +20,7 @@
 html {
   scroll-behavior: smooth;
   background: var(--bg);
+  overflow-x: clip;
 }
 
 html,
@@ -32,10 +33,18 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
 }
 
 body {
   overflow-x: hidden;
+}
+
+/* Keep any transformed/smooth-scroll wrappers from creating horizontal panning. */
+body > * {
+  max-width: 100%;
 }
 
 a {

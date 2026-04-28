@@ -17,9 +17,6 @@
   align-items: start;
 }
 
-.titleBlock {
-  min-width: 0;
-}
 
 .titleRow {
   display: flex;
@@ -42,6 +39,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: flex-start;
   gap: 6px 8px;
   margin: 12px 0 0;
   padding: 0;
@@ -50,6 +48,7 @@
 
 .techPill {
   display: inline-flex;
+  flex: 0 0 auto;
   align-items: center;
   padding: 5px 15px;
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -59,15 +58,16 @@
   letter-spacing: 0;
   color: rgba(255, 255, 255, 0.55);
   line-height: 1.2;
+  white-space: nowrap;
 }
 
 .category {
   margin: 0;
   align-self: start;
-  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  font-size: clamp(1.25rem, 2vw, 2rem);
   color: var(--muted);
   letter-spacing: 0.02em;
-  text-align: right;
+  text-align: left;
   white-space: nowrap;
 }
 
@@ -84,7 +84,7 @@
   font-size: clamp(0.95rem, 1.5vw, 1.05rem);
   line-height: 1.55;
   color: rgba(255, 255, 255, 0.88);
-  text-align: right;
+  text-align: left;
   text-wrap: balance;
 }
 
@@ -146,10 +146,6 @@
     align-items: start;
   }
 
-  .titleBlock {
-    display: contents;
-  }
-
   .introGrid > .titleRow,
   .introGrid > .projectTitle {
     grid-column: 1;
@@ -162,12 +158,16 @@
     grid-row: 1;
     align-self: center;
     justify-self: end;
-    text-align: right;
+    text-align: left;
     white-space: normal;
     max-width: min(58vw, 280px);
-  }
+  
+    font-size: clamp(1.25rem, 2vw, 2rem);
+}
 
   .introGrid > .techPills {
+    width: 100%;
+    min-width: 0;
     grid-column: 1 / -1;
     grid-row: 2;
     margin-top: 10px;
@@ -180,6 +180,14 @@
 
   .techPills {
     margin-top: 10px;
+
+    display: flex;
+
+    flex-direction: row;
+
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
   }
 
   .frames {
@@ -190,3 +198,36 @@
     padding: 0 14px 14px;
   }
 }
+
+@media (min-width: 901px) {
+  .introGrid > .titleRow,
+  .introGrid > .projectTitle {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .introGrid > .category {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .introGrid > .techPills {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .introGrid > .introMeta {
+    grid-column: 1;
+    grid-row: 3;
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  .introGrid > .infoBody {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    align-self: start;
+  }
+}
+

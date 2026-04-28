@@ -64,26 +64,26 @@ export default function SeacliffVillageProjectPage() {
         <Header links={CASE_NAV} />
         <section className={styles.intro} aria-labelledby="seacliff-title">
           <div className={styles.introGrid}>
-            <div className={styles.titleBlock}>
-              <div className={styles.titleRow}>
-                <h1 id="seacliff-title" className={styles.projectTitle}>
-                  SeaCliff Village
-                </h1>
-                <ProjectLiveLink href={LIVE_URL} />
-              </div>
-              <ul className={styles.techPills} aria-label="Technologies">
-                {TECH_PILLS.map((label) => (
-                  <li key={label} className={styles.techPill}>
-                    {label}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.titleRow}>
+              <h1 id="seacliff-title" className={styles.projectTitle}>
+                SeaCliff Village
+              </h1>
             </div>
-            <p className={styles.category}>Landing Page</p>
-            <div className={introLayoutStyles.introStack}>
+            <ul className={styles.techPills} aria-label="Technologies">
+              {TECH_PILLS.map((label) => (
+                <li key={label} className={styles.techPill}>
+                  {label}
+                </li>
+              ))}
+            </ul>
+            <p className={styles.category}>Web Design &amp; Development</p>
+            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
               <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
-              <div className={introLayoutStyles.introBack}>
-                <ProjectBackToProjects />
+              <div className={introLayoutStyles.introActions}>
+                <div className={introLayoutStyles.introBack}>
+                  <ProjectBackToProjects />
+                </div>
+                <ProjectLiveLink href={LIVE_URL} className={introLayoutStyles.introLive} />
               </div>
             </div>
             <p className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}>{INFORMATION}</p>

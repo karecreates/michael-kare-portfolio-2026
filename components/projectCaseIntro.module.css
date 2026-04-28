@@ -12,6 +12,19 @@
   margin-top: auto;
 }
 
+.introActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  margin-top: auto;
+}
+
+.introLive {
+  margin-left: auto;
+}
+
 .introLabel {
   margin: 0;
 }
@@ -40,10 +53,26 @@
     width: 100%;
   }
 
+  .introActions {
+    grid-column: 1 / -1;
+    grid-row: 5;
+    margin-top: 0;
+    gap: 10px;
+  }
+
+  .introLive {
+    margin-left: 0;
+  }
+
   .introBack {
     grid-column: 1 / -1;
     grid-row: 5;
-    width: 100%;
     margin-top: 0;
+  }
+
+  .introActions .introBack {
+    grid-column: auto;
+    grid-row: auto;
+    width: auto;
   }
 }

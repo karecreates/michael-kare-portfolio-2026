@@ -115,6 +115,7 @@
   .orbit {
     --orbit-size: min(88vw, 460px);
     --orbit-duration: 20s;
+    transform: translateY(-20px);
   }
 
   .logoCard {

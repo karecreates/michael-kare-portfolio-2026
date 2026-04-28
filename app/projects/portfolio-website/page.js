@@ -49,22 +49,20 @@ export default function PortfolioWebsiteProjectPage() {
         <Header links={CASE_NAV} />
         <section className={styles.intro} aria-labelledby="portfolio-site-title">
           <div className={styles.introGrid}>
-            <div className={styles.titleBlock}>
-              <div className={styles.titleRow}>
-                <h1 id="portfolio-site-title" className={styles.projectTitle}>
-                  Portfolio Website
-                </h1>
-              </div>
-              <ul className={styles.techPills} aria-label="Technologies">
-                {TECH_PILLS.map((label) => (
-                  <li key={label} className={styles.techPill}>
-                    {label}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.titleRow}>
+              <h1 id="portfolio-site-title" className={styles.projectTitle}>
+                Portfolio Website
+              </h1>
             </div>
-            <p className={styles.category}>Web Development</p>
-            <div className={introLayoutStyles.introStack}>
+            <ul className={styles.techPills} aria-label="Technologies">
+              {TECH_PILLS.map((label) => (
+                <li key={label} className={styles.techPill}>
+                  {label}
+                </li>
+              ))}
+            </ul>
+            <p className={styles.category}>Web Design &amp; Development</p>
+            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
               <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />

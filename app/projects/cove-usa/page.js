@@ -56,22 +56,20 @@ export default function CoveUsaProjectPage() {
         <Header links={CASE_NAV} />
         <section className={styles.intro} aria-labelledby="cove-usa-title">
           <div className={styles.introGrid}>
-            <div className={styles.titleBlock}>
-              <div className={styles.titleRow}>
-                <h1 id="cove-usa-title" className={styles.projectTitle}>
-                  Cove USA
-                </h1>
-              </div>
-              <ul className={styles.techPills} aria-label="Technologies">
-                {TECH_PILLS.map((label) => (
-                  <li key={label} className={styles.techPill}>
-                    {label}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.titleRow}>
+              <h1 id="cove-usa-title" className={styles.projectTitle}>
+                Cove USA
+              </h1>
             </div>
+            <ul className={styles.techPills} aria-label="Technologies">
+              {TECH_PILLS.map((label) => (
+                <li key={label} className={styles.techPill}>
+                  {label}
+                </li>
+              ))}
+            </ul>
             <p className={styles.category}>Web Design</p>
-            <div className={introLayoutStyles.introStack}>
+            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
               <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />

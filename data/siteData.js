@@ -9,155 +9,155 @@ export const siteData = {
   /* Project order: left→right in grid (row 1: items 1–2, row 2: 3–4, …). */
   projects: [
     {
-      title: 'Sushi Enya',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Web_Project_Kare_Portfolio.png',
-      href: '/projects/sushi-enya'
-    },
+          title: 'Solace',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/Solace_Web_Project_Kare_Portfolio.png',
+          href: '/projects/solace'
+        },
     {
-      title: 'Teleidoscope',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/Teleidoscope_Web_Project_Kare_Portfolio.png',
-      href: '/projects/teleidoscope'
-    },
+          title: 'SeaCliff Village Digital Presentation',
+          category: 'Web Design & Development',
+          image:
+            '/placeholders/Michael_Portfolio_Images/Beta_Agency_Web_Project_Kare_Portfolio.png',
+          href: '/projects/seacliff-village'
+        },
     {
-      title: 'Solace',
-      category: 'Web Design & Development',
-      image: '/placeholders/Michael_Portfolio_Images/Solace_Web_Project_Kare_Portfolio.png',
-      href: '/projects/solace'
-    },
+          title: 'Joux',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/Joux_Web_Project_Kare_Portfolio.png',
+          href: '/projects/joux'
+        },
     {
-      title: 'SeaCliff Village Digital Presentation',
-      category: 'Landing Page',
-      image:
-        '/placeholders/Michael_Portfolio_Images/Beta_Agency_Web_Project_Kare_Portfolio.png',
-      href: '/projects/seacliff-village'
-    },
+          title: 'Kim Kimble',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/Kim_Kimble_Web_Project_Kare_Portfolio.png',
+          href: '/projects/kim-kimble'
+        },
     {
-      title: 'Joux',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/Joux_Web_Project_Kare_Portfolio.png',
-      href: '/projects/joux'
-    },
+          title: 'OMT Enterprises',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/OMT_Web_Project_Kare_Portfolio.png',
+          href: '/projects/omt-enterprises'
+        },
     {
-      title: 'Kim Kimble',
-      category: 'Web Development',
-      image: '/placeholders/Michael_Portfolio_Images/Kim_Kimble_Web_Project_Kare_Portfolio.png',
-      href: '/projects/kim-kimble'
-    },
+          title: 'Knowi.ai',
+          category: 'Web Development & Branding',
+          image: '/placeholders/Michael_Portfolio_Images/Konwi_ai__Web_Project_Kare_Portfolio.png',
+          href: '/projects/knowi-ai'
+        },
     {
-      title: 'Sabio',
-      category: 'Video Animation',
-      image: '/placeholders/Michael_Portfolio_Images/Sabio_Brand_Experiences_Kare_Portfolio.png',
-      href: '/projects/sabio'
-    },
+          title: 'Beta Agency Landing',
+          category: 'Web Design & Development',
+          image:
+            '/placeholders/Michael_Portfolio_Images/Beta_Agency_Landing_Web_Project_Kare_Portfolio.png',
+          href: '/projects/beta-agency-landing'
+        },
     {
-      title: 'OMT Enterprises',
-      category: 'Web Development',
-      image: '/placeholders/Michael_Portfolio_Images/OMT_Web_Project_Kare_Portfolio.png',
-      href: '/projects/omt-enterprises'
-    },
+          title: 'SCSI Testing AI',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/SCSI_Testing_ai_Web_Project_Kare_Portfolio.png',
+          href: '/projects/scsitesting-ai'
+        },
     {
-      title: 'Knowi.ai',
-      category: 'Web Development & Branding',
-      image: '/placeholders/Michael_Portfolio_Images/Konwi_ai__Web_Project_Kare_Portfolio.png',
-      href: '/projects/knowi-ai'
-    },
+          title: 'Sushi Enya',
+          category: 'Web Design',
+          image: '/placeholders/Michael_Portfolio_Images/Sushi_Enya_Web_Project_Kare_Portfolio.png',
+          href: '/projects/sushi-enya'
+        },
     {
-      title: 'Beta Agency Redesign',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/Beta_Agency_Redesign.png',
-      href: '/projects/beta-agency-redesign'
-    },
+          title: 'Teleidoscope',
+          category: 'Web Design',
+          image: '/placeholders/Michael_Portfolio_Images/Teleidoscope_Web_Project_Kare_Portfolio.png',
+          href: '/projects/teleidoscope'
+        },
     {
-      title: 'Cove USA',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/Cove_Website_Frame_1.png',
-      href: '/projects/cove-usa'
-    },
+          title: 'Sabio',
+          category: 'Video Animation',
+          image: '/placeholders/Michael_Portfolio_Images/Sabio_Brand_Experiences_Kare_Portfolio.png',
+          href: '/projects/sabio'
+        },
     {
-      title: 'in2ai.ai',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/in2ai_Web_Project_Kare_Portfolio.png',
-      href: '/projects/in2ai-ai'
-    },
+          title: 'Beta Agency Redesign',
+          category: 'Web Design',
+          image: '/placeholders/Michael_Portfolio_Images/Beta_Agency_Redesign.png',
+          href: '/projects/beta-agency-redesign'
+        },
     {
-      title: 'Know App Prototype',
-      category: 'UI/UX App Prototyping',
-      image:
-        '/placeholders/Michael_Portfolio_Images/Knowi_ai_App_Prototyping__Web_Project_Kare_Portfolio.png',
-      href: '/projects/know-app-prototype'
-    },
+          title: 'Cove USA',
+          category: 'Web Design',
+          image: '/placeholders/Michael_Portfolio_Images/Cove_Website_Frame_1.png',
+          href: '/projects/cove-usa'
+        },
     {
-      title: 'Portfolio Website',
-      category: 'Web Development',
-      image: '/placeholders/Michael_Portfolio_Images/Portfolio_Web_Project_Kare_Portfolio.png',
-      href: '/projects/portfolio-website'
-    },
+          title: 'in2ai.ai',
+          category: 'Web Design',
+          image: '/placeholders/Michael_Portfolio_Images/in2ai_Web_Project_Kare_Portfolio.png',
+          href: '/projects/in2ai-ai'
+        },
     {
-      title: 'Smile Wellness',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Project_Kare_Portfolio.png',
-      href: '/projects/smile-wellness'
-    },
+          title: 'Know App Prototype',
+          category: 'UI/UX App Prototyping',
+          image:
+            '/placeholders/Michael_Portfolio_Images/Knowi_ai_App_Prototyping__Web_Project_Kare_Portfolio.png',
+          href: '/projects/know-app-prototype'
+        },
     {
-      title: 'SCSI Testing',
-      category: 'Branding',
-      image: '/placeholders/Michael_Portfolio_Images/SCSI_Testing_Branding_Kare_Portfolio.png',
-      href: '/projects/scsi-branding'
-    },
+          title: 'Portfolio Website',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/Portfolio_Web_Project_Kare_Portfolio.png',
+          href: '/projects/portfolio-website'
+        },
     {
-      title: 'SCSI AI Platform',
-      category: 'UI/UX',
-      image:
-        '/placeholders/Michael_Portfolio_Images/SCSI_Testing_ai_Dashboard_UI_UX_Kare_Portfolio.png',
-      href: '/projects/scsi-ai-platform'
-    },
+          title: 'Smile Wellness',
+          category: 'Web Design',
+          image: '/placeholders/Michael_Portfolio_Images/Smile_Wellness_Web_Project_Kare_Portfolio.png',
+          href: '/projects/smile-wellness'
+        },
     {
-      title: 'Beta Agency Landing',
-      category: 'Web Design & Development',
-      image:
-        '/placeholders/Michael_Portfolio_Images/Beta_Agency_Landing_Web_Project_Kare_Portfolio.png',
-      href: '/projects/beta-agency-landing'
-    },
+          title: 'SCSI Testing',
+          category: 'Branding',
+          image: '/placeholders/Michael_Portfolio_Images/SCSI_Testing_Branding_Kare_Portfolio.png',
+          href: '/projects/scsi-branding'
+        },
     {
-      title: 'Gentle Release Care',
-      category: 'Web Design & Development',
-      image: '/placeholders/Michael_Portfolio_Images/Gentle_Release_Website.png',
-      href: '/projects/gentle-release-care'
-    },
+          title: 'SCSI AI Platform',
+          category: 'UI/UX',
+          image:
+            '/placeholders/Michael_Portfolio_Images/SCSI_Testing_ai_Dashboard_UI_UX_Kare_Portfolio.png',
+          href: '/projects/scsi-ai-platform'
+        },
     {
-      title: 'Folio',
-      category: 'App Prototyping',
-      image: '/placeholders/Michael_Portfolio_Images/Folio_App_Design_Kare_Portfolio.png',
-      href: '/projects/folio'
-    },
+          title: 'Gentle Release Care',
+          category: 'Web Design & Development',
+          image: '/placeholders/Michael_Portfolio_Images/Gentle_Release_Website.png',
+          href: '/projects/gentle-release-care'
+        },
     {
-      title: 'Knowi AI Print Design',
-      category: 'Print Design',
-      image: '/placeholders/Michael_Portfolio_Images/in2ai_Print_Project_Kare_Portfolio.png',
-      href: '/projects/knowi-ai-print'
-    },
+          title: 'Folio',
+          category: 'App Prototyping',
+          image: '/placeholders/Michael_Portfolio_Images/Folio_App_Design_Kare_Portfolio.png',
+          href: '/projects/folio'
+        },
     {
-      title: 'SCSI Testing AI',
-      category: 'Web Design',
-      image: '/placeholders/Michael_Portfolio_Images/SCSI_Testing_ai_Web_Project_Kare_Portfolio.png',
-      href: '/projects/scsitesting-ai'
-    },
+          title: 'Knowi AI Print Design',
+          category: 'Print Design',
+          image: '/placeholders/Michael_Portfolio_Images/in2ai_Print_Project_Kare_Portfolio.png',
+          href: '/projects/knowi-ai-print'
+        },
     {
-      title: 'Starscript',
-      category: 'Google Ads',
-      image:
-        '/placeholders/Michael_Portfolio_Images/Starscript_Google_Ads_Campaign_Project_Kare_Portfolio.png',
-      href: '/projects/starscript'
-    },
+          title: 'Starscript',
+          category: 'Google Ads',
+          image:
+            '/placeholders/Michael_Portfolio_Images/Starscript_Google_Ads_Campaign_Project_Kare_Portfolio.png',
+          href: '/projects/starscript'
+        },
     {
-      title: 'Beta Agency Marketing Design',
-      category: 'Email & Campaign',
-      image:
-        '/placeholders/Michael_Portfolio_Images/Beta_Agency_Email_Camapign_Project_Kare_Portfolio.png',
-      href: '/projects/beta-agency-marketing-design'
-    }
+          title: 'Beta Agency Marketing Design',
+          category: 'Email & Campaign',
+          image:
+            '/placeholders/Michael_Portfolio_Images/Beta_Agency_Email_Camapign_Project_Kare_Portfolio.png',
+          href: '/projects/beta-agency-marketing-design'
+        }
   ],
   focusAreas: [
     'Web Development',

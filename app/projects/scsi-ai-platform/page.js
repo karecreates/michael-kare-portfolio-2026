@@ -67,22 +67,20 @@ export default function ScsiAiPlatformProjectPage() {
         <Header links={CASE_NAV} />
         <section className={styles.intro} aria-labelledby="scsi-ai-platform-title">
           <div className={styles.introGrid}>
-            <div className={styles.titleBlock}>
-              <div className={styles.titleRow}>
-                <h1 id="scsi-ai-platform-title" className={styles.projectTitle}>
-                  SCSI AI Platform
-                </h1>
-              </div>
-              <ul className={styles.techPills} aria-label="Technologies">
-                {TECH_PILLS.map((label) => (
-                  <li key={label} className={styles.techPill}>
-                    {label}
-                  </li>
-                ))}
-              </ul>
+            <div className={styles.titleRow}>
+              <h1 id="scsi-ai-platform-title" className={styles.projectTitle}>
+                SCSI AI Platform
+              </h1>
             </div>
+            <ul className={styles.techPills} aria-label="Technologies">
+              {TECH_PILLS.map((label) => (
+                <li key={label} className={styles.techPill}>
+                  {label}
+                </li>
+              ))}
+            </ul>
             <p className={styles.category}>UI/UX</p>
-            <div className={introLayoutStyles.introStack}>
+            <div className={`${introLayoutStyles.introStack} ${styles.introMeta}`}>
               <p className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}>Information</p>
               <div className={introLayoutStyles.introBack}>
                 <ProjectBackToProjects />
