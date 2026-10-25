@@ -153,8 +153,12 @@
     min-height: min(560px, 100svh);
   }
   .quote {
-    font-size: clamp(32px, 9vw, 46px);
-    padding-bottom: 10vh;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(18px, 5.4vw, 28px);
+    letter-spacing: -0.045em;
+    padding: 0 16px 10vh;
   }
   .glow {
     width: min(150vw, 760px);

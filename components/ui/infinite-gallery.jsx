@@ -1,6 +1,6 @@
 'use client';
 
-import { useLayoutEffect, useMemo, useRef } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { playInline, releaseInline } from '@/lib/inlineVideo';
 import styles from './infinite-gallery.module.css';
 
@@ -48,7 +48,7 @@ const COMPANIONS = [
 ];
 
 function buildTiles(images, cellSize, layers) {
-  const cycles = Math.min(3, Math.max(2, Math.round(layers)));
+  const cycles = Math.min(3, Math.max(1, Math.round(layers)));
   const tiles = [];
   for (let cycle = 0; cycle < cycles; cycle += 1) {
     images.forEach((image, index) => {
@@ -172,7 +172,8 @@ function stepGallery({ host, world, motion, props }) {
   const onScreen = hostBox.bottom >= -80 && hostBox.top <= window.innerHeight + 80;
   motion.frames += 1;
   if (!onScreen) return;
-  if (autoZoom) motion.zoom += autoZoomSpeed;
+  const compact = host.dataset.compact === '1';
+  if (autoZoom && !compact) motion.zoom += autoZoomSpeed;
 
   const { pointer, drift, velocity } = motion;
   const progress = readProgress(current);
@@ -196,18 +197,29 @@ function stepGallery({ host, world, motion, props }) {
     const node = nodes[index];
     if (!node) return;
     const z = wrapZ(tile.z + travel, fieldDepth);
+    const hidden = z > PASS_Z - 8;
+    node.style.visibility = hidden ? 'hidden' : 'visible';
+    if (hidden) return;
     const look = depthLook(z);
-    node.style.opacity = String(look.opacity);
-    node.style.filter = lookFilter(look);
+    node.style.opacity = String(compact ? 1 : look.opacity);
+    if (compact) {
+      if (node.style.filter) node.style.filter = '';
+    } else {
+      node.style.filter = lookFilter(look);
+    }
     node.style.zIndex = String(Math.round(900 + z));
-    node.style.visibility = z > PASS_Z - 8 ? 'hidden' : 'visible';
     node.style.transform = planeTransform(tile.x, tile.y, z);
   });
 }
 
 function ensureGalleryTimer() {
-  if (typeof window === 'undefined' || window.__mkGalleryTimer) return;
-  window.__mkGalleryTimer = window.setInterval(() => {
+  if (typeof window === 'undefined') return;
+  if (window.__mkGalleryTimer) {
+    window.clearInterval(window.__mkGalleryTimer);
+    window.__mkGalleryTimer = 0;
+  }
+  if (window.__mkGalleryRaf) return;
+  const tick = () => {
     document.querySelectorAll('[data-gallery="live"]').forEach((node) => {
       const ctx = node.__gallery;
       if (!ctx) return;
@@ -217,7 +229,9 @@ function ensureGalleryTimer() {
         node.dataset.err = String(error?.message || error);
       }
     });
-  }, 20);
+    window.__mkGalleryRaf = window.requestAnimationFrame(tick);
+  };
+  window.__mkGalleryRaf = window.requestAnimationFrame(tick);
 }
 
 export default function InfiniteGallery({
@@ -258,11 +272,12 @@ export default function InfiniteGallery({
     anchorY: null,
   });
   const propsRef = useRef(null);
-  const layers = Math.min(3, Math.max(2, Math.round(viewRange)));
-  const tiles = useMemo(
-    () => buildTiles(images, cellSize, layers),
-    [images, cellSize, layers],
-  );
+  const [compact, setCompact] = useState(false);
+  const layers = compact ? 1 : Math.min(3, Math.max(2, Math.round(viewRange)));
+  const tiles = useMemo(() => {
+    const source = compact ? images.filter((image) => !isVideoUrl(image.url)) : images;
+    return buildTiles(source, cellSize, layers);
+  }, [images, cellSize, layers, compact]);
   const fieldDepth = tiles.length
     ? PASS_Z - Math.min(...tiles.map((tile) => tile.z)) + Z_STRIDE
     : Z_STRIDE * 8;
@@ -280,12 +295,21 @@ export default function InfiniteGallery({
     trackRef,
   };
 
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 767px)');
+    const apply = () => setCompact(query.matches);
+    apply();
+    query.addEventListener('change', apply);
+    return () => query.removeEventListener('change', apply);
+  }, []);
+
   useLayoutEffect(() => {
     const host = hostRef.current;
     const world = worldRef.current;
     if (!host || !world) return undefined;
     const motion = motionRef.current;
     host.dataset.gallery = 'live';
+    host.dataset.compact = compact ? '1' : '';
     host.__gallery = { host, world, motion, props: propsRef };
     ensureGalleryTimer();
 
@@ -349,7 +373,7 @@ export default function InfiniteGallery({
         video.pause();
       });
     };
-  }, []);
+  }, [compact]);
 
   const bg = hexColor(backgroundColor, '#000000');
   const radius = `${Math.max(0, Math.min(1, imageRadius)) * 100}%`;

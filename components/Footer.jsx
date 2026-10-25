@@ -70,13 +70,34 @@ export default function Footer({ data, showMarquee = false }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                {social.label} ↗
+                {social.label}
+                <span className={styles.socialArrow} aria-hidden="true">
+                  <svg viewBox="0 0 100 100" fill="none">
+                    <path
+                      d="M12 16H84V88"
+                      stroke="currentColor"
+                      strokeWidth="5"
+                      strokeLinecap="butt"
+                      strokeLinejoin="miter"
+                    />
+                    <path
+                      d="M12 88L84 16"
+                      stroke="currentColor"
+                      strokeWidth="5"
+                      strokeLinecap="butt"
+                    />
+                  </svg>
+                </span>
               </a>
             ))}
         </nav>
       </div>
       <div className={`${styles.bottomRow} ${styles.gutter}`}>
-        <span>© {data.year} Michael Kare</span>
+        <span className={styles.copyright}>
+          © {String(data.year).slice(0, 2)}
+          <span aria-hidden="true">&#8203;</span>
+          {String(data.year).slice(2)} Michael Kare
+        </span>
         <span>Marina del Rey, CA</span>
         <a href="#top">Back to top ↑</a>
       </div>

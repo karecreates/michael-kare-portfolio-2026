@@ -19,10 +19,14 @@
   left: 50%;
   bottom: clamp(28px, 5vh, 56px);
   z-index: 2;
+  width: max-content;
+  max-width: calc(100% - 32px);
   margin: 0;
   transform: translateX(-50%);
   font-size: 13px;
   letter-spacing: 0.08em;
+  line-height: 1.35;
+  text-align: center;
   text-transform: lowercase;
   color: var(--muted);
   pointer-events: none;
@@ -85,6 +89,12 @@
 @media (max-width: 767px) {
   .track {
     height: 720vh;
+  }
+  .hint {
+    bottom: clamp(72px, 12vh, 104px);
+    max-width: calc(100vw - 28px);
+    letter-spacing: -0.03em;
+    white-space: nowrap;
   }
   .staticGrid {
     grid-template-columns: 1fr;

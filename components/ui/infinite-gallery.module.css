@@ -24,6 +24,8 @@
 @media (max-width: 767px) {
   .plane {
     top: 36%;
+    will-change: transform;
+    filter: none;
   }
 }
 .plane img,

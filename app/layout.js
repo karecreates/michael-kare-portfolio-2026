@@ -19,6 +19,12 @@ export const metadata = {
   metadataBase: new URL('https://michaelkare.com'),
   title: siteTitle,
   description: siteDescription,
+  formatDetection: {
+    telephone: false,
+    date: false,
+    address: false,
+    email: false,
+  },
   openGraph: {
     title: siteTitle,
     description: siteDescription,
@@ -28,7 +34,7 @@ export const metadata = {
     type: 'website',
     images: [
       {
-        url: '/og-image.png',
+        url: '/site_sharing_thumbnail.png',
         width: 1200,
         height: 630,
         alt: 'Michael Kare portfolio'
@@ -39,7 +45,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: siteTitle,
     description: siteDescription,
-    images: ['/og-image.png']
+    images: ['/site_sharing_thumbnail.png']
   }
 };
 

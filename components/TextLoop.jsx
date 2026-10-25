@@ -69,17 +69,27 @@ const TextLoop = ({
   const rootRef = useRef(null);
   const pathRef = useRef(null);
   const measureRef = useRef(null);
-  const headRef = useRef(null);
-  const tailRef = useRef(null);
+  const svgRef = useRef(null);
 
-  const [metrics, setMetrics] = useState({ length: 0, reps: 1 });
+  const [metrics, setMetrics] = useState({
+    length: 0,
+    advance: 0,
+    copies: 2,
+    center: 0,
+    textWidth: 0,
+    reps: 1,
+    flow: false,
+  });
+  const [narrow, setNarrow] = useState(false);
 
   const rawId = useId();
   const pathId = `text-loop-${rawId.replace(/:/g, '')}`;
 
+  const drawnCurve = narrow ? Math.min(curviness, 18) : curviness;
+  const drawnRibbon = narrow ? Math.round(ribbonWidth * 0.72) : ribbonWidth;
   const d = useMemo(
-    () => path || buildPath(shape, curviness, ribbonWidth),
-    [path, shape, curviness, ribbonWidth],
+    () => path || buildPath(shape, drawnCurve, drawnRibbon),
+    [path, shape, drawnCurve, drawnRibbon],
   );
 
   const unit = useMemo(() => {
@@ -88,14 +98,25 @@ const TextLoop = ({
     return `${base}${gap}`;
   }, [text, separator, uppercase]);
 
+  const drawnSize = narrow ? Math.round(fontSize * 0.62) : fontSize;
   const textStyle = useMemo(
     () => ({
-      fontSize: `${fontSize}px`,
+      fontSize: `${drawnSize}px`,
       fontWeight,
       letterSpacing: `${letterSpacing}px`,
     }),
-    [fontSize, fontWeight, letterSpacing],
+    [drawnSize, fontWeight, letterSpacing],
   );
+
+  useLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return undefined;
+    const read = () => setNarrow(root.clientWidth < 760);
+    read();
+    const observer = new ResizeObserver(read);
+    observer.observe(root);
+    return () => observer.disconnect();
+  }, []);
 
   useLayoutEffect(() => {
     const pathEl = pathRef.current;
@@ -116,9 +137,26 @@ const TextLoop = ({
       }
       if (!length) return;
 
-      const reps = unitWidth > 0 ? Math.max(1, Math.round(length / unitWidth)) : 1;
+      const reps = narrow ? 1 : Math.max(1, unitWidth > 0 ? Math.floor(length / unitWidth) : 1);
+      const textWidth = unitWidth * reps;
+      const advance = narrow ? textWidth * 1.14 : textWidth || length;
+      const copies = narrow ? Math.max(2, Math.ceil(length / advance) + 1) : 2;
+      let center = length / 2;
+      let low = 0;
+      let high = length;
+      for (let step = 0; step < 18; step += 1) {
+        const mid = (low + high) / 2;
+        if (pathEl.getPointAtLength(mid).x < CX) low = mid;
+        else high = mid;
+      }
+      center = (low + high) / 2;
       setMetrics((prev) =>
-        prev.length === length && prev.reps === reps ? prev : { length, reps },
+        prev.length === length &&
+        prev.advance === advance &&
+        prev.copies === copies &&
+        prev.flow === narrow
+          ? prev
+          : { length, advance, copies, center, textWidth, reps, flow: narrow },
       );
     };
 
@@ -130,18 +168,32 @@ const TextLoop = ({
     return () => {
       cancelled = true;
     };
-  }, [d, unit, fontSize, fontWeight, letterSpacing]);
+  }, [d, unit, drawnSize, fontWeight, letterSpacing, narrow]);
 
   useEffect(() => {
-    const { length } = metrics;
-    const head = headRef.current;
-    const tail = tailRef.current;
-    if (!head || !tail || !length) return undefined;
+    const { length, advance, center, textWidth, flow } = metrics;
+    const nodes = svgRef.current
+      ? [...svgRef.current.querySelectorAll('textPath')]
+      : [];
+    if (!nodes.length || !length || !advance) return undefined;
 
+    const base = center - advance / 2;
     const apply = (offset) => {
-      const partner = offset >= 0 ? offset - length : offset + length;
-      head.setAttribute('startOffset', String(offset));
-      tail.setAttribute('startOffset', String(partner));
+      if (!flow) {
+        const wrapped = ((offset % advance) + advance) % advance;
+        nodes.forEach((node, index) => {
+          node.parentNode.setAttribute('visibility', 'visible');
+          node.setAttribute('startOffset', String(base + wrapped - index * advance));
+        });
+        return;
+      }
+      nodes.forEach((node, index) => {
+        const raw = base + offset + index * advance;
+        const pos = ((raw % length) + length) % length;
+        const overflows = textWidth > 0 && pos + textWidth > length - 4;
+        node.parentNode.setAttribute('visibility', overflows ? 'hidden' : 'visible');
+        node.setAttribute('startOffset', String(overflows ? 0 : pos));
+      });
     };
 
     apply(0);
@@ -153,8 +205,8 @@ const TextLoop = ({
 
     const state = { offset: 0 };
     const tween = gsap.to(state, {
-      offset: direction === 'reverse' ? -length : length,
-      duration: length / speed,
+      offset: direction === 'reverse' ? -advance : advance,
+      duration: advance / speed,
       ease: 'none',
       repeat: -1,
       onUpdate: () => apply(state.offset),
@@ -178,12 +230,10 @@ const TextLoop = ({
     };
   }, [metrics, speed, direction, pauseOnHover]);
 
-  const loopText = unit.repeat(metrics.reps);
-  const fitLength = metrics.length || undefined;
-
   return (
     <div ref={rootRef} className={`text-loop ${className}`.trim()} style={style}>
       <svg
+        ref={svgRef}
         className="text-loop-svg"
         viewBox={`0 0 ${VIEW_W} ${VIEW_H}`}
         preserveAspectRatio="xMidYMid meet"
@@ -196,7 +246,7 @@ const TextLoop = ({
           d={d}
           fill="none"
           stroke={ribbon ? ribbonColor : 'none'}
-          strokeWidth={ribbon ? ribbonWidth : 0}
+          strokeWidth={ribbon ? drawnRibbon : 0}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -210,33 +260,20 @@ const TextLoop = ({
           {unit}
         </text>
 
-        <text
-          className="text-loop-text"
-          style={textStyle}
-          fill={color}
-          dominantBaseline="central"
-          aria-hidden="true"
-          textLength={fitLength}
-          lengthAdjust="spacing"
-        >
-          <textPath ref={headRef} href={`#${pathId}`} startOffset={0}>
-            {loopText}
-          </textPath>
-        </text>
-
-        <text
-          className="text-loop-text"
-          style={textStyle}
-          fill={color}
-          dominantBaseline="central"
-          aria-hidden="true"
-          textLength={fitLength}
-          lengthAdjust="spacing"
-        >
-          <textPath ref={tailRef} href={`#${pathId}`} startOffset={0}>
-            {loopText}
-          </textPath>
-        </text>
+        {Array.from({ length: metrics.copies }, (_, index) => (
+          <text
+            key={index}
+            className="text-loop-text"
+            style={textStyle}
+            fill={color}
+            dominantBaseline="central"
+            aria-hidden="true"
+          >
+            <textPath href={`#${pathId}`} startOffset={0}>
+              {metrics.flow ? unit : unit.repeat(metrics.reps)}
+            </textPath>
+          </text>
+        ))}
       </svg>
     </div>
   );
