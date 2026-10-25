@@ -157,6 +157,24 @@ export const siteData = {
           image:
             '/placeholders/Michael_Portfolio_Images/Beta_Agency_Email_Camapign_Project_Kare_Portfolio.png',
           href: '/projects/beta-agency-marketing-design'
+        },
+    {
+          title: 'Interactive Mapping',
+          category: 'Product Development',
+          image: '/editorial/interactive-mapping.webp',
+          href: '/projects/interactive-mapping'
+        },
+    {
+          title: 'Keen Footwear',
+          category: 'Data Visualization',
+          image: '/editorial/keen-footwear.webp',
+          href: '/projects/keen-footwear'
+        },
+    {
+          title: 'JG Aquatics',
+          category: 'Web Design & Development',
+          image: '/editorial/jg-aquatics.webp',
+          href: '/projects/jg-aquatics'
         }
   ],
   focusAreas: [
@@ -172,11 +190,11 @@ export const siteData = {
   creativeWork: {
     sectionLabel: 'Creative',
     headline: 'Creative Work',
-    image: '/placeholders/Michael_Portfolio_Images/Michael_Portfolio_Creative.png',
-    imageAlt: 'Michael Kare — creative photography',
+    image: '/editorial/michael_camera_transparent.png',
+    imageAlt: 'Michael Kare holding a camera lens toward the viewer',
     cursorIcon: '/placeholders/Michael_Portfolio_Images/cursor-alt-pointer-mouse-rounded.svg',
     ctaLabel: 'click here',
-    ctaHref: '/projects/creative'
+    ctaHref: '#creative-gallery'
   },
   about: {
     title: 'About Me',
@@ -188,9 +206,10 @@ export const siteData = {
       { label: 'Email', href: 'mailto:karecreates@gmail.com' }
     ],
     paragraphs: [
-      'I graduated from the University of Washington in 2021, receiving my degree in Cinema and Media Studies (CMS) as well as Digital Experimental Media (DXARTS). Passionate about film, media, and photography while simultaneously being shaped by the internet, I became interested in a career in web design and development.',
-      'My uniqueness lies in my ability to wear many hats within the industry that I serve. My ability to create stunning graphics in industry standard softwares, create animations and videos, design logos, and more, has led me to design powerful websites that combine a range of mediums.',
-      'I have worked on projects consisting of designing and developing education platforms, creating brand identity for an AI education models, organizing print for large conferences (banners, panels, business cards, apparel, etc.), rebranding logos, deploying mobile applications, and more. I am passionate about paving the way for the future of design and how we consume information on the web.'
+      'I’m a multidisciplinary designer and developer working at the intersection of design, technology, and digital storytelling.',
+      'I graduated from the University of Washington in 2021, where I studied Cinema and Media Studies and Digital Arts & Experimental Media (DXARTS). My background in film, photography, and digital media shaped the way I approach the web—not simply as a functional tool, but as a space for storytelling, interaction, and visual experience.',
+      'My work spans web design and development, branding, motion, graphic design, and digital experiences. I’ve designed and developed educational platforms, built brand identities for AI-focused products, created large-scale conference and print materials, reimagined visual identities, and helped bring mobile and web applications to life.',
+      'I’m most interested in projects where design and technology meet. Whether I’m building a website, developing a brand system, or experimenting with motion and interaction, my goal is to create work that feels thoughtful, memorable, and distinctly built for the medium.'
     ]
   },
   footer: {

@@ -20,7 +20,7 @@
   min-height: 240px;
   overflow: hidden;
   border-radius: clamp(14px, 1.2vw, 20px);
-  background: #0a0a0b;
+  background: #000;
   overscroll-behavior: none;
   user-select: none;
   -webkit-user-drag: none;

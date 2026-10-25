@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { playInline, releaseInline } from '@/lib/inlineVideo';
 import styles from './BetaAgencyRedesignVideo.module.css';
 
 const VIDEO_SRC =
@@ -17,10 +18,11 @@ export default function BetaAgencyRedesignVideo() {
 
     const sync = () => {
       if (mq.matches) {
+        releaseInline(video);
         video.pause();
         return;
       }
-      void video.play().catch(() => {});
+      playInline(video).catch(() => {});
     };
 
     sync();

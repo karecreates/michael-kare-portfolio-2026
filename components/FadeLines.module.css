@@ -1,0 +1,41 @@
+.line {
+  display: block;
+  opacity: 0;
+  transform: translate3d(0, 0.22em, 0);
+}
+
+.lineIn {
+  animation: lineIn 1.25s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i) * 0.09s);
+}
+
+.settled {
+  opacity: 1;
+  transform: none;
+  animation: none;
+}
+
+.word {
+  display: inline;
+}
+
+@keyframes lineIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 0.22em, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .line,
+  .lineIn,
+  .settled {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}

@@ -1,0 +1,142 @@
+.sidebar {
+  position: sticky;
+  top: calc(var(--site-header-height) + var(--cs-pad, 24px));
+  height: calc(100dvh - var(--site-header-height) - 48px);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #111;
+  border-radius: var(--cs-radius, 32px);
+  padding: var(--cs-content-top, 30px) 26px 24px;
+  overflow: hidden;
+  box-shadow: none;
+}
+:global(html[data-theme='light']) .sidebar {
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.22);
+}
+
+.top {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.kickerRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+  font-weight: 500;
+}
+
+.back {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: #8a8a8a;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.back:hover,
+.back:focus-visible {
+  color: #111;
+}
+
+.title {
+  margin: 0 0 18px;
+  font-size: clamp(30px, 2.5vw, 42px);
+  line-height: 1.02;
+  letter-spacing: -0.05em;
+  font-weight: 600;
+  color: #111;
+}
+
+.projectType {
+  margin: -6px 0 16px;
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  color: #6a6a6a;
+}
+
+.description {
+  margin: 0 0 32px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: #6a6a6a;
+  max-width: 34ch;
+}
+
+.disciplines {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.discipline {
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: #9a9a9a;
+  letter-spacing: 0.01em;
+}
+
+.cta {
+  flex-shrink: 0;
+  margin-top: 20px;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
+  padding: 0 16px;
+  border: 1px solid #111;
+  border-radius: 999px;
+  background: transparent;
+  color: #111;
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  transition: background 180ms ease, color 180ms ease;
+}
+
+.cta:hover,
+.cta:focus-visible {
+  background: #111;
+  color: #fff;
+}
+
+@media (max-width: 980px) {
+  .sidebar {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .top {
+    overflow: visible;
+  }
+
+  .title {
+    font-size: clamp(32px, 8vw, 44px);
+  }
+
+  .description {
+    max-width: 52ch;
+  }
+}

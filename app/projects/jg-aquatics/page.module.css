@@ -1,0 +1,241 @@
+.page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.intro {
+  width: 100%;
+  padding: 28px 20px 36px;
+  box-sizing: border-box;
+}
+
+.introGrid {
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 42%);
+  column-gap: clamp(20px, 4vw, 48px);
+  row-gap: 24px;
+  align-items: start;
+}
+
+
+.titleRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  min-width: 0;
+}
+
+.projectTitle {
+  margin: 0;
+  font-family: var(--font-dm-sans), Arial, Helvetica, sans-serif;
+  font-size: clamp(2.75rem, 8vw, 5rem);
+  font-weight: 700;
+  line-height: 0.92;
+  letter-spacing: -0.05em;
+}
+
+.techPills {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px 8px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.techPill {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  padding: 5px 15px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  font-size: 1em;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+.category {
+  margin: 0;
+  align-self: start;
+  font-size: clamp(1.25rem, 2vw, 2rem);
+  color: var(--muted);
+  letter-spacing: 0.02em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.infoLabel {
+  margin: 0;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+
+.infoBody {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.88);
+  text-align: left;
+  text-wrap: balance;
+}
+
+.introCtaBar {
+  margin-top: 0;
+}
+
+
+.frames {
+  width: 100%;
+  max-width: 100%;
+  padding: 0 20px 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+
+.frame {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  margin: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.frameImage {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  vertical-align: bottom;
+}
+
+@media (max-width: 900px) {
+  .intro {
+    padding: 20px 14px 28px;
+  }
+
+  .introGrid {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+    row-gap: 20px;
+    align-items: start;
+  }
+
+  .introGrid > .titleRow,
+  .introGrid > .projectTitle {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+  }
+  .category {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    align-self: start;
+    justify-self: start;
+    text-align: left;
+    white-space: nowrap;
+    width: 100%;
+    max-width: 100%;
+    font-size: 1.5rem;
+  }
+
+  .introGrid > .techPills {
+    width: 100%;
+    min-width: 0;
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: 0;
+  }
+
+  .projectTitle {
+    width: 100%;
+    white-space: nowrap;
+    font-size: clamp(2rem, 8.8vw, 3rem);
+  }
+
+  .titleRow {
+    align-items: flex-start;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .techPills {
+    margin-top: 0;
+
+    display: flex;
+
+    flex-direction: row;
+
+    flex-wrap: wrap;
+
+    justify-content: flex-start;
+  }
+
+  .frames {
+    padding: 0 14px 14px;
+  }
+}
+
+@media (min-width: 901px) {
+  .techPills {
+    margin-top: 0;
+  }
+
+  .introGrid > .titleRow,
+  .introGrid > .projectTitle {
+    grid-column: 1;
+    grid-row: 1;
+    min-width: 0;
+  }
+
+  .introGrid > .category {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .introGrid > .techPills {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .introGrid > .introMeta {
+    grid-column: 2;
+    grid-row: 2 / span 2;
+    min-width: 0;
+    align-self: start;
+  }
+
+  .introGrid > .introMeta .infoLabel {
+    margin-bottom: 20px;
+  }
+
+  .introGrid > .introMeta .infoBody {
+    width: 100%;
+    max-width: 100%;
+    text-wrap: pretty;
+  }
+
+  .introGrid > .introCtaBar {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0;
+    padding-top: clamp(8px, 1.5vw, 20px);
+  }
+}
+

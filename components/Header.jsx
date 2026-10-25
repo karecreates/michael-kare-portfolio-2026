@@ -1,133 +1,212 @@
 'use client';
 
-import { useCallback, useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
 import styles from './Header.module.css';
 
 const DEFAULT_LINKS = [
-  { label: 'Work', href: '/#work' },
+  { label: 'Work', href: '/#archive' },
   { label: 'Profile', href: '/#profile' },
-  { label: 'Contact', href: '/#contact' }
+  { label: 'Contact', href: '/#contact' },
 ];
-
-const SCROLL_THRESHOLD = 8;
 const RESUME_PATH =
   '/placeholders/Michael_Portfolio_Images/Michael_Kare_Resume_2026_Web_Optimized_2026.pdf';
 
-const MOBILE_MAX = 900;
+function applyStoredTheme() {
+  try {
+    const stored = localStorage.getItem('theme');
+    document.documentElement.dataset.theme = stored === 'light' ? 'light' : 'dark';
+  } catch {
+    document.documentElement.dataset.theme = 'dark';
+  }
+}
+
+function ThemeToggle() {
+  const toggle = () => {
+    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    document.documentElement.dataset.theme = next;
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* storage can be blocked; the attribute still switches this visit */
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      className={styles.themeToggle}
+      onClick={toggle}
+      aria-label="Switch color theme"
+    >
+      <span className={styles.themeTrack} aria-hidden="true">
+        <span className={styles.themeKnob} />
+      </span>
+    </button>
+  );
+}
 
 export default function Header({ links = DEFAULT_LINKS }) {
-  const [elevated, setElevated] = useState(false);
-  const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [resumeOpen, setResumeOpen] = useState(false);
   const menuId = useId();
-  const menuButtonRef = useRef(null);
+  const menuButton = useRef(null);
+  const resumeButton = useRef(null);
+  const resumeDialog = useRef(null);
 
-  const closeMenu = useCallback(() => setMenuOpen(false), []);
+  useLayoutEffect(() => {
+    applyStoredTheme();
+  }, []);
 
   useEffect(() => {
-    const updateFromWindow = () => {
-      setElevated(window.scrollY > SCROLL_THRESHOLD);
+    const sync = () => {
+      const root = document.documentElement;
+      const band = root.querySelector('header')?.getBoundingClientRect().height || 62;
+      let ink = '';
+      root.querySelectorAll('[data-header-contrast]').forEach((node) => {
+        const box = node.getBoundingClientRect();
+        if (box.top >= band || box.bottom <= 8) return;
+        const mode = node.getAttribute('data-header-contrast');
+        if (mode === 'dark') ink = 'dark';
+        else if (mode === 'invert' && root.dataset.theme === 'light' && ink !== 'dark') {
+          ink = 'light';
+        }
+      });
+      if (ink) root.dataset.headerInk = ink;
+      else delete root.dataset.headerInk;
     };
-
-    const updateFromLenis = (e) => {
-      setElevated(e.detail.scroll > SCROLL_THRESHOLD);
+    let frame = 0;
+    const schedule = () => {
+      if (frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        sync();
+      });
     };
-
-    updateFromWindow();
-    window.addEventListener('scroll', updateFromWindow, { passive: true });
-    window.addEventListener('lenis-scroll', updateFromLenis);
+    sync();
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    const theme = new MutationObserver(schedule);
+    theme.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    });
+    const lenis = window.__lenis;
+    lenis?.on?.('scroll', schedule);
     return () => {
-      window.removeEventListener('scroll', updateFromWindow);
-      window.removeEventListener('lenis-scroll', updateFromLenis);
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('resize', schedule);
+      theme.disconnect();
+      lenis?.off?.('scroll', schedule);
     };
   }, []);
 
   useEffect(() => {
-    if (!isResumeOpen) {
-      return undefined;
-    }
-
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-
-    const handleEscape = (event) => {
+    const root = document.documentElement;
+    if (menuOpen) root.dataset.menu = 'open';
+    else delete root.dataset.menu;
+    if (!menuOpen) return undefined;
+    const keydown = (event) => {
       if (event.key === 'Escape') {
-        setIsResumeOpen(false);
+        setMenuOpen(false);
+        menuButton.current?.focus();
       }
     };
-
-    window.addEventListener('keydown', handleEscape);
+    const resize = () => {
+      if (window.innerWidth > 900) setMenuOpen(false);
+    };
+    const lenis = window.__lenis;
+    lenis?.stop?.();
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', keydown);
+    window.addEventListener('resize', resize);
     return () => {
-      document.body.style.overflow = previousOverflow;
-      window.removeEventListener('keydown', handleEscape);
-    };
-  }, [isResumeOpen]);
-
-  useEffect(() => {
-    if (!menuOpen) {
-      return undefined;
-    }
-
-    const onKeyDown = (e) => {
-      if (e.key === 'Escape') {
-        closeMenu();
-        menuButtonRef.current?.focus();
-      }
-    };
-
-    const onResize = () => {
-      if (window.innerWidth > MOBILE_MAX) {
-        closeMenu();
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    window.addEventListener('resize', onResize);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      window.removeEventListener('resize', onResize);
-    };
-  }, [menuOpen, closeMenu]);
-
-  useEffect(() => {
-    if (menuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
+      delete root.dataset.menu;
+      lenis?.start?.();
+      document.body.style.overflow = overflow;
+      window.removeEventListener('keydown', keydown);
+      window.removeEventListener('resize', resize);
     };
   }, [menuOpen]);
 
-  const toggleMenu = () => {
-    setMenuOpen((open) => !open);
+  useEffect(() => {
+    if (!resumeOpen) return;
+    const dialog = resumeDialog.current;
+    dialog.showModal();
+    const overflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      dialog.close();
+      document.body.style.overflow = overflow;
+    };
+  }, [resumeOpen]);
+
+  const followLink = (event, href) => {
+    const url = new URL(href, window.location.origin);
+    if (url.pathname !== window.location.pathname || !url.hash) return;
+    const target = document.querySelector(url.hash);
+    if (!target) return;
+    event.preventDefault();
+    setMenuOpen(false);
+    const band = document.querySelector('header')?.getBoundingClientRect().height || 72;
+    const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - band - 16);
+    const lenis = window.__lenis;
+    if (lenis?.scrollTo) lenis.scrollTo(top, { duration: 1.15 });
+    else window.scrollTo({ top, behavior: 'smooth' });
+    window.history.pushState(null, '', `${url.pathname}${url.hash}`);
   };
 
-  const openResume = () => {
-    closeMenu();
-    setIsResumeOpen(true);
+  useEffect(() => {
+    const hash = window.location.hash;
+    if (!hash) return undefined;
+    let timer = 0;
+    const go = () => {
+      if (document.documentElement.dataset.loading) {
+        timer = window.setTimeout(go, 120);
+        return;
+      }
+      const target = document.querySelector(hash);
+      if (!target) return;
+      const band = document.querySelector('header')?.getBoundingClientRect().height || 72;
+      const top = Math.max(0, target.getBoundingClientRect().top + window.scrollY - band - 16);
+      const lenis = window.__lenis;
+      if (lenis?.scrollTo) lenis.scrollTo(top, { immediate: true });
+      else window.scrollTo(0, top);
+    };
+    timer = window.setTimeout(go, 80);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  const closeResume = () => {
+    setResumeOpen(false);
+    if (window.innerWidth <= 900) menuButton.current?.focus();
+    else resumeButton.current?.focus();
   };
 
   return (
     <>
-      <header
-        className={`${styles.header} ${elevated ? styles.headerElevated : ''}`}
-      >
+      <a href="/" className={styles.logo} aria-label="Michael Kare home">
+        MICHAELKARE
+      </a>
+      <span className={styles.logoInvert} data-header-logo-invert aria-hidden="true">
+        MICHAELKARE
+      </span>
+      <header className={styles.header}>
         <div className={styles.inner}>
-          <a href="/" className={styles.logo} aria-label="Michael Kare home">
+          <span className={styles.logoSpacer} aria-hidden="true">
             MICHAELKARE
-          </a>
-
+          </span>
           <div className={styles.navArea}>
+            <ThemeToggle />
             <button
-              ref={menuButtonRef}
+              ref={menuButton}
               type="button"
               className={styles.menuToggle}
               aria-expanded={menuOpen}
               aria-controls={menuId}
               aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-              onClick={toggleMenu}
+              onClick={() => setMenuOpen((open) => !open)}
             >
               <span className={styles.menuIcon} aria-hidden="true">
                 <span className={menuOpen ? styles.barOpen1 : styles.bar} />
@@ -135,38 +214,24 @@ export default function Header({ links = DEFAULT_LINKS }) {
                 <span className={menuOpen ? styles.barOpen3 : styles.bar} />
               </span>
             </button>
-
-            {menuOpen && (
-              <button
-                type="button"
-                className={styles.menuBackdrop}
-                aria-label="Close menu"
-                tabIndex={-1}
-                onClick={closeMenu}
-              />
-            )}
-
-            <nav
-              id={menuId}
-              className={`${styles.nav} ${menuOpen ? styles.navOpen : ''}`}
-              aria-label="Primary navigation"
-            >
+            <nav className={styles.nav} aria-label="Primary navigation">
               {links.map((link) => (
                 <a
                   key={link.label}
                   href={link.href}
                   className={styles.link}
-                  onClick={closeMenu}
+                  onClick={(event) => followLink(event, link.href)}
                 >
                   {link.label}
                 </a>
               ))}
               <button
+                ref={resumeButton}
                 type="button"
                 className={styles.linkButton}
-                onClick={openResume}
+                onClick={() => setResumeOpen(true)}
                 aria-haspopup="dialog"
-                aria-expanded={isResumeOpen}
+                aria-expanded={resumeOpen}
                 aria-controls="resume-modal"
               >
                 Resume
@@ -175,48 +240,96 @@ export default function Header({ links = DEFAULT_LINKS }) {
           </div>
         </div>
       </header>
-
-      {isResumeOpen && (
-        <div
-          id="resume-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Michael Kare resume"
-          className={styles.resumeModal}
-        >
-          <div className={styles.resumeTopBar}>
+      <nav
+        id={menuId}
+        className={`${styles.mobileMenu} ${menuOpen ? styles.mobileMenuOpen : ''}`}
+        aria-label="Mobile navigation"
+        aria-hidden={menuOpen ? undefined : true}
+        inert={!menuOpen}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setMenuOpen(false);
+        }}
+      >
+        <p className={styles.mobileKicker}>Index</p>
+        <ol className={styles.mobileList}>
+          {links.map((link, index) => (
+            <li key={link.label} style={{ '--i': index }}>
+              <a
+                href={link.href}
+                className={styles.mobileItem}
+                onClick={(event) => followLink(event, link.href)}
+              >
+                <span className={styles.mobileIndex}>
+                  {String(index + 1).padStart(2, '0')}
+                </span>
+                <span className={styles.mobileLabel}>{link.label}</span>
+              </a>
+            </li>
+          ))}
+          <li style={{ '--i': links.length }}>
             <button
               type="button"
-              className={styles.modalButton}
-              onClick={() => setIsResumeOpen(false)}
+              className={styles.mobileItem}
+              onClick={() => {
+                setMenuOpen(false);
+                setResumeOpen(true);
+              }}
             >
-              Close
+              <span className={styles.mobileIndex}>
+                {String(links.length + 1).padStart(2, '0')}
+              </span>
+              <span className={styles.mobileLabel}>Resume</span>
             </button>
-            <a
-              href={RESUME_PATH}
-              target="_blank"
-              rel="noreferrer"
-              className={styles.modalButton}
-            >
-              Open in New Tab
-            </a>
-            <a href={RESUME_PATH} download className={styles.modalButton}>
-              Download
-            </a>
-          </div>
-          <div className={styles.resumeFrameWrap}>
-            <iframe
-              src={RESUME_PATH}
-              title="Michael Kare Resume PDF"
-              className={styles.resumeFrame}
-            />
-          </div>
-          <p className={styles.resumeHint}>
-            If this preview appears blank, use Download or Open in New Tab. The
-            current PDF export may not render in all built-in browser viewers.
-          </p>
-        </div>
-      )}
+          </li>
+        </ol>
+      </nav>
+      <dialog
+        ref={resumeDialog}
+        id="resume-modal"
+        aria-label="Michael Kare resume"
+        className={styles.resumeModal}
+        data-lenis-prevent
+        onCancel={(event) => {
+          event.preventDefault();
+          closeResume();
+        }}
+      >
+        {resumeOpen && (
+          <>
+            <div className={styles.resumeTopBar}>
+              <button
+                type="button"
+                className={styles.modalButton}
+                onClick={closeResume}
+                autoFocus
+              >
+                Close
+              </button>
+              <a
+                href={RESUME_PATH}
+                target="_blank"
+                rel="noreferrer"
+                className={styles.modalButton}
+              >
+                Open in new tab
+              </a>
+              <a href={RESUME_PATH} download className={styles.modalButton}>
+                Download
+              </a>
+            </div>
+            <div className={styles.resumeFrameWrap}>
+              <iframe
+                src={RESUME_PATH}
+                title="Michael Kare resume PDF"
+                className={styles.resumeFrame}
+              />
+            </div>
+            <p className={styles.resumeHint}>
+              You can also download a copy or open the résumé in a new tab.
+            </p>
+          </>
+        )}
+      </dialog>
     </>
   );
 }

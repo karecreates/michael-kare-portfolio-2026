@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback } from 'react';
+import { playInline } from '@/lib/inlineVideo';
 import styles from './SabioVideo.module.css';
 
 const START_SEC = 60;
@@ -15,13 +16,13 @@ export default function SabioVideo() {
   }, []);
 
   const onSeeked = useCallback((e) => {
-    void e.currentTarget.play();
+    playInline(e.currentTarget).catch(() => {});
   }, []);
 
   const onEnded = useCallback((e) => {
     const v = e.currentTarget;
     v.currentTime = START_SEC;
-    void v.play();
+    playInline(v).catch(() => {});
   }, []);
 
   return (
@@ -31,6 +32,8 @@ export default function SabioVideo() {
         src={VIDEO_SRC}
         muted
         playsInline
+        autoPlay
+        loop
         preload="auto"
         disablePictureInPicture
         onLoadedMetadata={onLoadedMetadata}

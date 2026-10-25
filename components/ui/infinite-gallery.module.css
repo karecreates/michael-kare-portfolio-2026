@@ -1,0 +1,36 @@
+.viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+}
+.world {
+  position: absolute;
+  inset: 0;
+}
+.plane {
+  position: absolute;
+  left: 50%;
+  top: 44%;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  background: var(--bg);
+  transform-origin: center center;
+  will-change: transform, opacity, filter;
+  box-shadow: 0 0 0 1px var(--media-line);
+}
+@media (max-width: 767px) {
+  .plane {
+    top: 36%;
+  }
+}
+.plane img,
+.plane video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}

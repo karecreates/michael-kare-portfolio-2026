@@ -1,5 +1,8 @@
 import { DM_Sans } from 'next/font/google';
 import '@/app/globals.css';
+import SiteLoader from '@/components/SiteLoader';
+
+const themeBoot = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';}catch(e){document.documentElement.dataset.theme='dark';}})();`;
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -42,8 +45,14 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={dmSans.variable}>
-      <body>{children}</body>
+    <html lang="en" className={dmSans.variable} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
+      </head>
+      <body id="top">
+        {children}
+        <SiteLoader />
+      </body>
     </html>
   );
 }

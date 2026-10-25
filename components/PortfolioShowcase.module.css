@@ -1,0 +1,308 @@
+/* Scroll-driven stacked-tab showcase. Every panel shares one solid blue. */
+.track {
+  --gutter: clamp(20px, 3.3vw, 64px);
+  --panel-h: 100svh;
+  --tab-h: calc(var(--site-header-height) + 96px);
+  --tab-min: 10px;
+  --head-gap: 32px;
+  --pad: 28px;
+  --title-size: clamp(40px, 5vw, 76px);
+  --number-size: clamp(30px, 3.6vw, 56px);
+  --line: rgba(255, 255, 255, 0.32);
+  --media-h: calc(var(--panel-h) - var(--tab-h));
+  --media-w: calc(var(--media-h) * 16 / 9);
+  position: relative;
+  width: 100%;
+  height: calc(10 * var(--panel-h) * 0.85 + var(--panel-h) * 1.3);
+  color: var(--text);
+}
+.sticky {
+  position: sticky;
+  top: 0;
+  height: var(--panel-h);
+  overflow: clip;
+  background: var(--bg);
+}
+.intro {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--gutter);
+  pointer-events: none;
+}
+.introInner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: min(100%, 1100px);
+  pointer-events: auto;
+}
+.wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--portfolio-blue);
+  clip-path: circle(0% at 0% 50%);
+  pointer-events: none;
+  will-change: clip-path;
+}
+.panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--panel-h);
+  background: var(--portfolio-blue);
+  color: #fff;
+  border-top: 1px solid var(--line);
+  overflow: hidden;
+  will-change: transform;
+}
+.header {
+  position: relative;
+  z-index: 7;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: var(--head-gap);
+  width: 100%;
+  height: var(--tab-h);
+  padding: var(--site-header-height) var(--gutter) 0;
+  margin: 0;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  background: var(--portfolio-blue);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.header:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: -6px;
+}
+.number {
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  font-size: var(--number-size);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.9;
+  transform-origin: left center;
+  will-change: transform;
+}
+.title {
+  position: relative;
+  z-index: 5;
+  display: inline-block;
+  justify-self: end;
+  font-size: var(--title-size);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.03em;
+  line-height: 0.92;
+  text-align: right;
+  transform-origin: right center;
+  will-change: transform;
+}
+.body {
+  position: absolute;
+  top: var(--tab-h);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: visible;
+}
+.copy {
+  position: absolute;
+  z-index: 6;
+  left: 0;
+  bottom: 0;
+  top: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  /* The 16:9 mockup owns the right side. This stays in the blue strip. */
+  width: calc(100% - min(var(--media-w), 100%));
+  max-width: 36ch;
+  padding: 8px 10px 28px 16px;
+  container-type: inline-size;
+  will-change: transform, opacity;
+}
+.description {
+  margin: 0;
+  /* Scale with the blue strip. 15.5cqi fits the longest word
+     ("conventional") without crossing the mockup, and caps at 28px
+     once the strip is wide enough for a real paragraph. */
+  font-size: min(28px, 18.5cqi);
+  line-height: 1.28;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.94);
+}
+.frame {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  height: 100%;
+  width: auto;
+  aspect-ratio: 16 / 9;
+  max-width: 100%;
+  overflow: visible;
+}
+.float {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 4;
+  width: 100%;
+  height: 100%;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.float img,
+.float video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom right;
+  user-select: none;
+}
+
+/* Reduced motion: no pinning, panels stack naturally with media at full size. */
+.static {
+  height: auto !important;
+}
+.static .sticky {
+  position: static;
+  height: auto;
+  overflow: visible;
+  background: transparent;
+}
+.static .intro {
+  position: relative;
+  min-height: min(70svh, 720px);
+  padding: 8vh var(--gutter);
+}
+.static .wipe {
+  display: none;
+}
+.static .panel {
+  position: relative;
+  height: auto;
+  min-height: var(--panel-h);
+  transform: none !important;
+  background: var(--portfolio-blue);
+}
+.static .body {
+  position: relative;
+  min-height: var(--media-h);
+}
+.static .copy {
+  position: relative;
+  opacity: 1 !important;
+  transform: none !important;
+}
+.static .float {
+  position: relative;
+  transform: none !important;
+  aspect-ratio: 16 / 9;
+}
+.static .frame {
+  position: relative;
+  width: min(var(--media-w), 100%);
+  height: auto;
+  aspect-ratio: 16 / 9;
+  margin-left: auto;
+}
+
+@media (max-width: 1279px) {
+  .track {
+    --tab-h: calc(var(--site-header-height) + 80px);
+    --title-size: clamp(32px, 4.4vw, 56px);
+    --number-size: clamp(26px, 3vw, 42px);
+  }
+}
+
+@media (max-width: 1023px) {
+  .track {
+    --tab-h: calc(var(--site-header-height) + 68px);
+    --title-size: clamp(26px, 4vw, 42px);
+    --number-size: clamp(22px, 2.8vw, 34px);
+    --pad: 22px;
+    --head-gap: 20px;
+  }
+  .description {
+    font-size: min(24px, 18.5cqi);
+  }
+}
+
+@media (max-width: 767px) {
+  .track {
+    --tab-h: calc(var(--site-header-height) + (var(--title-size) * 1.95) + 16px);
+    --head-gap: 12px;
+    --title-size: clamp(28px, 8vw, 40px);
+    --number-size: clamp(22px, 6.2vw, 30px);
+    --pad: 16px;
+    --media-w: 100%;
+    --media-h: auto;
+  }
+  .header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    padding-bottom: 10px;
+  }
+  .number {
+    position: absolute;
+    left: var(--gutter);
+    top: calc(100% + 16px);
+    text-align: left;
+  }
+  .title {
+    line-height: 0.95;
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0;
+    padding: calc(var(--number-size) + 30px) var(--gutter) 0;
+    overflow: hidden;
+  }
+  .frame {
+    position: relative;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    align-self: stretch;
+    width: calc(100% + (var(--gutter) * 2));
+    max-width: none;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    margin: auto calc(var(--gutter) * -1) 0;
+    overflow: hidden;
+  }
+  .copy {
+    position: relative;
+    width: min(100%, 14em);
+    max-width: 14em;
+    padding: 0;
+    container-type: normal;
+    font-size: clamp(22px, 6.2vw, 28px);
+  }
+  .description {
+    font-size: 1em;
+    line-height: 1.22;
+    text-align: left;
+  }
+}

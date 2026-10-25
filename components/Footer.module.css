@@ -1,50 +1,105 @@
 .footer {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 10px 20px 24px;
+  padding: 0 0 25px;
+  background: var(--bg);
   overflow-x: clip;
-  /* Size fluid type from the padded content box, not 100vw */
-  container-type: inline-size;
 }
-
-/* Full bleed like main sections — no .container max-width */
+.gutter {
+  padding-left: clamp(20px, 3.3vw, 64px);
+  padding-right: clamp(20px, 3.3vw, 64px);
+}
 .topRow {
   display: flex;
   justify-content: space-between;
   gap: 20px;
-  width: 100%;
-  max-width: none;
-  padding-top: 10px;
+  padding-top: 24px;
   border-top: 1px solid var(--line);
+  font-size: 14px;
   color: var(--muted);
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  font-size: 0.78rem;
 }
-
-.wordmark {
+.invitation {
+  display: block;
+  width: fit-content;
+  margin: 65px 0 55px;
+  font-size: clamp(54px, 11.6vw, 225px);
+  font-weight: 400;
+  letter-spacing: -0.065em;
+  line-height: 0.95;
+}
+.invitation > span {
+  display: block;
+}
+.arrow {
+  display: inline-block;
+  width: 0.72em;
+  height: 0.72em;
+  margin-left: 0.16em;
+  vertical-align: 0.02em;
+  color: var(--accent);
+  filter: drop-shadow(0 0 12px rgba(0, 148, 233, 0.55));
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.arrow svg {
   display: block;
   width: 100%;
-  max-width: 100%;
-  padding-top: 20px;
-  box-sizing: border-box;
-  white-space: nowrap;
-  /* vw uses full viewport — footer content is narrower; cqw tracks the footer’s inner width */
-  font-size: clamp(3rem, 18vw, 50rem);
-  line-height: 0.88;
-  font-weight: 700;
-  letter-spacing: -0.08em;
+  height: 100%;
+  overflow: visible;
 }
-
-@supports (font-size: 1cqw) {
-  .wordmark {
-    /* Tuned to fill width without clipping — adjust ~15–16cqw as needed */
-    font-size: clamp(3rem, 16cqw, 50rem);
+.invitation:hover .arrow {
+  transform: translate(8px, -8px);
+}
+.loop {
+  width: 100%;
+  margin: 10px 0 20px;
+}
+.contactRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-bottom: 60px;
+}
+.contactRow > a {
+  font-size: clamp(20px, 2.1vw, 40px);
+  letter-spacing: -0.035em;
+}
+.contactRow nav {
+  display: flex;
+  gap: 35px;
+  align-items: center;
+  font-size: 14px;
+}
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-top: 1px solid var(--line);
+  padding-top: 23px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.bottomRow a {
+  color: var(--text);
+}
+@media (max-width: 767px) {
+  .invitation {
+    font-size: 11.3vw;
+    margin: 45px 0;
   }
-}
-
-@media (max-width: 900px) {
-  .footer {
-    padding: 10px 14px 18px;
+  .contactRow {
+    display: block;
+    padding-bottom: 40px;
+  }
+  .contactRow nav {
+    margin-top: 28px;
+    gap: 25px;
+  }
+  .bottomRow {
+    flex-wrap: wrap;
+    font-size: 12px;
+  }
+  .bottomRow > span:nth-child(2) {
+    display: none;
+  }
+  .topRow {
+    font-size: 13px;
   }
 }

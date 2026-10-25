@@ -1,16 +1,44 @@
 :root {
+  color-scheme: dark;
   /* Sticky site header — used for full-viewport previews (e.g. case study hero). */
   --site-header-height: clamp(52px, 3.75rem, 62px);
   --bg: #000000;
-  --surface: #0a0a0a;
-  --surface-2: #101010;
-  --text: #f5f5f5;
-  --muted: rgba(255, 255, 255, 0.64);
+  --accent: #0094e9;
+  --accent-hover: #59b9f1;
+  --on-accent: #ffffff;
+  --accent-glow: 0 0 18px rgba(0, 148, 233, 0.42);
+  --accent-glow-text: 0 0 14px rgba(0, 148, 233, 0.55);
+  --brand-accent: var(--accent);
+  --portfolio-blue: #0094e9;
+  --surface: #000000;
+  --surface-2: #000000;
+  --text: #eeede7;
+  --muted: #92938c;
   --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.28);
+  --media-line: rgba(255, 255, 255, 0.16);
+  --orb: #ffffff;
   --radius: 28px;
   --radius-sm: 18px;
   --shadow: 0 24px 80px rgba(0, 0, 0, 0.28);
   --max-width: 1600px;
+}
+
+html[data-theme='light'] {
+  color-scheme: light;
+  --bg: #ffffff;
+  --accent: #0094e9;
+  --accent-hover: #59b9f1;
+  --on-accent: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f3f3f1;
+  --text: #111111;
+  --muted: #5c5d57;
+  --line: rgba(0, 0, 0, 0.12);
+  --line-strong: rgba(0, 0, 0, 0.28);
+  --media-line: rgba(0, 0, 0, 0.16);
+  --orb: #ffffff;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.08);
 }
 
 * {
@@ -18,7 +46,7 @@
 }
 
 html {
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
   background: var(--bg);
   overflow-x: clip;
 }
@@ -39,7 +67,13 @@ body {
 }
 
 body {
-  overflow-x: hidden;
+  overflow-x: clip;
+}
+
+/* Case study pages need a visible overflow axis so the sidebar can stick. */
+html[data-case-study],
+html[data-case-study] body {
+  overflow-x: visible;
 }
 
 /* Keep any transformed/smooth-scroll wrappers from creating horizontal panning. */
@@ -100,4 +134,34 @@ section {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 6px;
+}
+[id] {
+  scroll-margin-top: 90px;
+}
+.skip-link {
+  position: fixed;
+  z-index: 200;
+  top: 10px;
+  left: 20px;
+  padding: 14px 20px;
+  background: var(--text);
+  color: var(--bg);
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+html {
+  position: relative;
 }

@@ -1,124 +1,32 @@
-import Image from "next/image";
-import SmoothScroll from "@/components/SmoothScroll";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { siteData } from "@/data/siteData";
-import styles from "./page.module.css";
-import ProjectBackToProjects from "@/components/ProjectBackToProjects";
-import introLayoutStyles from "@/components/projectCaseIntro.module.css";
+import CaseStudyLayout from '@/components/case-study/CaseStudyLayout';
+import Footer from '@/components/Footer';
+import Header from '@/components/Header';
+import SmoothScroll from '@/components/SmoothScroll';
+import { getCaseStudy } from '@/data/caseStudies';
+import { siteData } from '@/data/siteData';
 
 const CASE_NAV = [
-  { label: "Home", href: "/" },
-  { label: "Profile", href: "/#profile" },
-  { label: "Contact", href: "/#contact" },
+  { href: '/', label: 'Home' },
+  { href: '/#profile', label: 'Profile' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
-const TECH_PILLS = ["figma"];
-
-const FRAMES = [
-  {
-    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_1.png",
-    alt: "Sushi Enya website — hero",
-    width: 1920,
-    height: 1022,
-  },
-  {
-    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_2.png",
-    alt: "Sushi Enya website — our story",
-    width: 1920,
-    height: 1947,
-  },
-  {
-    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_3.png",
-    alt: "Sushi Enya website — menu preview",
-    width: 1920,
-    height: 2121,
-  },
-  {
-    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_4.png",
-    alt: "Sushi Enya website — reviews",
-    width: 1920,
-    height: 936,
-  },
-  {
-    src: "/placeholders/Michael_Portfolio_Images/Sushi_Enya_Frame_5.png",
-    alt: "Sushi Enya website — join us",
-    width: 1920,
-    height: 1211,
-  },
-];
-
-const INFORMATION =
-  "A full-width web experience for Sushi Enya, pairing bold typography with high-contrast photography. The layout moves guests through story, menu, and social proof—structured for clarity and a smooth path to order online across desktop and mobile.";
+const study = getCaseStudy('sushi-enya');
 
 export const metadata = {
-  title: "Sushi Enya — Michael Kare",
-  description: "Web design case study for Sushi Enya restaurant.",
+  title: `${study.title} — Michael Kare`,
+  description: study.description,
 };
 
-export default function SushiEnyaProjectPage() {
-  const { footer } = siteData;
-
+export default function SushiEnyaCaseStudyPage() {
   return (
     <>
       <SmoothScroll />
-      <div className={styles.page}>
-        <Header links={CASE_NAV} />
-        <section className={styles.intro} aria-labelledby="sushi-enya-title">
-          <div className={styles.introGrid}>
-            <h1 id="sushi-enya-title" className={styles.projectTitle}>
-              Sushi Enya
-            </h1>
-            <ul className={styles.techPills} aria-label="Technologies">
-              {TECH_PILLS.map((label) => (
-                <li key={label} className={styles.techPill}>
-                  {label}
-                </li>
-              ))}
-            </ul>
-            <p className={styles.category}>Web Design</p>
-            <div
-              className={`${introLayoutStyles.introStack} ${styles.introMeta}`}
-            >
-              <p
-                className={`${styles.infoLabel} ${introLayoutStyles.introLabel}`}
-              >
-                Information
-              </p>
-              <p
-                className={`${styles.infoBody} ${introLayoutStyles.infoBodyStretch}`}
-              >
-                {INFORMATION}
-              </p>
-            </div>
-            <div
-              className={`${introLayoutStyles.introActions} ${styles.introCtaBar}`}
-            >
-              <div className={introLayoutStyles.introBack}>
-                <ProjectBackToProjects />
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <main className={styles.frames} aria-label="Sushi Enya design frames">
-          {FRAMES.map((frame) => (
-            <figure key={frame.src} className={styles.frame}>
-              <Image
-                src={frame.src}
-                alt={frame.alt}
-                width={frame.width}
-                height={frame.height}
-                sizes="(max-width: 900px) calc(100vw - 28px), calc(100vw - 40px)"
-                className={styles.frameImage}
-                priority={frame.src.endsWith("Frame_1.png")}
-              />
-            </figure>
-          ))}
-        </main>
-
-        <Footer data={footer} />
-      </div>
+      <Header links={CASE_NAV} />
+      <main>
+        <CaseStudyLayout study={study} />
+      </main>
+      <Footer data={siteData.footer} />
     </>
   );
 }

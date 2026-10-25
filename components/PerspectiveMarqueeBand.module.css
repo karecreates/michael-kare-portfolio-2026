@@ -1,0 +1,75 @@
+.band {
+  position: relative;
+  width: 100%;
+  height: min(48vh, 380px);
+  margin: 8px 0 4px;
+  overflow: hidden;
+  background: var(--bg);
+}
+.stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  perspective: 1200px;
+  background: var(--bg);
+}
+.tilt {
+  width: 100%;
+  transform: rotateX(8deg) rotateY(-28deg);
+  transform-style: preserve-3d;
+}
+.row {
+  display: flex;
+  width: max-content;
+  align-items: center;
+  white-space: nowrap;
+  will-change: transform;
+}
+.rowMoving {
+  animation: marquee 42s linear infinite;
+}
+.rowStatic {
+  transform: translateX(-12%);
+}
+.word {
+  display: inline-block;
+  padding-right: 0.9em;
+  font-size: clamp(42px, 7vw, 72px);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  line-height: 1;
+}
+.fadeX,
+.fadeY {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.fadeX {
+  background: linear-gradient(90deg, var(--bg) 0%, transparent 18%, transparent 82%, var(--bg) 100%);
+}
+.fadeY {
+  background: linear-gradient(180deg, var(--bg) 0%, transparent 25%, transparent 75%, var(--bg) 100%);
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-33.333%);
+  }
+}
+@media (max-width: 767px) {
+  .band {
+    height: min(36vh, 260px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rowMoving {
+    animation: none;
+    transform: translateX(-12%);
+  }
+}
