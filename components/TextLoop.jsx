@@ -14,6 +14,9 @@ const EDGE_PAD = 6;
 // whose startOffset is negative, so every copy must begin on the path; the
 // lead-in gives the first copy room to start off-screen instead.
 const LEAD_X = 2240;
+// DM Sans cap height is ~0.7em; half of it puts the optical centre of
+// uppercase type on the path.
+const CAP_CENTER = 0.35;
 
 const buildPath = (shape, curviness, ribbonWidth) => {
   const c = Math.max(0, curviness);
@@ -287,7 +290,11 @@ const TextLoop = ({
             className="text-loop-text"
             style={textStyle}
             fill={color}
-            dominantBaseline="central"
+            // WebKit ignores dominant-baseline on text-on-a-path (iOS sat the
+            // type on the ribbon's centreline). A perpendicular `dy` of half
+            // the cap height centres the uppercase glyphs on the ribbon in
+            // every engine instead.
+            dy={fontSize * CAP_CENTER}
             aria-hidden="true"
           >
             <textPath href={`#${pathId}`} startOffset={0}>
