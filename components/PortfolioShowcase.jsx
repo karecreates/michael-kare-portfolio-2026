@@ -78,6 +78,7 @@ function PortfolioMedia({ item, index, floatRef, videoRef, isStatic, loadNow }) 
           preload={loadNow ? 'auto' : 'none'}
           disablePictureInPicture
           controls={isStatic || undefined}
+          controlsList="nodownload noremoteplayback"
           onLoadedMetadata={seekToStart}
           onPlay={seekToStart}
           onEnded={onEnded}

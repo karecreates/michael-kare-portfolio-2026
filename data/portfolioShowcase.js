@@ -77,7 +77,7 @@ export const PORTFOLIO_DISCIPLINES = [
     title: 'Video & Animation',
     description:
       'Bringing ideas and stories to life through motion, animation, and dynamic visual communication.',
-    mediaSrc: '/showcase/video-animation.mp4',
+    mediaSrc: '/showcase/video-animation-1080p.mp4',
     mediaType: 'video',
     // SCSI Testing AI Video 4K — playback starts here and loops back to this point.
     startTime: 40,

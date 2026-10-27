@@ -5,6 +5,7 @@ import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
 import ProjectLiveLink from "@/components/ProjectLiveLink";
+import LazyVideo from "@/components/LazyVideo";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -85,15 +86,10 @@ export default function ScsitestingAiProjectPage() {
           className={styles.scrollMedia}
           aria-label="scsitesting.ai website preview"
         >
-          <video
+          <LazyVideo
             className={styles.scrollMediaVideo}
             src={PREVIEW_VIDEO_SRC}
-            autoPlay
-            loop
-            muted
-            playsInline
-            preload="auto"
-            disablePictureInPicture
+            eager
             aria-label="scsitesting.ai — looping site preview video"
           />
         </section>

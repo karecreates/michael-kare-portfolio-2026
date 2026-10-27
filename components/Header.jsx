@@ -1,7 +1,11 @@
 'use client';
 
 import { useEffect, useId, useLayoutEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import styles from './Header.module.css';
+
+/** Fired when the wordmark is clicked on the homepage; the hero replays. */
+export const HERO_REPLAY_EVENT = 'mk:hero-replay';
 
 const DEFAULT_LINKS = [
   { label: 'Work', href: '/#archive' },
@@ -184,11 +188,25 @@ export default function Header({ links = DEFAULT_LINKS }) {
     else resumeButton.current?.focus();
   };
 
+  // The site loader only belongs to the initial load. On the homepage the
+  // wordmark scrolls back up and replays the hero; elsewhere it client-navigates
+  // home so the root layout (and the loader) is never remounted.
+  const onLogoClick = (event) => {
+    if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+    setMenuOpen(false);
+    if (window.location.pathname !== '/') return;
+    event.preventDefault();
+    if (window.location.hash || window.location.search) window.history.replaceState(null, '', '/');
+    if (window.__lenis) window.__lenis.scrollTo(0, { immediate: true });
+    else window.scrollTo(0, 0);
+    window.dispatchEvent(new CustomEvent(HERO_REPLAY_EVENT));
+  };
+
   return (
     <>
-      <a href="/" className={styles.logo} aria-label="Michael Kare home">
+      <Link href="/" className={styles.logo} aria-label="Michael Kare home" onClick={onLogoClick}>
         MICHAELKARE
-      </a>
+      </Link>
       <span className={styles.logoInvert} data-header-logo-invert aria-hidden="true">
         MICHAELKARE
       </span>
@@ -250,8 +268,7 @@ export default function Header({ links = DEFAULT_LINKS }) {
           if (event.target === event.currentTarget) setMenuOpen(false);
         }}
       >
-        <p className={styles.mobileKicker}>Index</p>
-        <ol className={styles.mobileList}>
+        <ul className={styles.mobileList}>
           {links.map((link, index) => (
             <li key={link.label} style={{ '--i': index }}>
               <a
@@ -259,9 +276,6 @@ export default function Header({ links = DEFAULT_LINKS }) {
                 className={styles.mobileItem}
                 onClick={(event) => followLink(event, link.href)}
               >
-                <span className={styles.mobileIndex}>
-                  {String(index + 1).padStart(2, '0')}
-                </span>
                 <span className={styles.mobileLabel}>{link.label}</span>
               </a>
             </li>
@@ -275,13 +289,10 @@ export default function Header({ links = DEFAULT_LINKS }) {
                 setResumeOpen(true);
               }}
             >
-              <span className={styles.mobileIndex}>
-                {String(links.length + 1).padStart(2, '0')}
-              </span>
               <span className={styles.mobileLabel}>Resume</span>
             </button>
           </li>
-        </ol>
+        </ul>
       </nav>
       <dialog
         ref={resumeDialog}

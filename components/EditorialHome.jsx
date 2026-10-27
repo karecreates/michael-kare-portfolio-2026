@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import Link from 'next/link';
 import {
   motion,
   useReducedMotion,
@@ -14,6 +13,7 @@ import CreativeInfiniteGallery from './CreativeInfiniteGallery';
 import PortfolioShowcase from './PortfolioShowcase';
 import FeaturedWorks from './FeaturedWorks';
 import SpaceSection from './SpaceSection';
+import { HERO_REPLAY_EVENT } from './Header';
 import { Typewriter } from '@/components/ui/typewriter';
 import FadeLines from '@/components/FadeLines';
 import styles from './EditorialHome.module.css';
@@ -363,7 +363,7 @@ function AboutReveal({ data, reduced }) {
   );
 }
 
-function Creative({ data, reduced }) {
+function Creative({ data }) {
   return (
     <section
       id="creative"
@@ -384,17 +384,6 @@ function Creative({ data, reduced }) {
             sizes="(max-width: 767px) 94vw, 1200px"
           />
         </div>
-        <div className={styles.creativeCta}>
-          <Link href={data.ctaHref} className={styles.creativeBtn}>
-            {data.ctaLabel}
-          </Link>
-          <img
-            className={`${styles.creativePointer} ${reduced ? '' : styles.creativePointerBob}`}
-            src={data.cursorIcon}
-            alt=""
-            aria-hidden="true"
-          />
-        </div>
       </div>
     </section>
   );
@@ -402,11 +391,19 @@ function Creative({ data, reduced }) {
 
 export default function EditorialHome({ data }) {
   const { quiet, reduced, compact } = useQuietMotion();
+  // Clicking the wordmark remounts the hero so its intro (typewriter, rays)
+  // plays again without touching the site loader.
+  const [heroKey, setHeroKey] = useState(0);
+  useEffect(() => {
+    const replay = () => setHeroKey((key) => key + 1);
+    window.addEventListener(HERO_REPLAY_EVENT, replay);
+    return () => window.removeEventListener(HERO_REPLAY_EVENT, replay);
+  }, []);
   // Every case study stays reachable from the index now that the featured grid
   // has been replaced by the discipline showcase.
   return (
     <div className={`${styles.home} ${quiet ? styles.quiet : ''}`}>
-      <Hero data={data.hero} quiet={quiet} reduced={reduced} />
+      <Hero key={heroKey} data={data.hero} quiet={quiet} reduced={reduced} />
       <section id="work" className={styles.work} aria-labelledby="work-title">
         <div className={styles.workHeading}>
           <div className={styles.sectionKicker}>
@@ -436,7 +433,7 @@ export default function EditorialHome({ data }) {
       <Focus items={data.focusAreas} compact={compact} />
       <LogoMarquee />
       <AboutReveal data={data.about} reduced={reduced} />
-      <Creative data={data.creativeWork} reduced={reduced} />
+      <Creative data={data.creativeWork} />
       <CreativeInfiniteGallery reduced={reduced} />
     </div>
   );

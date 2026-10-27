@@ -202,10 +202,8 @@
 .mobileMenu {
   display: none;
 }
-.mobileKicker,
 .mobileList,
 .mobileItem,
-.mobileIndex,
 .mobileLabel {
   margin: 0;
 }
@@ -337,12 +335,6 @@
     clip-path: circle(160vmax at calc(100% - 34px) calc(var(--site-header-height) / 2));
     pointer-events: auto;
   }
-  .mobileKicker {
-    font-size: 12px;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
   .mobileList {
     display: flex;
     flex-direction: column;
@@ -375,11 +367,6 @@
     opacity: 1;
     transform: none;
     transition-delay: calc(0.2s + (var(--i) * 0.07s));
-  }
-  .mobileIndex {
-    font-size: 13px;
-    letter-spacing: 0.14em;
-    color: var(--accent);
   }
   .mobileLabel {
     font-size: clamp(56px, 16vw, 112px);

@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
-import { playInline } from '@/lib/inlineVideo';
 import styles from './CreativeInfiniteGallery.module.css';
 
 const InfiniteGallery = dynamic(() => import('@/components/ui/infinite-gallery'), {
@@ -63,9 +62,9 @@ const CREATIVE_IMAGES = [
     height: 1650,
   },
   {
-    url: cool('engagement_cover.png'),
-    width: 3300,
-    height: 2550,
+    url: cool('milky_way_car.png'),
+    width: 1920,
+    height: 1080,
   },
   {
     url: cool('rolling_dog_main_front_panel.png'),
@@ -98,9 +97,9 @@ const CREATIVE_IMAGES = [
     height: 200,
   },
   {
-    url: cool('SCSI Testing AI Video 4K_2160p.mp4'),
-    width: 3840,
-    height: 2160,
+    url: cool('scsi_ai_video_720p.mp4'),
+    width: 1280,
+    height: 720,
   },
 ];
 
@@ -144,16 +143,6 @@ export default function CreativeInfiniteGallery({ reduced }) {
     io.observe(track);
     return () => io.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (!ready) return undefined;
-    const track = trackRef.current;
-    if (!track) return undefined;
-    track.querySelectorAll('video').forEach((video) => {
-      playInline(video).catch(() => {});
-    });
-    return undefined;
-  }, [ready]);
 
   useEffect(() => {
     if (reduced) return undefined;
@@ -233,7 +222,7 @@ export default function CreativeInfiniteGallery({ reduced }) {
                   aria-label={`Creative study ${index + 1}`}
                 />
               ) : (
-                <img src={item.url} alt={`Creative study ${index + 1}`} />
+                <img src={item.url} alt={`Creative study ${index + 1}`} loading="lazy" decoding="async" />
               )}
             </figure>
           ))}

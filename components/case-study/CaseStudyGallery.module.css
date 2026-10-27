@@ -908,31 +908,83 @@
     margin-top: 14px;
   }
 
+  /* Two screens fit; a centred snap carousel with a symmetric peek. */
   .phonesRow {
+    /* Slide width is a share of the row's full width (100cqi of this
+       container); the side padding centres the first and last slides. */
+    --phone-slide: 46cqi;
+    --phone-peek: calc((100cqi - var(--phone-slide)) / 2);
     justify-content: flex-start;
+    gap: 14px;
     overflow-x: auto;
     overscroll-behavior-x: contain;
     scroll-snap-type: x mandatory;
-    scroll-padding-inline: 0;
+    padding-inline: var(--phone-peek);
+    scroll-padding-inline: var(--phone-peek);
     padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+
+  .phonesRow::-webkit-scrollbar {
+    display: none;
   }
 
   .phone {
-    flex: 0 0 calc((100% - clamp(16px, 2cqi, 28px)) / 2);
+    flex: 0 0 var(--phone-slide);
     max-width: none;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
+  }
+
+  .phonesWrap .phoneDots {
+    display: flex;
   }
 }
 
 @container casestudy (max-width: 460px) {
   .phonesRow {
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 6%;
+    --phone-slide: 66cqi;
   }
+}
 
-  .phone {
-    flex: 0 0 88%;
-    max-width: none;
-    scroll-snap-align: center;
-  }
+.phonesWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+}
+
+.phoneDots {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+}
+
+.phoneDot {
+  width: 6px;
+  height: 6px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: var(--muted);
+  opacity: 0.45;
+  transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.phoneDot::before {
+  /* Larger hit area without changing the drawn dot. */
+  content: '';
+  display: block;
+  margin: -11px;
+  padding: 11px;
+}
+
+.phoneDotActive {
+  background: var(--accent);
+  opacity: 1;
+  transform: scale(1.25);
 }

@@ -91,6 +91,19 @@ img {
   max-width: 100%;
 }
 
+/* Media can't be dragged out, long-pressed to save (iOS), or text-selected.
+   The context menu is blocked in components/MediaGuard.jsx. */
+img,
+video,
+picture,
+canvas {
+  -webkit-user-drag: none;
+  user-drag: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 button,
 input,
 textarea,

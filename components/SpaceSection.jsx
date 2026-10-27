@@ -10,12 +10,29 @@ const LINES = [
   'INTO POSSIBILITIES',
 ];
 
+// Phones re-break the quote into four shorter lines so the type can run larger.
+const COMPACT_LINES = [
+  'NOTHING IS',
+  'IMPOSSIBLE WHEN',
+  'YOU BREAK IT DOWN',
+  'INTO POSSIBILITIES',
+];
+
 const ASSET = '/placeholders/Michael_Portfolio_Images/space_section';
 
 export default function SpaceSection({ reduced = false }) {
   const trackRef = useRef(null);
   const stageRef = useRef(null);
   const [play, setPlay] = useState(false);
+  const [compact, setCompact] = useState(false);
+
+  useEffect(() => {
+    const query = window.matchMedia('(max-width: 720px)');
+    const apply = () => setCompact(query.matches);
+    apply();
+    query.addEventListener('change', apply);
+    return () => query.removeEventListener('change', apply);
+  }, []);
 
   useEffect(() => {
     if (reduced) return undefined;
@@ -50,17 +67,21 @@ export default function SpaceSection({ reduced = false }) {
           className={styles.background}
           src={`${ASSET}/space_background.png`}
           alt=""
+          loading="lazy"
+          decoding="async"
         />
         <img
           className={styles.glow}
           src="/Cool_Stuff/space_glow.png"
           alt=""
+          loading="lazy"
+          decoding="async"
         />
         {reduced ? null : (
           <SpaceWalker trackRef={trackRef} stageRef={stageRef} />
         )}
         <h2 id="space-quote" className={styles.quote}>
-          {LINES.map((line, lineIndex) => (
+          {(compact ? COMPACT_LINES : LINES).map((line, lineIndex) => (
             <span className={styles.line} key={line}>
               {line.split('').map((char, index) => (
                 <span

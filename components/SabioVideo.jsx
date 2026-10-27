@@ -1,44 +1,18 @@
-'use client';
-
-import { useCallback } from 'react';
-import { playInline } from '@/lib/inlineVideo';
+import LazyVideo from './LazyVideo';
 import styles from './SabioVideo.module.css';
 
 const START_SEC = 60;
 
-const VIDEO_SRC = `/placeholders/Michael_Portfolio_Images/${encodeURIComponent(
-  'SCSI Testing AI Video 4K_2160p.mp4'
-)}`;
+// 1080p derivative of "SCSI Testing AI Video 4K_2160p.mp4" (master kept on disk).
+const VIDEO_SRC = '/showcase/video-animation-1080p.mp4';
 
 export default function SabioVideo() {
-  const onLoadedMetadata = useCallback((e) => {
-    e.currentTarget.currentTime = START_SEC;
-  }, []);
-
-  const onSeeked = useCallback((e) => {
-    playInline(e.currentTarget).catch(() => {});
-  }, []);
-
-  const onEnded = useCallback((e) => {
-    const v = e.currentTarget;
-    v.currentTime = START_SEC;
-    playInline(v).catch(() => {});
-  }, []);
-
   return (
     <div className={styles.wrap}>
-      <video
+      <LazyVideo
         className={styles.video}
         src={VIDEO_SRC}
-        muted
-        playsInline
-        autoPlay
-        loop
-        preload="auto"
-        disablePictureInPicture
-        onLoadedMetadata={onLoadedMetadata}
-        onSeeked={onSeeked}
-        onEnded={onEnded}
+        startAt={START_SEC}
         aria-label="Sabio brand motion — looping video"
       />
     </div>

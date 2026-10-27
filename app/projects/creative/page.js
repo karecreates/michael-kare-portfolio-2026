@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import LazyVideo from "@/components/LazyVideo";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -150,15 +151,10 @@ export default function CreativeProjectPage() {
             {GRID_ITEMS.map((item, index) => (
               <figure key={item.src} className={styles.gridItem}>
                 {item.type === "video" ? (
-                  <video
+                  <LazyVideo
                     className={styles.gridVideo}
                     src={item.src}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    preload={index === 0 ? "auto" : "metadata"}
-                    disablePictureInPicture
+                    eager={index === 0}
                     aria-label={item.ariaLabel}
                   />
                 ) : (

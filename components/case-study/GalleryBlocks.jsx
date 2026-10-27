@@ -1,5 +1,6 @@
 import CaseStudyVideo from './CaseStudyVideo';
 import GalleryMedia from './GalleryMedia';
+import PhoneRow from './PhoneRow';
 import ScrollableScreenshot from './ScrollableScreenshot';
 import FadeLines from '@/components/FadeLines';
 import styles from './CaseStudyGallery.module.css';
@@ -307,13 +308,7 @@ export function PhoneShowcaseBlock({ block }) {
       }`}
     >
       <Copy block={block} headingClassName={styles.headingSection} />
-      <div className={styles.phonesRow} role="group" aria-label={block.heading || 'Product screens'}>
-        {images.map((image) => (
-          <figure key={image.src} className={styles.phone}>
-            <GalleryMedia asset={image} />
-          </figure>
-        ))}
-      </div>
+      <PhoneRow images={images} label={block.heading || 'Product screens'} />
     </section>
   );
 }

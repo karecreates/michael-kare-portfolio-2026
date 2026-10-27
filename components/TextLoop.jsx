@@ -10,6 +10,10 @@ const VIEW_H = 520;
 const CX = VIEW_W / 2;
 const CY = VIEW_H / 2;
 const EDGE_PAD = 6;
+// Open shapes start this far left of the viewBox. WebKit hides a <textPath>
+// whose startOffset is negative, so every copy must begin on the path; the
+// lead-in gives the first copy room to start off-screen instead.
+const LEAD_X = 2240;
 
 const buildPath = (shape, curviness, ribbonWidth) => {
   const c = Math.max(0, curviness);
@@ -37,11 +41,19 @@ const buildPath = (shape, curviness, ribbonWidth) => {
       return `M 120 ${CY + rise / 2} Q ${CX} ${CY - rise * 1.5} ${VIEW_W - 120} ${CY + rise / 2}`;
     }
     case 'line':
-      return `M -320 ${CY} L ${VIEW_W + 320} ${CY}`;
+      return `M ${-LEAD_X} ${CY} L ${VIEW_W + 320} ${CY}`;
     case 'wave':
     default: {
       const a = Math.min(c * 2.2, room * 2);
-      return `M -320 ${CY} Q -160 ${CY - a} 0 ${CY} T 320 ${CY} T 640 ${CY} T 960 ${CY} T 1280 ${CY} T ${VIEW_W + 320} ${CY}`;
+      // Half-waves are 320 wide; the lead-in is a whole number of them so the
+      // crest/trough phase inside the viewBox is unchanged.
+      const parts = [`M ${-LEAD_X} ${CY} Q ${-LEAD_X + 160} ${CY - a} ${-LEAD_X + 320} ${CY}`];
+      let x = -LEAD_X + 640;
+      for (; x <= 1280; x += 320) {
+        parts.push(`T ${x} ${CY}`);
+      }
+      parts.push(`T ${VIEW_W + 320} ${CY}`);
+      return parts.join(' ');
     }
   }
 };
@@ -69,27 +81,25 @@ const TextLoop = ({
   const rootRef = useRef(null);
   const pathRef = useRef(null);
   const measureRef = useRef(null);
+  const probeRef = useRef(null);
   const svgRef = useRef(null);
 
+  // `unitWidth` comes from getBBox() of an off-path SVG copy of one phrase.
+  // WebKit's getComputedTextLength ignores letter-spacing while the glyphs on
+  // the path include it, which is what made the copies overlap on iPhone.
   const [metrics, setMetrics] = useState({
     length: 0,
-    advance: 0,
-    copies: 2,
+    unitWidth: 0,
     center: 0,
-    textWidth: 0,
-    reps: 1,
-    flow: false,
+    lead: 0,
   });
-  const [narrow, setNarrow] = useState(false);
 
   const rawId = useId();
   const pathId = `text-loop-${rawId.replace(/:/g, '')}`;
 
-  const drawnCurve = narrow ? Math.min(curviness, 18) : curviness;
-  const drawnRibbon = narrow ? Math.round(ribbonWidth * 0.72) : ribbonWidth;
   const d = useMemo(
-    () => path || buildPath(shape, drawnCurve, drawnRibbon),
-    [path, shape, drawnCurve, drawnRibbon],
+    () => path || buildPath(shape, curviness, ribbonWidth),
+    [path, shape, curviness, ribbonWidth],
   );
 
   const unit = useMemo(() => {
@@ -98,30 +108,20 @@ const TextLoop = ({
     return `${base}${gap}`;
   }, [text, separator, uppercase]);
 
-  const drawnSize = narrow ? Math.round(fontSize * 0.62) : fontSize;
   const textStyle = useMemo(
     () => ({
-      fontSize: `${drawnSize}px`,
+      fontSize: `${fontSize}px`,
       fontWeight,
       letterSpacing: `${letterSpacing}px`,
     }),
-    [drawnSize, fontWeight, letterSpacing],
+    [fontSize, fontWeight, letterSpacing],
   );
-
-  useLayoutEffect(() => {
-    const root = rootRef.current;
-    if (!root) return undefined;
-    const read = () => setNarrow(root.clientWidth < 760);
-    read();
-    const observer = new ResizeObserver(read);
-    observer.observe(root);
-    return () => observer.disconnect();
-  }, []);
 
   useLayoutEffect(() => {
     const pathEl = pathRef.current;
     const measureEl = measureRef.current;
-    if (!pathEl || !measureEl) return undefined;
+    const probeEl = probeRef.current;
+    if (!pathEl || !measureEl || !probeEl) return undefined;
 
     let cancelled = false;
 
@@ -131,68 +131,79 @@ const TextLoop = ({
       let unitWidth = 0;
       try {
         length = pathEl.getTotalLength();
-        unitWidth = measureEl.getComputedTextLength();
+        unitWidth = measureEl.getBBox().width;
       } catch {
         return;
       }
-      if (!length) return;
+      if (!length || !unitWidth) return;
 
-      const reps = narrow ? 1 : Math.max(1, unitWidth > 0 ? Math.floor(length / unitWidth) : 1);
-      const textWidth = unitWidth * reps;
-      const advance = narrow ? textWidth * 1.14 : textWidth || length;
-      const copies = narrow ? Math.max(2, Math.ceil(length / advance) + 1) : 2;
-      let center = length / 2;
-      let low = 0;
-      let high = length;
-      for (let step = 0; step < 18; step += 1) {
-        const mid = (low + high) / 2;
-        if (pathEl.getPointAtLength(mid).x < CX) low = mid;
-        else high = mid;
-      }
-      center = (low + high) / 2;
+      // Path length at which the curve reaches a given x (x is monotonic for
+      // the open shapes; closed shapes just get 0 lead).
+      const lengthAtX = (targetX) => {
+        let low = 0;
+        let high = length;
+        for (let step = 0; step < 18; step += 1) {
+          const mid = (low + high) / 2;
+          if (pathEl.getPointAtLength(mid).x < targetX) low = mid;
+          else high = mid;
+        }
+        return (low + high) / 2;
+      };
+      const center = lengthAtX(CX);
+      const open = !path && (shape === 'wave' || shape === 'line');
+      const lead = open ? lengthAtX(-40) : 0;
       setMetrics((prev) =>
         prev.length === length &&
-        prev.advance === advance &&
-        prev.copies === copies &&
-        prev.flow === narrow
+        Math.abs(prev.unitWidth - unitWidth) < 0.5 &&
+        prev.center === center &&
+        prev.lead === lead
           ? prev
-          : { length, advance, copies, center, textWidth, reps, flow: narrow },
+          : { length, unitWidth, center, lead },
       );
     };
 
     measure();
+    // The HTML probe only exists so a font swap re-triggers measurement.
+    const observer = new ResizeObserver(measure);
+    observer.observe(probeEl);
     if (typeof document !== 'undefined' && document.fonts?.ready) {
       document.fonts.ready.then(measure).catch(() => {});
     }
 
     return () => {
       cancelled = true;
+      observer.disconnect();
     };
-  }, [d, unit, drawnSize, fontWeight, letterSpacing, narrow]);
+  }, [d, unit, fontSize, fontWeight, letterSpacing, path, shape]);
+
+  // Each copy repeats the phrase `reps` times. The repeat span is capped at
+  // the off-screen lead-in so the gap before the first copy is never visible.
+  const reps = metrics.unitWidth
+    ? Math.max(
+        1,
+        Math.floor((metrics.lead || metrics.length) / metrics.unitWidth),
+      )
+    : 1;
+  const copies = metrics.unitWidth
+    ? Math.ceil(metrics.length / (metrics.unitWidth * reps)) + 1
+    : 3;
 
   useEffect(() => {
-    const { length, advance, center, textWidth, flow } = metrics;
+    const { center, unitWidth } = metrics;
     const nodes = svgRef.current
       ? [...svgRef.current.querySelectorAll('textPath')]
       : [];
-    if (!nodes.length || !length || !advance) return undefined;
+    if (!nodes.length || !unitWidth) return undefined;
 
-    const base = center - advance / 2;
+    const span = unitWidth * reps;
+
+    // One repeat is centred on the viewBox; the first copy starts at the
+    // smallest non-negative offset of that series, the rest follow at `span`.
+    const base = center - span / 2;
     const apply = (offset) => {
-      if (!flow) {
-        const wrapped = ((offset % advance) + advance) % advance;
-        nodes.forEach((node, index) => {
-          node.parentNode.setAttribute('visibility', 'visible');
-          node.setAttribute('startOffset', String(base + wrapped - index * advance));
-        });
-        return;
-      }
+      const first = (((base + offset) % span) + span) % span;
       nodes.forEach((node, index) => {
-        const raw = base + offset + index * advance;
-        const pos = ((raw % length) + length) % length;
-        const overflows = textWidth > 0 && pos + textWidth > length - 4;
-        node.parentNode.setAttribute('visibility', overflows ? 'hidden' : 'visible');
-        node.setAttribute('startOffset', String(overflows ? 0 : pos));
+        node.setAttribute('startOffset', String(first + index * span));
       });
     };
 
@@ -205,8 +216,8 @@ const TextLoop = ({
 
     const state = { offset: 0 };
     const tween = gsap.to(state, {
-      offset: direction === 'reverse' ? -advance : advance,
-      duration: advance / speed,
+      offset: direction === 'reverse' ? -span : span,
+      duration: span / speed,
       ease: 'none',
       repeat: -1,
       onUpdate: () => apply(state.offset),
@@ -228,10 +239,20 @@ const TextLoop = ({
         root.removeEventListener('pointerleave', resume);
       }
     };
-  }, [metrics, speed, direction, pauseOnHover]);
+  }, [metrics, reps, copies, speed, direction, pauseOnHover]);
+
+  const loopText = unit.repeat(reps);
 
   return (
     <div ref={rootRef} className={`text-loop ${className}`.trim()} style={style}>
+      <span
+        ref={probeRef}
+        className="text-loop-probe"
+        style={textStyle}
+        aria-hidden="true"
+      >
+        {unit}
+      </span>
       <svg
         ref={svgRef}
         className="text-loop-svg"
@@ -246,7 +267,7 @@ const TextLoop = ({
           d={d}
           fill="none"
           stroke={ribbon ? ribbonColor : 'none'}
-          strokeWidth={ribbon ? drawnRibbon : 0}
+          strokeWidth={ribbon ? ribbonWidth : 0}
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -260,7 +281,7 @@ const TextLoop = ({
           {unit}
         </text>
 
-        {Array.from({ length: metrics.copies }, (_, index) => (
+        {Array.from({ length: copies }, (_, index) => (
           <text
             key={index}
             className="text-loop-text"
@@ -270,7 +291,7 @@ const TextLoop = ({
             aria-hidden="true"
           >
             <textPath href={`#${pathId}`} startOffset={0}>
-              {metrics.flow ? unit : unit.repeat(metrics.reps)}
+              {loopText}
             </textPath>
           </text>
         ))}

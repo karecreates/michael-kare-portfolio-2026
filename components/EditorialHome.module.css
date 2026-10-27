@@ -748,8 +748,7 @@
 }
 .creative {
   position: relative;
-  min-height: 100svh;
-  padding: 28px var(--gutter) 80px;
+  padding: 28px var(--gutter) 0;
   overflow: hidden;
   background: var(--bg);
 }
@@ -763,11 +762,11 @@
 .creativeStage {
   position: relative;
   isolation: isolate;
-  min-height: calc(100svh - 140px);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-top: clamp(24px, 4vw, 56px);
 }
 .creativeTitleBehind {
   position: relative;
@@ -802,46 +801,6 @@
   height: 34%;
   background: linear-gradient(to bottom, transparent, var(--bg));
   pointer-events: none;
-}
-.creativeCta {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  gap: 10px;
-  margin-top: clamp(8px, 1.6vw, 18px);
-}
-.creativeBtn {
-  padding: 10px 22px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  font-size: 13px;
-  color: var(--text);
-  background: transparent;
-}
-.creativePointer {
-  width: clamp(40px, 5.6vw, 62px);
-  height: auto;
-  margin-top: 14px;
-  transform: rotate(-8deg);
-  pointer-events: none;
-  user-select: none;
-}
-:global(html[data-theme='light']) .creativePointer {
-  filter: invert(1);
-}
-.creativePointerBob {
-  animation: cursorBob 2.6s ease-in-out infinite;
-}
-@keyframes cursorBob {
-  0%,
-  100% {
-    transform: translateY(0) rotate(-8deg);
-  }
-  50% {
-    transform: translateY(7px) rotate(-8deg);
-  }
 }
 @keyframes previewIn {
   from {
@@ -1208,13 +1167,11 @@
     margin-top: 22px;
   }
   .creative {
-    min-height: 0;
     padding-top: 12px;
-    padding-bottom: 8px;
+    padding-bottom: 0;
   }
   .creativeStage {
-    min-height: 0;
-    justify-content: flex-start;
+    padding-top: 16px;
   }
   .creativeTitleBehind {
     font-size: 16vw;
@@ -1222,9 +1179,6 @@
   .creativePhoto {
     width: min(640px, 96vw);
     margin-top: clamp(-36px, -8vw, -18px);
-  }
-  .creativeCta {
-    margin-top: 6px;
   }
   .desktopBreak {
     display: none;
@@ -1263,9 +1217,6 @@
   }
   .aboutWord {
     --lit: 1;
-  }
-  .creativePointerBob {
-    animation: none;
   }
 }
 @media (min-width: 768px) and (max-width: 1023px) {

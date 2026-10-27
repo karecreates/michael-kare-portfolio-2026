@@ -157,6 +157,20 @@ function readProgress(props) {
   return Math.min(1, Math.max(0, props.progressRef?.current ?? 0));
 }
 
+function setTilePlayback(video, shouldPlay) {
+  if (video.__wantPlay === shouldPlay) return;
+  video.__wantPlay = shouldPlay;
+  if (shouldPlay) {
+    if (!video.getAttribute('src') && video.dataset.src) {
+      video.src = video.dataset.src;
+    }
+    playInline(video).catch(() => {});
+  } else {
+    releaseInline(video);
+    if (!video.paused) video.pause();
+  }
+}
+
 function stepGallery({ host, world, motion, props }) {
   const current = props.current;
   if (!current || !host || !world) return;
@@ -171,7 +185,14 @@ function stepGallery({ host, world, motion, props }) {
   const hostBox = host.getBoundingClientRect();
   const onScreen = hostBox.bottom >= -80 && hostBox.top <= window.innerHeight + 80;
   motion.frames += 1;
-  if (!onScreen) return;
+  if (!onScreen) {
+    if (motion.wasOnScreen) {
+      host.querySelectorAll('video').forEach((video) => setTilePlayback(video, false));
+      motion.wasOnScreen = false;
+    }
+    return;
+  }
+  motion.wasOnScreen = true;
   const compact = host.dataset.compact === '1';
   if (autoZoom && !compact) motion.zoom += autoZoomSpeed;
 
@@ -199,8 +220,15 @@ function stepGallery({ host, world, motion, props }) {
     const z = wrapZ(tile.z + travel, fieldDepth);
     const hidden = z > PASS_Z - 8;
     node.style.visibility = hidden ? 'hidden' : 'visible';
-    if (hidden) return;
+    const video = node.firstElementChild;
+    const isVideo = video && video.tagName === 'VIDEO';
+    if (hidden) {
+      if (isVideo) setTilePlayback(video, false);
+      return;
+    }
     const look = depthLook(z);
+    // Clips deep in the fog are invisible anyway; only decode the ones in view.
+    if (isVideo) setTilePlayback(video, compact || look.opacity > 0.06);
     node.style.opacity = String(compact ? 1 : look.opacity);
     if (compact) {
       if (node.style.filter) node.style.filter = '';
@@ -351,10 +379,8 @@ export default function InfiniteGallery({
       motion.drag.active = false;
     };
 
+    // Playback is driven per tile from stepGallery, based on what is in view.
     const videos = [...host.querySelectorAll('video')];
-    videos.forEach((video) => {
-      playInline(video).catch(() => {});
-    });
 
     host.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointermove', onPointerMove, { passive: true });
@@ -369,6 +395,7 @@ export default function InfiniteGallery({
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
       videos.forEach((video) => {
+        video.__wantPlay = undefined;
         releaseInline(video);
         video.pause();
       });
@@ -407,17 +434,17 @@ export default function InfiniteGallery({
             >
               {isVideoUrl(tile.url) ? (
                 <video
-                  src={tile.url}
+                  data-src={tile.url}
                   muted
                   loop
                   playsInline
                   webkit-playsinline="true"
-                  preload="metadata"
+                  preload="none"
                   disablePictureInPicture
                   aria-label="Creative study"
                 />
               ) : (
-                <img src={tile.url} alt="" />
+                <img src={tile.url} alt="" loading="lazy" decoding="async" />
               )}
             </figure>
           );

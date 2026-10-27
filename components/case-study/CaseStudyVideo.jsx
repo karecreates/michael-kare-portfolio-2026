@@ -16,7 +16,10 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
   const ref = useRef(null);
   const [playing, setPlaying] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
-  const [src, setSrc] = useState(video.lazy && !video.lead ? undefined : video.src);
+  // Only the lead/priority clip loads up front; everything else waits until
+  // it is within ~one viewport of the screen (`lazy: false` opts out).
+  const deferred = video.lazy !== false && !video.lead && !video.priority;
+  const [src, setSrc] = useState(deferred ? undefined : video.src);
   const ratio = video.width && video.height ? `${video.width} / ${video.height}` : undefined;
   const showNativeControls = video.controls === true && !video.seamless;
   const canAutoplay = video.autoPlay !== false && !reduceMotion;
@@ -31,7 +34,7 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
   }, []);
 
   useEffect(() => {
-    if (!video.lazy || video.lead || src) return undefined;
+    if (!deferred || src) return undefined;
     const node = ref.current;
     if (!node) return undefined;
     const observer = new IntersectionObserver(
@@ -41,11 +44,11 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
           observer.disconnect();
         }
       },
-      { rootMargin: '480px 0px' }
+      { rootMargin: '80% 0px' }
     );
     observer.observe(node);
     return () => observer.disconnect();
-  }, [src, video.lazy, video.lead, video.src]);
+  }, [deferred, src, video.src]);
 
   useEffect(() => {
     const node = ref.current;
@@ -126,6 +129,7 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
         webkit-playsinline="true"
         autoPlay={canAutoplay}
         controls={showNativeControls}
+        controlsList="nodownload noremoteplayback"
         disablePictureInPicture
         preload={video.lead ? 'auto' : video.preload || 'metadata'}
         aria-label={video.alt}

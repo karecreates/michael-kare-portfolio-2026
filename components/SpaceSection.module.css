@@ -1,5 +1,7 @@
 .track {
   --space-track: 210vh;
+  /* How far above the stage's centre the quote (and the glow behind it) sit. */
+  --quote-lift: 4vh;
   position: relative;
   height: var(--space-track);
   background: #000;
@@ -38,10 +40,10 @@
 .glow {
   z-index: 1;
   left: 50%;
-  top: 4%;
+  top: 50%;
   width: min(96vw, 1120px);
   height: auto;
-  transform: translateX(-50%);
+  transform: translate(-50%, calc(-50% - var(--quote-lift)));
   mix-blend-mode: screen;
   opacity: 1;
   animation: glowBreath 8s ease-in-out infinite;
@@ -71,7 +73,8 @@
   align-items: center;
   justify-content: center;
   margin: 0;
-  padding: 0 3vw 8vh;
+  padding: 0 3vw;
+  transform: translateY(calc(var(--quote-lift) * -1));
   color: #fff;
   mix-blend-mode: difference;
   font-weight: 400;
@@ -148,6 +151,7 @@
 @media (max-width: 720px) {
   .track {
     --space-track: 180vh;
+    --quote-lift: 5vh;
   }
   .stage {
     min-height: min(560px, 100svh);
@@ -156,13 +160,13 @@
     box-sizing: border-box;
     width: 100%;
     max-width: 100%;
-    font-size: clamp(18px, 5.4vw, 28px);
-    letter-spacing: -0.045em;
-    padding: 0 16px 10vh;
+    font-size: clamp(30px, 10vw, 44px);
+    line-height: 1.04;
+    letter-spacing: -0.05em;
+    padding: 0 14px;
   }
   .glow {
-    width: min(150vw, 760px);
-    top: 10%;
+    width: min(170vw, 760px);
   }
 }
 

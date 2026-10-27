@@ -191,10 +191,7 @@ export const siteData = {
     sectionLabel: 'Creative',
     headline: 'Creative Work',
     image: '/editorial/michael_camera_transparent.png',
-    imageAlt: 'Michael Kare holding a camera lens toward the viewer',
-    cursorIcon: '/placeholders/Michael_Portfolio_Images/cursor-alt-pointer-mouse-rounded.svg',
-    ctaLabel: 'click here',
-    ctaHref: '#creative-gallery'
+    imageAlt: 'Michael Kare holding a camera lens toward the viewer'
   },
   about: {
     title: 'About Me',
