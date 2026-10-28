@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -104,6 +105,7 @@ export default function ScsiBrandingProjectPage() {
           ))}
         </main>
 
+        <ProjectOutro current="/projects/scsi-branding" tags={["Branding", "Logo"]} />
         <Footer data={footer} />
       </div>
     </>

@@ -68,6 +68,9 @@ body {
 
 body {
   overflow-x: clip;
+  /* <html> paints the page colour; body stays transparent so the fixed,
+     negative z-index cursor grid sits between the background and content. */
+  background: transparent;
 }
 
 /* Case study pages need a visible overflow axis so the sidebar can stick. */

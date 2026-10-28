@@ -1,7 +1,13 @@
 .footer {
+  position: relative;
   padding: 0 0 25px;
-  background: var(--bg);
-  overflow-x: clip;
+  background: transparent;
+  overflow: clip;
+}
+/* Everything sits above the optional bottom glow (which is z-index 0). */
+.footer > :not([aria-hidden='true']) {
+  position: relative;
+  z-index: 1;
 }
 .gutter {
   padding-left: clamp(20px, 3.3vw, 64px);
@@ -125,9 +131,6 @@
   .bottomRow {
     flex-wrap: wrap;
     font-size: 12px;
-  }
-  .bottomRow > span:nth-child(2) {
-    display: none;
   }
   .topRow {
     font-size: 13px;

@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import ProjectLiveLink from "@/components/ProjectLiveLink";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
@@ -124,6 +125,7 @@ export default function SeacliffVillageProjectPage() {
           ))}
         </main>
 
+        <ProjectOutro current="/projects/seacliff-village" tags={["Web Design", "Web Development"]} />
         <Footer data={footer} />
       </div>
     </>

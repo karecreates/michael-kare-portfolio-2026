@@ -73,6 +73,8 @@ function PortfolioMedia({ item, index, floatRef, videoRef, isStatic, loadNow }) 
             ? { src: item.mediaSrc, poster: item.posterSrc }
             : { 'data-defer-src': item.mediaSrc, 'data-defer-poster': item.posterSrc })}
           muted
+          autoPlay
+          loop={!start}
           playsInline
           webkit-playsinline="true"
           preload={loadNow ? 'auto' : 'none'}

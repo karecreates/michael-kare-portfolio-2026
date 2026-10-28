@@ -8,7 +8,7 @@ import styles from './Header.module.css';
 export const HERO_REPLAY_EVENT = 'mk:hero-replay';
 
 const DEFAULT_LINKS = [
-  { label: 'Work', href: '/#archive' },
+  { label: 'Work', href: '/work' },
   { label: 'Profile', href: '/#profile' },
   { label: 'Contact', href: '/#contact' },
 ];
@@ -148,7 +148,12 @@ export default function Header({ links = DEFAULT_LINKS }) {
 
   const followLink = (event, href) => {
     const url = new URL(href, window.location.origin);
-    if (url.pathname !== window.location.pathname || !url.hash) return;
+    // Cross-page links fall through to <Link> (client-side navigation, no
+    // loader); only same-page hashes get the smooth scroll below.
+    if (url.pathname !== window.location.pathname || !url.hash) {
+      setMenuOpen(false);
+      return;
+    }
     const target = document.querySelector(url.hash);
     if (!target) return;
     event.preventDefault();
@@ -234,14 +239,14 @@ export default function Header({ links = DEFAULT_LINKS }) {
             </button>
             <nav className={styles.nav} aria-label="Primary navigation">
               {links.map((link) => (
-                <a
+                <Link
                   key={link.label}
                   href={link.href}
                   className={styles.link}
                   onClick={(event) => followLink(event, link.href)}
                 >
                   {link.label}
-                </a>
+                </Link>
               ))}
               <button
                 ref={resumeButton}
@@ -271,13 +276,13 @@ export default function Header({ links = DEFAULT_LINKS }) {
         <ul className={styles.mobileList}>
           {links.map((link, index) => (
             <li key={link.label} style={{ '--i': index }}>
-              <a
+              <Link
                 href={link.href}
                 className={styles.mobileItem}
                 onClick={(event) => followLink(event, link.href)}
               >
                 <span className={styles.mobileLabel}>{link.label}</span>
-              </a>
+              </Link>
             </li>
           ))}
           <li style={{ '--i': links.length }}>

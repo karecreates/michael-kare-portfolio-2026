@@ -436,6 +436,7 @@ export default function InfiniteGallery({
                 <video
                   data-src={tile.url}
                   muted
+                  autoPlay
                   loop
                   playsInline
                   webkit-playsinline="true"

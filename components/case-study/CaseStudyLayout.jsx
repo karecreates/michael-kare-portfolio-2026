@@ -1,6 +1,7 @@
 import CaseStudyDocument from './CaseStudyDocument';
 import CaseStudyGallery from './CaseStudyGallery';
 import CaseStudySidebar from './CaseStudySidebar';
+import RelatedProjects from '@/components/RelatedProjects';
 import styles from './CaseStudyLayout.module.css';
 
 export default function CaseStudyLayout({ study }) {
@@ -16,6 +17,9 @@ export default function CaseStudyLayout({ study }) {
         <div className={styles.gallerySlot}>
           <CaseStudyGallery gallery={study.gallery} />
         </div>
+      </div>
+      <div className={styles.outro}>
+        <RelatedProjects currentHref={`/projects/${study.slug}`} tags={study.disciplines} />
       </div>
     </article>
   );

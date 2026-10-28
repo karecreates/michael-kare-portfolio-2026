@@ -3,11 +3,14 @@
 import { siteData } from '@/data/siteData';
 import TextLoop from './TextLoop';
 import PerspectiveMarqueeBand from './PerspectiveMarqueeBand';
+import WorkGridCta from './WorkGridCta';
+import WorkGlow from './WorkGlow';
 import styles from './Footer.module.css';
 
-export default function Footer({ data, showMarquee = false }) {
+export default function Footer({ data, showMarquee = false, showWorkGrid = false, showGlow = false }) {
   return (
     <footer id="contact" className={styles.footer}>
+      {showGlow ? <WorkGlow edge="bottom" /> : null}
       <div className={`${styles.topRow} ${styles.gutter}`}>
         <span>Have something in mind?</span>
         <span>Let’s talk.</span>
@@ -38,6 +41,7 @@ export default function Footer({ data, showMarquee = false }) {
           </span>
         </a>
       </div>
+      {showWorkGrid ? <WorkGridCta /> : null}
       {showMarquee ? <PerspectiveMarqueeBand /> : null}
       <div className={styles.loop}>
         <TextLoop
@@ -98,7 +102,6 @@ export default function Footer({ data, showMarquee = false }) {
           <span aria-hidden="true">&#8203;</span>
           {String(data.year).slice(2)} Michael Kare
         </span>
-        <span>Marina del Rey, CA</span>
         <a href="#top">Back to top ↑</a>
       </div>
     </footer>

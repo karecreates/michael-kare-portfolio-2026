@@ -1,0 +1,12 @@
+.main {
+  --gutter: clamp(20px, 3.3vw, 64px);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  position: relative;
+  padding-top: clamp(48px, 8vh, 96px);
+}
+
+@media (max-width: 767px) {
+  .main {
+    padding-top: 8px;
+  }
+}

@@ -1,5 +1,14 @@
 .section {
+  position: relative;
+  z-index: 1;
   padding: 48px var(--gutter) 150px;
+}
+/* /work: centred masthead and filter bar. */
+.centered .title {
+  text-align: center;
+}
+.centered .filters {
+  justify-content: center;
 }
 .title {
   margin: 8px 0 0;
@@ -10,48 +19,69 @@
 }
 .filters {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
-  align-items: center;
-  gap: 4px;
-  width: 100%;
+  justify-content: flex-start;
   margin: 56px 0 72px;
-  padding: 6px 8px;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--text) 4%, transparent);
 }
-.filter {
-  appearance: none;
-  flex: 1 1 auto;
-  border: 0;
-  border-radius: 1000px;
-  padding: 11px 10px;
+/* Site-tuned Gooey Nav: quiet frame, the page's own type weight. */
+.gooey {
+  --gn-frame: color-mix(in srgb, var(--text) 4%, transparent);
+  --gn-frame-edge: var(--line-strong);
+  --gn-frame-highlight: transparent;
+  --gn-frame-shadow: none;
+  --gn-ink: var(--text);
+  --gn-muted: color-mix(in srgb, var(--text) 72%, transparent);
+  --gn-font: 13px;
+  --gn-x: 26px;
+  --gn-y: 12px;
+  --gn-pad: 7px;
+  --gn-gap: 6px;
+  letter-spacing: 0.01em;
+}
+.gooey :global(.gooey-nav__link) {
+  font-weight: 400;
+}
+/* Once the chips wrap onto multiple lines a full pill frame looks odd. */
+@media (max-width: 1100px) {
+  .gooey:global(.gooey-nav--framed) {
+    border-radius: 28px;
+  }
+  .gooey {
+    --gn-x: 18px;
+  }
+  .centered .gooey :global(.gooey-nav__list) {
+    justify-content: center;
+  }
+}
+/* Keeps the grid's rhythm when the filter bar is omitted. */
+.spacer {
+  height: 56px;
+}
+.ctaRow {
+  display: flex;
+  justify-content: center;
+  margin-top: clamp(56px, 6vw, 88px);
+}
+/* Stroke button: text-coloured outline, inverts on hover (white on dark,
+   black on light). */
+.viewAll {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 28px;
+  border: 1px solid var(--text);
+  border-radius: 999px;
   background: transparent;
   color: var(--text);
-  font: inherit;
-  font-size: 13px;
-  font-weight: 400;
-  letter-spacing: 0.01em;
+  font-size: 14px;
+  letter-spacing: 0.02em;
   line-height: 1;
-  white-space: nowrap;
-  text-align: center;
-  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, color 0.2s ease;
 }
-.filter:hover,
-.filter:focus-visible {
-  color: var(--text);
-}
-.filter:focus-visible {
-  outline: 2px solid var(--text);
-  outline-offset: 2px;
-}
-.filterActive {
+.viewAll:hover,
+.viewAll:focus-visible {
   background: var(--text);
-  color: var(--bg);
-}
-.filterActive:hover,
-.filterActive:focus-visible {
   color: var(--bg);
 }
 .grid {
@@ -127,25 +157,6 @@
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-  .filters {
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 8px;
-    overflow: visible;
-    padding: 0;
-    border: 0;
-    border-radius: 0;
-    background: transparent;
-  }
-  .filter {
-    flex: 0 0 auto;
-    min-height: 40px;
-    padding: 0 14px;
-    border: 1px solid var(--line-strong);
-  }
-  .filterActive {
-    border-color: var(--text);
-  }
 }
 @media (max-width: 767px) {
   .section {
@@ -157,6 +168,9 @@
   }
   .filters {
     margin: 40px 0 36px;
+  }
+  .spacer {
+    height: 36px;
   }
   .grid {
     grid-template-columns: 1fr;

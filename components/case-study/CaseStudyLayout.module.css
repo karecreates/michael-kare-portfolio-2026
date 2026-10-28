@@ -6,7 +6,7 @@
   --cs-radius: 32px;
   --cs-media-radius: 20px;
   --cs-well: var(--bg);
-  background: var(--bg);
+  background: transparent; /* page background lives on <html> so the cursor grid shows through */
   color: var(--text);
   min-height: 100dvh;
   padding: var(--cs-pad);
@@ -27,6 +27,11 @@
 
 .gallerySlot {
   min-width: 0;
+}
+
+/* Related projects + back link, full width under the sidebar/gallery grid. */
+.outro {
+  padding: 0 clamp(4px, 1vw, 16px);
 }
 
 @media (max-width: 980px) {

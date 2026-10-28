@@ -13,7 +13,7 @@ export default function CaseStudySidebar({ study }) {
       <div className={styles.top}>
         <div className={styles.kickerRow}>
           <p className={styles.kicker}>{study.label ?? 'Case Study'}</p>
-          <Link href="/#archive" className={styles.back}>
+          <Link href="/work" className={styles.back}>
             Selected work
           </Link>
         </div>

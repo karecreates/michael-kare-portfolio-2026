@@ -1,0 +1,4 @@
+.outro {
+  padding: 0 clamp(20px, 3.3vw, 64px);
+  margin-bottom: clamp(40px, 5vw, 72px);
+}

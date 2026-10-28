@@ -1,0 +1,57 @@
+.glow {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: clamp(520px, 92vh, 980px);
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+/* Pours down from the top centre; dissolves before the project grid starts. */
+.top {
+  top: calc(-1 * var(--site-header-height, 0px));
+  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+}
+
+/* Rises from the bottom centre of the page footer, behind the ribbon. */
+.bottom {
+  /* Sink the hot core of the light just below the page edge (the header does
+     the same job at the top) so what shows is the broad wash. */
+  bottom: -140px;
+  height: clamp(600px, 92vh, 980px);
+  mask-image: linear-gradient(to top, #000 50%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 50%, transparent 100%);
+}
+
+:global(html[data-theme='light']) .glow {
+  mix-blend-mode: multiply;
+  opacity: 0.72;
+}
+
+/* The loader owns the screen during the initial load. */
+:global(html[data-loading]) .glow {
+  visibility: hidden;
+}
+
+.half {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+}
+
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
+}
+
+.half > * {
+  position: absolute;
+  inset: 0;
+}

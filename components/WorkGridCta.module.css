@@ -1,0 +1,104 @@
+.section {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  margin-top: clamp(48px, 7vw, 110px);
+  overflow: hidden;
+}
+
+.grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+/* Flat, slight scrim in the page colour over the whole grid so the headline
+   reads over busy tiles; the grid itself feathers out at its edges. */
+.grid::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--bg) 42%, transparent);
+  pointer-events: none;
+}
+
+:global(html[data-theme='light']) .grid::after {
+  background: color-mix(in srgb, var(--bg) 48%, transparent);
+}
+
+.overlay {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(22px, 3vw, 36px);
+  height: 100%;
+  padding: 0 clamp(20px, 3.3vw, 64px);
+  text-align: center;
+  pointer-events: none;
+}
+
+.overlay > * {
+  pointer-events: auto;
+}
+
+.title {
+  margin: 0;
+  font-weight: 400;
+  font-size: clamp(40px, 7vw, 112px);
+  line-height: 1;
+  letter-spacing: -0.06em;
+  text-wrap: balance;
+  /* A soft halo keeps the headline legible over bright thumbnails. */
+  filter: drop-shadow(0 6px 40px rgba(0, 0, 0, 0.55));
+}
+
+:global(html[data-theme='light']) .title {
+  filter: drop-shadow(0 6px 40px rgba(255, 255, 255, 0.75));
+}
+
+/* The shine is a background clipped to the text, and only paints inside the
+   span's box, so give the box room for the descender of the "g" (and a hair
+   either side) without changing the layout. */
+.title :global(.shiny-text) {
+  padding: 0.08em 0.06em 0.22em;
+  margin: -0.08em -0.06em -0.22em;
+}
+
+/* Stroke button: text-coloured outline, inverts on hover (white on dark,
+   black on light). */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 0 32px;
+  border: 1px solid var(--text);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+  color: var(--text);
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-decoration: none;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.button:hover,
+.button:focus-visible {
+  background: var(--text);
+  color: var(--bg);
+}
+
+@media (max-width: 767px) {
+  .section {
+    margin-top: 32px;
+  }
+  .title {
+    font-size: clamp(40px, 12vw, 56px);
+  }
+}

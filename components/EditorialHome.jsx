@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import {
   motion,
   useReducedMotion,
@@ -13,7 +14,9 @@ import CreativeInfiniteGallery from './CreativeInfiniteGallery';
 import PortfolioShowcase from './PortfolioShowcase';
 import FeaturedWorks from './FeaturedWorks';
 import SpaceSection from './SpaceSection';
+import SiteBackdrop from './SiteBackdrop';
 import { HERO_REPLAY_EVENT } from './Header';
+import { HOME_FEATURED_WORKS } from '@/data/featuredWorks';
 import { Typewriter } from '@/components/ui/typewriter';
 import FadeLines from '@/components/FadeLines';
 import styles from './EditorialHome.module.css';
@@ -75,13 +78,42 @@ function Hero({ data, quiet, reduced }) {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '-12%']);
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.12]);
   const opacity = useTransform(scrollYProgress, [0, 0.7, 1], [1, 1, 0.4]);
+  const stickyRef = useRef(null);
+  const portraitRef = useRef(null);
+
+  // Tell the backdrop where the portrait's bottom gradient starts/ends so the
+  // shader fades into the page background at the same place. Uses offset
+  // geometry, so scroll-driven transforms on the portrait don't skew it.
+  useEffect(() => {
+    const sticky = stickyRef.current;
+    const portrait = portraitRef.current;
+    if (!sticky || !portrait) return undefined;
+    const measure = () => {
+      let top = 0;
+      let el = portrait;
+      while (el && el !== sticky) {
+        top += el.offsetTop;
+        el = el.offsetParent;
+      }
+      const height = portrait.offsetHeight;
+      sticky.style.setProperty('--backdrop-fade-start', `${Math.round(top + height * 0.42)}px`);
+      sticky.style.setProperty('--backdrop-fade-end', `${Math.round(top + height * 0.92)}px`);
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(sticky);
+    observer.observe(portrait);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section
       ref={ref}
       className={styles.heroTrack}
       aria-labelledby="hero-title"
     >
-      <div className={styles.heroSticky}>
+      <div ref={stickyRef} className={styles.heroSticky}>
+        {!reduced ? <SiteBackdrop /> : null}
         {!reduced ? (
           <div className={styles.heroRays} aria-hidden="true">
             <SideRays
@@ -157,9 +189,9 @@ function Hero({ data, quiet, reduced }) {
             className={styles.portrait}
             style={quiet ? undefined : { scale, opacity }}
           >
-            <div className={styles.portraitImage}>
+            <div ref={portraitRef} className={styles.portraitImage}>
               <Image
-                src="/editorial/kare-developer.png"
+                src="/editorial/kare-developer-transparent.png"
                 alt="Michael Kare"
                 width={1448}
                 height={1086}
@@ -408,9 +440,9 @@ export default function EditorialHome({ data }) {
         <div className={styles.workHeading}>
           <div className={styles.sectionKicker}>
             <span>01 / Selected work</span>
-            <a href="#archive">
-              Full index <span aria-hidden="true">↓</span>
-            </a>
+            <Link href="/work">
+              Full index <span aria-hidden="true">→</span>
+            </Link>
           </div>
         </div>
         {/* Centered heading lives inside the pinned showcase so the blue wipe can sweep over it. */}
@@ -428,7 +460,11 @@ export default function EditorialHome({ data }) {
           </p>
         </PortfolioShowcase>
       </section>
-      <FeaturedWorks />
+      <FeaturedWorks
+        works={HOME_FEATURED_WORKS}
+        filters={false}
+        cta={{ label: 'View all projects', href: '/work' }}
+      />
       <SpaceSection reduced={reduced} />
       <Focus items={data.focusAreas} compact={compact} />
       <LogoMarquee />

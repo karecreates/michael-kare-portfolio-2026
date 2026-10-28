@@ -5,6 +5,7 @@ import StarscriptVideo from "@/components/StarscriptVideo";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -84,6 +85,7 @@ export default function StarscriptProjectPage() {
           <StarscriptVideo />
         </main>
 
+        <ProjectOutro current="/projects/starscript" tags={["Branding", "Video Animation"]} />
         <Footer data={footer} />
       </div>
     </>

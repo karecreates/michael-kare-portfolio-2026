@@ -2,7 +2,6 @@ import { DM_Sans } from 'next/font/google';
 import '@/app/globals.css';
 import SiteLoader from '@/components/SiteLoader';
 import MediaGuard from '@/components/MediaGuard';
-
 const themeBoot = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';}catch(e){document.documentElement.dataset.theme='dark';}})();`;
 
 const dmSans = DM_Sans({

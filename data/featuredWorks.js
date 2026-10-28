@@ -115,6 +115,42 @@ export const FEATURED_WORKS = [
   },
 ];
 
+/** The six projects shown on the homepage, in display order. */
+export const HOME_FEATURED_IDS = ['beta-agency', 'in2ai', 'solace', 'sabio', 'omt', 'knowi'];
+
+export const HOME_FEATURED_WORKS = HOME_FEATURED_IDS.map((id) =>
+  FEATURED_WORKS.find((item) => item.id === id),
+).filter(Boolean);
+
+const normalise = (tag) => String(tag).toLowerCase().replace(/[^a-z0-9/]+/g, ' ').trim();
+
+/** Loose match so "Logo Design" relates to "Logo" and "Web Design & Development" to both. */
+const tagsOverlap = (a, b) => {
+  const x = normalise(a);
+  const y = normalise(b);
+  return x === y || x.includes(y) || y.includes(x);
+};
+
+/**
+ * Projects related to the current page, ranked by how many disciplines they
+ * share with it (ties keep the featured order). Falls back to the next
+ * featured projects so there are always `limit` cards.
+ */
+export function getRelatedWorks(currentHref, tags = [], limit = 3) {
+  const current = FEATURED_WORKS.find((item) => item.href === currentHref);
+  const wanted = [...new Set([...(current?.pills ?? []), ...tags])];
+  const scored = FEATURED_WORKS.filter((item) => item.href !== currentHref).map((item, index) => ({
+    item,
+    index,
+    score: wanted.reduce(
+      (total, tag) => total + (item.pills.some((pill) => tagsOverlap(pill, tag)) ? 1 : 0),
+      0,
+    ),
+  }));
+  scored.sort((a, b) => b.score - a.score || a.index - b.index);
+  return scored.slice(0, limit).map(({ item }) => item);
+}
+
 export const FEATURED_FILTERS = [
   'All',
   'Web Design',

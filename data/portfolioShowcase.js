@@ -3,24 +3,24 @@
 // intentionally no per-discipline colour field.
 export const PORTFOLIO_DISCIPLINES = [
   {
-    id: 'branding',
+    id: 'web-design-development',
     number: '01',
+    title: 'Web Design & Development',
+    description:
+      'Creating modern digital experiences where thoughtful design, custom development, and seamless interaction meet.',
+    mediaSrc: '/showcase/web-design-development.png',
+    mediaType: 'image',
+    href: '/projects/beta-agency-redesign',
+  },
+  {
+    id: 'branding',
+    number: '02',
     title: 'Branding',
     description:
       'Creating distinctive visual identities that give brands a recognizable personality and lasting impression.',
-    mediaSrc: '/showcase/branding.png',
+    mediaSrc: '/showcase/branding-v2.png',
     mediaType: 'image',
     href: '/projects/scsi-branding',
-  },
-  {
-    id: 'creative-work',
-    number: '02',
-    title: 'Creative Work',
-    description:
-      'Exploring ideas through experimentation, visual storytelling, and expressive creative direction.',
-    mediaSrc: '/showcase/creative-work.png',
-    mediaType: 'image',
-    href: '#creative-gallery',
   },
   {
     id: 'custom-coded-solutions',
@@ -85,13 +85,13 @@ export const PORTFOLIO_DISCIPLINES = [
     href: '/projects/sabio',
   },
   {
-    id: 'web-design-development',
+    id: 'creative-work',
     number: '09',
-    title: 'Web Design & Development',
+    title: 'Creative Work',
     description:
-      'Creating modern digital experiences where thoughtful design, custom development, and seamless interaction meet.',
-    mediaSrc: '/showcase/web-design-development.png',
+      'Exploring ideas through experimentation, visual storytelling, and expressive creative direction.',
+    mediaSrc: '/showcase/creative-work.png',
     mediaType: 'image',
-    href: '/projects/beta-agency-redesign',
+    href: '#creative-gallery',
   },
 ];

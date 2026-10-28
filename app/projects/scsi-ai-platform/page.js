@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -125,6 +126,7 @@ export default function ScsiAiPlatformProjectPage() {
           ))}
         </main>
 
+        <ProjectOutro current="/projects/scsi-ai-platform" tags={["UI/UX", "Web Design"]} />
         <Footer data={footer} />
       </div>
     </>

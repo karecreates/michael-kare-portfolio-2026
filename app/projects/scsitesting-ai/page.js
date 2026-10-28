@@ -4,6 +4,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import ProjectLiveLink from "@/components/ProjectLiveLink";
 import LazyVideo from "@/components/LazyVideo";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
@@ -94,6 +95,7 @@ export default function ScsitestingAiProjectPage() {
           />
         </section>
 
+        <ProjectOutro current="/projects/scsitesting-ai" tags={["Web Design", "Web Development"]} />
         <Footer data={footer} />
       </div>
     </>

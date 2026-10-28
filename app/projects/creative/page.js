@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import LazyVideo from "@/components/LazyVideo";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
@@ -184,6 +185,7 @@ export default function CreativeProjectPage() {
           </figure>
         </main>
 
+        <ProjectOutro current="/projects/creative" tags={["Video Animation", "Branding"]} />
         <Footer data={footer} />
       </div>
     </>

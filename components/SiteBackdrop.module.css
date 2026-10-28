@@ -1,0 +1,48 @@
+/* Fills its positioned parent (the hero) and sits under the hero content. */
+.layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  contain: strict;
+  /* Keep the chrome a quiet texture behind the type, not a feature. */
+  opacity: 0.14;
+  /* Cross-fade in from the page colour rather than popping in: the shader's
+     own intro plays while the loader still covers it. The animation (re)starts
+     the moment data-loading is removed, and also on in-site navigation. */
+  animation: backdropIn 1.8s ease-out both;
+  /* Fade to the page background exactly where the portrait's own
+     bottom gradient begins (Hero measures and sets these variables). */
+  mask-image: linear-gradient(
+    to bottom,
+    #000 var(--backdrop-fade-start, 62%),
+    transparent var(--backdrop-fade-end, 96%)
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 var(--backdrop-fade-start, 62%),
+    transparent var(--backdrop-fade-end, 96%)
+  );
+}
+
+:global(html[data-theme='light']) .layer {
+  opacity: 0.12;
+}
+
+/* The loader owns the screen during the initial load. */
+:global(html[data-loading]) .layer {
+  opacity: 0;
+  animation: none;
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .layer {
+    display: none;
+  }
+}

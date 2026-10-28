@@ -4,17 +4,43 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FEATURED_FILTERS, FEATURED_WORKS } from '@/data/featuredWorks';
+import GooeyNav from './GooeyNav';
 import styles from './FeaturedWorks.module.css';
 
-export default function FeaturedWorks() {
+// No href: GooeyNav renders buttons, so filtering never touches the URL.
+const FILTER_ITEMS = FEATURED_FILTERS.map((label) => ({ label }));
+
+/**
+ * Filterable project grid. The homepage passes a curated subset with the
+ * filters off and a "view all" link; /work renders the full set as the page.
+ */
+export default function FeaturedWorks({
+  works = FEATURED_WORKS,
+  heading = 'Featured Work',
+  headingTag: Heading = 'h2',
+  id = 'archive',
+  filters = true,
+  cta = null,
+  align = 'start',
+}) {
   const [filter, setFilter] = useState('All');
+  const [light, setLight] = useState(false);
   const gridRef = useRef(null);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    const sync = () => setLight(root.dataset.theme === 'light');
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
+    return () => observer.disconnect();
+  }, []);
   const items = useMemo(
     () =>
-      filter === 'All'
-        ? FEATURED_WORKS
-        : FEATURED_WORKS.filter((item) => item.pills.includes(filter)),
-    [filter],
+      !filters || filter === 'All'
+        ? works
+        : works.filter((item) => item.pills.includes(filter)),
+    [works, filters, filter],
   );
 
   useEffect(() => {
@@ -101,30 +127,36 @@ export default function FeaturedWorks() {
 
   return (
     <section
-      id="archive"
-      className={styles.section}
-      aria-labelledby="archive-title"
+      id={id}
+      className={`${styles.section} ${align === 'center' ? styles.centered : ''}`}
+      aria-labelledby={`${id}-title`}
     >
-      <h2 id="archive-title" className={styles.title}>
-        Featured Work
-      </h2>
-      <div className={styles.filters} role="tablist" aria-label="Filter work">
-        {FEATURED_FILTERS.map((name) => {
-          const active = filter === name;
-          return (
-            <button
-              key={name}
-              type="button"
-              role="tab"
-              aria-selected={active}
-              className={`${styles.filter} ${active ? styles.filterActive : ''}`}
-              onClick={() => setFilter(name)}
-            >
-              {name}
-            </button>
-          );
-        })}
-      </div>
+      <Heading id={`${id}-title`} className={styles.title}>
+        {heading}
+      </Heading>
+      {filters ? (
+        <div className={styles.filters}>
+          <GooeyNav
+            className={styles.gooey}
+            items={FILTER_ITEMS}
+            activeIndex={Math.max(0, FEATURED_FILTERS.indexOf(filter))}
+            onChange={(index) => setFilter(FEATURED_FILTERS[index])}
+            theme={light ? 'light' : 'dark'}
+            color={light ? '#000000' : '#ffffff'}
+            size="md"
+            frame
+            particleCount={15}
+            spread={56}
+            animationTime={600}
+            timeVariance={300}
+            gooeyness={0.5}
+            wobble={0.5}
+            hoverEffect
+          />
+        </div>
+      ) : (
+        <div className={styles.spacer} aria-hidden="true" />
+      )}
       <ul ref={gridRef} className={styles.grid}>
         {items.map((item) => (
           <li key={item.id}>
@@ -151,6 +183,13 @@ export default function FeaturedWorks() {
           </li>
         ))}
       </ul>
+      {cta ? (
+        <div className={styles.ctaRow}>
+          <Link href={cta.href} className={styles.viewAll}>
+            {cta.label}
+          </Link>
+        </div>
+      ) : null}
     </section>
   );
 }

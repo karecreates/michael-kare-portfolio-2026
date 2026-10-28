@@ -1,7 +1,9 @@
 .home {
   --gutter: clamp(20px, 3.3vw, 64px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
-  background: var(--bg);
+  /* Page background lives on <html>; wrappers stay transparent so the
+     fixed cursor grid behind the page shows through. */
+  background: transparent;
 }
 .home h1,
 .home h2,
@@ -156,13 +158,6 @@
   object-fit: contain;
   object-position: center;
   filter: grayscale(100%);
-}
-.portraitImage::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to bottom, transparent 42%, var(--bg) 92%);
-  pointer-events: none;
 }
 .portrait figcaption {
   font-size: 13px;
@@ -450,7 +445,7 @@
   min-height: 100svh;
   padding: 28px var(--gutter) 80px;
   overflow: hidden;
-  background: var(--bg);
+  background: transparent;
   cursor: default;
 }
 .focusKicker {
@@ -570,7 +565,7 @@
 }
 .marquee {
   padding: 36px 0 140px;
-  background: var(--bg);
+  background: transparent;
   overflow: hidden;
 }
 .marqueeViewport {
@@ -750,7 +745,7 @@
   position: relative;
   padding: 28px var(--gutter) 0;
   overflow: hidden;
-  background: var(--bg);
+  background: transparent;
 }
 .creativeKicker {
   display: block;

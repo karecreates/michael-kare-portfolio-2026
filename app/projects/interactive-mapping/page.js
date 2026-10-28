@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -108,6 +109,7 @@ export default function InteractiveMappingProjectPage() {
           ))}
         </main>
 
+        <ProjectOutro current="/projects/interactive-mapping" tags={["Web Development", "Custom Code", "UI/UX"]} />
         <Footer data={footer} />
       </div>
     </>

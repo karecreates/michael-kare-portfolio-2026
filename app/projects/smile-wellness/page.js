@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -113,6 +114,7 @@ export default function SmileWellnessProjectPage() {
           ))}
         </main>
 
+        <ProjectOutro current="/projects/smile-wellness" tags={["Web Design"]} />
         <Footer data={footer} />
       </div>
     </>

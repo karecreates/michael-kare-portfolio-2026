@@ -15,7 +15,7 @@ export default function HomePage() {
       <main id="main-content">
         <EditorialHome data={siteData} />
       </main>
-      <Footer data={siteData.footer} showMarquee />
+      <Footer data={siteData.footer} showMarquee showWorkGrid showGlow />
     </>
   );
 }

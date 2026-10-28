@@ -6,6 +6,7 @@ import BetaAgencyRedesignVideo from "@/components/BetaAgencyRedesignVideo";
 import { siteData } from "@/data/siteData";
 import styles from "./page.module.css";
 import ProjectBackToProjects from "@/components/ProjectBackToProjects";
+import ProjectOutro from "@/components/ProjectOutro";
 import introLayoutStyles from "@/components/projectCaseIntro.module.css";
 
 const CASE_NAV = [
@@ -101,6 +102,7 @@ export default function BetaAgencyRedesignProjectPage() {
           ))}
         </main>
 
+        <ProjectOutro current="/projects/beta-agency-redesign" tags={["Web Design", "UI/UX"]} />
         <Footer data={footer} />
       </div>
     </>
