@@ -36,6 +36,25 @@
   backdrop-filter: blur(20px) saturate(1.6);
 }
 
+/* Glass variant: the Glass Surface paints the frame, so the flat fill, blur
+   and rim step aside and the glass sits behind the stage. */
+.gooey-nav--glass {
+  background: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.gooey-nav__glass {
+  position: absolute !important;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.gooey-nav--glass .gooey-nav__stage {
+  z-index: 1;
+}
+
 .gooey-nav__stage {
   position: relative;
   max-width: 100%;

@@ -4,7 +4,15 @@
 
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+import GlassSurface from './GlassSurface';
 import './GooeyNav.css';
+
+// Refraction settings for the optional Glass Surface frame.
+const GLASS = {
+  distortionScale: -180,
+  displace: 0.5,
+  backgroundOpacity: 0.1,
+};
 
 const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
@@ -217,6 +225,9 @@ const GooeyNav = ({
   colors = [],
   size = 'md',
   frame = true,
+  // `glass` swaps the flat frame for a refractive Glass Surface. Pass an
+  // object to override its settings.
+  glass = false,
   animationTime = 600,
   particleCount = 15,
   timeVariance = 300,
@@ -229,6 +240,10 @@ const GooeyNav = ({
 }) => {
   const [innerIndex, setInnerIndex] = useState(initialActiveIndex);
   const current = Math.min(Math.max(0, activeIndex ?? innerIndex), Math.max(0, items.length - 1));
+  const navRef = useRef(null);
+  // The glass needs the frame's actual corner radius in px (the CSS may say
+  // 999px, which the pill really renders as half its height).
+  const [glassRadius, setGlassRadius] = useState(999);
   const stageRef = useRef(null);
   const canvasRef = useRef(null);
   const listRef = useRef(null);
@@ -743,6 +758,21 @@ const GooeyNav = ({
     engineRef.current?.refresh();
   }, [pillColor, palette, gooeyness, size, frame]);
 
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav || !frame || !glass) return undefined;
+    const measure = () => {
+      const radius = parseFloat(getComputedStyle(nav).borderRadius) || 0;
+      setGlassRadius(Math.round(Math.min(radius, nav.offsetHeight / 2, nav.offsetWidth / 2)));
+    };
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(nav);
+    return () => observer.disconnect();
+  }, [frame, glass]);
+
+  const glassProps = glass && typeof glass === 'object' ? { ...GLASS, ...glass } : GLASS;
+
   const textColor = activeTextColor || contrastInk(pillRgb);
 
   const labels = (interactive) =>
@@ -790,10 +820,20 @@ const GooeyNav = ({
 
   return (
     <nav
-      className={`gooey-nav ${SIZES[size] ?? SIZES.md}${frame ? ' gooey-nav--framed' : ''} ${className}`.trim()}
+      ref={navRef}
+      className={`gooey-nav ${SIZES[size] ?? SIZES.md}${frame ? ' gooey-nav--framed' : ''}${frame && glass ? ' gooey-nav--glass' : ''} ${className}`.trim()}
       style={{ ...THEMES[palette], '--gn-pill': pillColor, '--gn-active-ink': textColor, ...style }}
     >
-      {frame && <span className="gooey-nav__rim" />}
+      {frame && glass && (
+        <GlassSurface
+          className="gooey-nav__glass"
+          width="100%"
+          height="100%"
+          borderRadius={glassRadius}
+          {...glassProps}
+        />
+      )}
+      {frame && !glass && <span className="gooey-nav__rim" />}
       <div ref={stageRef} className="gooey-nav__stage">
         <canvas ref={canvasRef} className="gooey-nav__canvas" aria-hidden="true" />
         <span ref={fallbackRef} className="gooey-nav__fallback" aria-hidden="true" />

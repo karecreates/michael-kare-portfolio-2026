@@ -83,6 +83,7 @@ const GridMotion = ({
   dim = 0.35,
   grayscale = false,
   fade = 0.5,
+  fadeSides = true,
   tileColor,
   textColor,
   theme = 'dark',
@@ -287,9 +288,12 @@ const GridMotion = ({
         ),
       )
     : [];
+  const vertical = feather('to bottom', settings.fade * 44);
   const mask =
     settings.fade > 0
-      ? `${feather('to right', settings.fade * 34)}, ${feather('to bottom', settings.fade * 44)}`
+      ? fadeSides
+        ? `${feather('to right', settings.fade * 34)}, ${vertical}`
+        : vertical
       : undefined;
 
   return (

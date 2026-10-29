@@ -52,6 +52,7 @@ export default function WorkGridCta() {
           spotlight={0.6}
           dim={0.45}
           fade={0.5}
+          fadeSides={false}
           grayscale={false}
           theme={light ? 'light' : 'dark'}
         />

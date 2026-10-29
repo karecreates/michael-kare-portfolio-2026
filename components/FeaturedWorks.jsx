@@ -145,6 +145,7 @@ export default function FeaturedWorks({
             color={light ? '#000000' : '#ffffff'}
             size="md"
             frame
+            glass
             particleCount={15}
             spread={56}
             animationTime={600}

@@ -12,8 +12,9 @@
 /* Pours down from the top centre; dissolves before the project grid starts. */
 .top {
   top: calc(-1 * var(--site-header-height, 0px));
-  mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 45%, transparent 100%);
+  /* Hold full strength past the filter bar so the glass has light to bend. */
+  mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 62%, transparent 100%);
 }
 
 /* Rises from the bottom centre of the page footer, behind the ribbon. */
@@ -28,7 +29,7 @@
 
 :global(html[data-theme='light']) .glow {
   mix-blend-mode: multiply;
-  opacity: 0.72;
+  opacity: 0.5;
 }
 
 /* The loader owns the screen during the initial load. */

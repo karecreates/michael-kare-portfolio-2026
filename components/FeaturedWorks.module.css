@@ -30,10 +30,11 @@
   --gn-frame-shadow: none;
   --gn-ink: var(--text);
   --gn-muted: color-mix(in srgb, var(--text) 72%, transparent);
-  --gn-font: 13px;
+  /* Matches the Glass Surface "Tab Bar" preset proportions (76px pill). */
+  --gn-font: 14px;
   --gn-x: 26px;
-  --gn-y: 12px;
-  --gn-pad: 7px;
+  --gn-y: 17px;
+  --gn-pad: 12px;
   --gn-gap: 6px;
   letter-spacing: 0.01em;
 }
@@ -46,7 +47,10 @@
     border-radius: 28px;
   }
   .gooey {
+    --gn-font: 13px;
     --gn-x: 18px;
+    --gn-y: 12px;
+    --gn-pad: 8px;
   }
   .centered .gooey :global(.gooey-nav__list) {
     justify-content: center;

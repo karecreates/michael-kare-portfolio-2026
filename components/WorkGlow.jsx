@@ -38,7 +38,11 @@ export default function WorkGlow({ edge = 'top' }) {
 
   const fromBottom = edge === 'bottom';
   // The footer version sits over more open black, so push a touch brighter.
-  const rays = fromBottom ? { ...RAYS, intensity: 5, falloff: 1.3 } : RAYS;
+  // The top version reaches further so the glass filter bar has light to
+  // refract; the footer version sits over more open black.
+  const rays = fromBottom
+    ? { ...RAYS, intensity: 5, falloff: 1.3 }
+    : { ...RAYS, intensity: 3.4, falloff: 1.4 };
 
   return (
     <div className={`${styles.glow} ${fromBottom ? styles.bottom : styles.top}`} aria-hidden="true">
