@@ -7,7 +7,8 @@ import WorkGridCta from './WorkGridCta';
 import WorkGlow from './WorkGlow';
 import styles from './Footer.module.css';
 
-export default function Footer({ data, showMarquee = false, showWorkGrid = false, showGlow = false }) {
+export default function Footer({ showMarquee = false, showWorkGrid = false, showGlow = false }) {
+  const year = String(new Date().getFullYear());
   return (
     <footer id="contact" className={styles.footer}>
       {showGlow ? <WorkGlow edge="bottom" /> : null}
@@ -97,10 +98,10 @@ export default function Footer({ data, showMarquee = false, showWorkGrid = false
         </nav>
       </div>
       <div className={`${styles.bottomRow} ${styles.gutter}`}>
-        <span className={styles.copyright}>
-          © {String(data.year).slice(0, 2)}
+        <span className={styles.copyright} suppressHydrationWarning>
+          © {year.slice(0, 2)}
           <span aria-hidden="true">&#8203;</span>
-          {String(data.year).slice(2)} Michael Kare
+          {year.slice(2)} Michael Kare
         </span>
         <a href="#top">Back to top ↑</a>
       </div>

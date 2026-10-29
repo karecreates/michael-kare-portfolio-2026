@@ -1,7 +1,6 @@
 export const siteData = {
   hero: {
     name: 'MICHAELKARE',
-    year: '2026',
     title: 'Portfolio',
     portrait: '/placeholders/Michael_Portfolio_Images/Kare_Portfolio_Hero.png',
     portraitAlt: 'Michael Kare portfolio hero'
@@ -211,7 +210,6 @@ export const siteData = {
   },
   footer: {
     wordmark: '@MichaelKare',
-    year: '2026',
     handle: '@KARE'
   }
 };

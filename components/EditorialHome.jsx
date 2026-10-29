@@ -134,10 +134,10 @@ function Hero({ data, quiet, reduced }) {
         <div className={styles.heroMeta}>
           <span>Independent designer & developer</span>
           <span className={styles.heroMetaAside}>
-            <span>
+            <span suppressHydrationWarning>
               Marina del Rey, CA
               <br />
-              Portfolio / {data.year}
+              Portfolio / {new Date().getFullYear()}
             </span>
             <span className={styles.heroMetaNote}>
               Design sensibility.
