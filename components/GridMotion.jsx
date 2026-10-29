@@ -61,7 +61,7 @@ const EMPTY = { kind: 'empty' };
 const Tile = ({ tile }) => (
   <div className="grid-motion__tile">
     {tile.kind === 'image' && (
-      <img src={tile.src} alt={tile.alt} draggable={false} decoding="async" />
+      <img src={tile.src} alt={tile.alt} draggable={false} loading="lazy" decoding="async" />
     )}
     {tile.kind === 'text' && <span className="grid-motion__text">{tile.text}</span>}
     {tile.kind === 'node' && tile.node}

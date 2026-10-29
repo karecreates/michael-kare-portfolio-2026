@@ -55,7 +55,7 @@ export default function CaseStudyGallery({ gallery = [] }) {
   return (
     <div ref={rootRef} className={styles.gallery}>
       {gallery.map((block, index) => {
-        const canReveal = REVEAL_TYPES.has(block.type);
+        const canReveal = index > 0 && REVEAL_TYPES.has(block.type);
         return (
           <div
             key={`${block.type}-${index}`}

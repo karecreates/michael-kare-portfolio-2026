@@ -7,7 +7,7 @@ const themeBoot = `(function(){try{var t=localStorage.getItem('theme');document.
 const dmSans = DM_Sans({
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '700'],
+  weight: ['300', '400', '700'],
   variable: '--font-dm-sans'
 });
 

@@ -114,6 +114,34 @@ export default function FadeLines({ as: Tag = 'p', className, text, cue = 'view'
       return undefined;
     }
 
+    if (cue === 'load') {
+      let cancelled = false;
+      const play = () => {
+        if (cancelled) return;
+        played.current = true;
+        setSettled(false);
+        setPlayCount((count) => count + 1);
+        setActive(true);
+      };
+      const root = document.documentElement;
+      if (!root.hasAttribute('data-loading')) {
+        play();
+        return () => {
+          cancelled = true;
+        };
+      }
+      const observer = new MutationObserver(() => {
+        if (root.hasAttribute('data-loading')) return;
+        observer.disconnect();
+        play();
+      });
+      observer.observe(root, { attributes: true, attributeFilter: ['data-loading'] });
+      return () => {
+        cancelled = true;
+        observer.disconnect();
+      };
+    }
+
     let showing = false;
     const covered = () => {
       let ancestor = node.parentElement;

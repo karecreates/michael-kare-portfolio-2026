@@ -235,12 +235,16 @@ function LogoMarquee() {
                     className={logo.lightSrc ? styles.marqueeOnDark : undefined}
                     src={logo.src}
                     alt={copy === 0 ? logo.alt : ''}
+                    loading="lazy"
+                    decoding="async"
                   />
                   {logo.lightSrc ? (
                     <img
                       className={styles.marqueeOnLight}
                       src={logo.lightSrc}
                       alt={copy === 0 ? logo.alt : ''}
+                      loading="lazy"
+                      decoding="async"
                     />
                   ) : null}
                 </div>

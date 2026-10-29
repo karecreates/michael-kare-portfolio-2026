@@ -5,12 +5,12 @@ import ScrollableScreenshot from './ScrollableScreenshot';
 import FadeLines from '@/components/FadeLines';
 import styles from './CaseStudyGallery.module.css';
 
-function Lines({ as = 'p', className, children }) {
+function Lines({ as = 'p', className, children, cue = 'view' }) {
   if (typeof children !== 'string' || !children.trim()) {
     const Tag = as;
     return <Tag className={className}>{children}</Tag>;
   }
-  return <FadeLines as={as} className={className} text={children} />;
+  return <FadeLines as={as} className={className} text={children} cue={cue} />;
 }
 
 function shellClass(surface) {
@@ -152,12 +152,16 @@ export function TextBlock({ block }) {
   return <Lines className={styles.body}>{block.text}</Lines>;
 }
 
-function Copy({ block, headingClassName }) {
+function Copy({ block, headingClassName, headingCue = 'view' }) {
   if (!block.heading && !block.body && !block.eyebrow) return null;
   return (
     <div className={styles.copy}>
       {block.eyebrow ? <p className={styles.eyebrow}>{block.eyebrow}</p> : null}
-      {block.heading ? <Lines as="h2" className={headingClassName}>{block.heading}</Lines> : null}
+      {block.heading ? (
+        <Lines as="h2" className={headingClassName} cue={headingCue}>
+          {block.heading}
+        </Lines>
+      ) : null}
       {block.body ? <Lines className={styles.body}>{block.body}</Lines> : null}
     </div>
   );
@@ -196,13 +200,13 @@ function MediaFrame({ block, image, video }) {
   );
 }
 
-export function EditorialSpreadBlock({ block }) {
+export function EditorialSpreadBlock({ block, headingCue = 'view' }) {
   const lead = block.variant === 'lead';
   const feature = block.variant === 'feature';
   const heading = feature ? styles.headingFeature : lead ? styles.headingLead : styles.headingHero;
   return (
     <section className={`${styles.spread} ${lead ? styles.spreadLead : ''} ${feature ? styles.spreadFeature : ''}`}>
-      <Copy block={block} headingClassName={heading} />
+      <Copy block={block} headingClassName={heading} headingCue={headingCue} />
       {block.image || block.video ? (
         <figure className={styles.spreadMedia}>
           <MediaFrame block={block} image={block.image} video={block.video} />
@@ -363,7 +367,13 @@ export function renderGalleryBlock(block, index) {
     case 'closingStatement':
       return <EditorialBlock key={index} block={block} />;
     case 'editorialSpread':
-      return <EditorialSpreadBlock key={index} block={block} />;
+      return (
+        <EditorialSpreadBlock
+          key={index}
+          block={block}
+          headingCue={index === 0 ? 'load' : 'view'}
+        />
+      );
     case 'asymmetricMedia':
       return <AsymmetricMediaBlock key={index} block={block} />;
     case 'fullBleedMedia':

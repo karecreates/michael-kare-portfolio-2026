@@ -9,6 +9,9 @@
   --title-size: clamp(40px, 5vw, 76px);
   --number-size: clamp(30px, 3.6vw, 56px);
   --line: rgba(255, 255, 255, 0.32);
+  /* One gradient, sized to the pinned viewport and anchored to its bottom,
+     so it reads as fixed to the screen while the tabs rise through it. */
+  --panel-fill: linear-gradient(180deg, #0094ea 0%, #005384 100%) bottom / 100% var(--panel-h) no-repeat;
   --media-h: calc(var(--panel-h) - var(--tab-h));
   --media-w: calc(var(--media-h) * 16 / 9);
   position: relative;
@@ -45,7 +48,7 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: var(--portfolio-blue);
+  background: var(--panel-fill);
   clip-path: circle(0% at 0% 50%);
   pointer-events: none;
   will-change: clip-path;
@@ -56,7 +59,7 @@
   left: 0;
   width: 100%;
   height: var(--panel-h);
-  background: var(--portfolio-blue);
+  background: var(--panel-fill);
   color: #fff;
   border-top: 1px solid var(--line);
   overflow: hidden;
@@ -75,7 +78,7 @@
   margin: 0;
   border: 0;
   border-bottom: 1px solid var(--line);
-  background: var(--portfolio-blue);
+  background: transparent;
   color: inherit;
   font: inherit;
   text-align: left;
@@ -117,7 +120,9 @@
   left: 0;
   right: 0;
   bottom: 0;
-  overflow: visible;
+  /* Clip at the header rule so copy in a barely-open tab can't rise behind
+     the (transparent) header. */
+  overflow: hidden;
 }
 .copy {
   position: absolute;
@@ -199,7 +204,8 @@
   height: auto;
   min-height: var(--panel-h);
   transform: none !important;
-  background: var(--portfolio-blue);
+  background: var(--panel-fill);
+  background-size: 100% 100%;
 }
 .static .body {
   position: relative;

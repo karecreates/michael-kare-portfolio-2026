@@ -144,6 +144,7 @@ export default function PortfolioShowcase({
       step: 1,
       stickyTop: 0,
       tabH: 118,
+      border: 1,
       geo: [],
     };
     const lastInert = new Array(count).fill(null);
@@ -158,11 +159,17 @@ export default function PortfolioShowcase({
       metrics.stickyTop = parseFloat(css.top) || 0;
       const measuredTab = headerRefs.current.find((node) => node)?.offsetHeight;
       metrics.tabH = measuredTab || 156;
+      // The panel's top rule sits above its header, so the media box is one
+      // border shorter than viewport minus tab.
+      const firstPanel = panelRefs.current.find((node) => node);
+      metrics.border = firstPanel
+        ? parseFloat(getComputedStyle(firstPanel).borderTopWidth) || 0
+        : 0;
       track.style.height = `${
         (INTRO_STEPS + count - 1) * metrics.step +
         metrics.viewport * (1 + TAIL)
       }px`;
-      const boxH = Math.max(metrics.viewport - metrics.tabH, 160);
+      const boxH = Math.max(metrics.viewport - metrics.tabH - metrics.border, 160);
       const boxW = sticky.clientWidth;
       let mediaH = boxH;
       let mediaW = boxH * (16 / 9);
@@ -246,10 +253,14 @@ export default function PortfolioShowcase({
         } else if (float) {
           float.style.width = `${geo.mediaW}px`;
           float.style.height = `${geo.mediaH}px`;
+          const border = metrics.border;
+          // Scale that fits the mockup into `space` px of open tab height.
+          const fitTo = (space) =>
+            geo.mediaH > 0 ? Math.min(1, Math.max(0, space) / geo.mediaH) : 0;
           let s = 0;
           let origin = 'top right';
           // Incoming mockup is pinned to the bottom of its tab so it grows
-          // from that bottom-left corner. Everything else stays top-aligned.
+          // from that bottom edge. Everything else stays top-aligned.
           const incoming = timeline > i - 1 && timeline < i && i > 0;
           float.style.top = incoming ? 'auto' : '0';
           float.style.bottom = incoming ? '0' : 'auto';
@@ -259,20 +270,17 @@ export default function PortfolioShowcase({
               // until their own panel starts up.
               s = i === 0 ? 1 : 0;
             } else {
-              // Scale up from the bottom-left corner. By halfway it fills the
-              // open tab, and it never slides under the header.
-              const bodyH = Math.max(0, V - y - tabH);
-              const fit = geo.mediaH > 0 ? Math.min(1, bodyH / geo.mediaH) : 0;
-              const grow = Math.min(1, rise / 0.5);
-              s = fit * easeInOut(grow);
+              // Grow from the bottom-left corner and fill the open tab
+              // exactly, so the top edge always meets the header rule.
+              s = fitTo(V - y - tabH - border);
               origin = 'bottom left';
             }
           } else if (i < count - 1 && timeline <= i + 1) {
-            // Previous mockup is pinched between its header rule and the
-            // rising tab's top rule, retreating toward the top-right.
+            // Previous mockup retreats toward the top-right so its left edge
+            // meets the incoming mockup's right edge; the rising tab slides
+            // over its lower part.
             const nextY = lerp(V, 0, easeInOut(leave));
-            const gap = Math.max(0, nextY - tabH);
-            s = geo.mediaH > 0 ? Math.min(1, gap / geo.mediaH) : 0;
+            s = 1 - fitTo(V - nextY - tabH - border);
           } else if (timeline <= i + 1) {
             s = 1;
           }
