@@ -203,10 +203,10 @@ export const siteData = {
       { label: 'Email', href: 'mailto:karecreates@gmail.com' }
     ],
     paragraphs: [
-      'I’m a multidisciplinary designer and developer working at the intersection of design, technology, and digital storytelling.',
-      'I graduated from the University of Washington in 2021, where I studied Cinema and Media Studies and Digital Arts & Experimental Media (DXARTS). My background in film, photography, and digital media shaped the way I approach the web—not simply as a functional tool, but as a space for storytelling, interaction, and visual experience.',
-      'My work spans web design and development, branding, motion, graphic design, and digital experiences. I’ve designed and developed educational platforms, built brand identities for AI-focused products, created large-scale conference and print materials, reimagined visual identities, and helped bring mobile and web applications to life.',
-      'I’m most interested in projects where design and technology meet. Whether I’m building a website, developing a brand system, or experimenting with motion and interaction, my goal is to create work that feels thoughtful, memorable, and distinctly built for the medium.'
+      'I’m a multidisciplinary designer and developer based in Los Angeles, specializing in brand identities and digital experiences. I take projects from defining the creative direction through design, development, and launch, connecting how a brand communicates with how people experience it.',
+      'My experience spans agency, in-house, and independent work across commercial real estate, education, and technology. I’ve led design and front-end development for educational platforms and AI products, created interactive property websites and mapping tools, and developed visual identities that extend across web, motion, campaigns, and print. Working across these disciplines helps me build a consistent experience while giving each medium the attention it needs.',
+      'I’m driven by the challenge of turning a complicated problem into something clear and useful. I think through the structure, visual language, and technical approach together—whether the goal is to simplify navigation, communicate complex information, or give a business a more distinctive presence. Being able to design and build allows me to test ideas directly and stay accountable to the details through delivery.',
+      'I love the process of making: exploring an idea, figuring out what it needs, and refining it until it works. My background in film, photography, and digital media continues to shape my eye for composition, pacing, and storytelling, while curiosity keeps me exploring new tools and ways to create.'
     ]
   },
   footer: {
