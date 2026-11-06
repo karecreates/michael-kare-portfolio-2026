@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
+import { preloadMedia } from '@/lib/preloadMedia';
 import styles from './CreativeInfiniteGallery.module.css';
 
 const InfiniteGallery = dynamic(() => import('@/components/ui/infinite-gallery'), {
@@ -130,18 +131,9 @@ export default function CreativeInfiniteGallery({ reduced }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const track = trackRef.current;
-    if (!track) return undefined;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) return;
-        setReady(true);
-        io.disconnect();
-      },
-      { rootMargin: '100% 0px' },
-    );
-    io.observe(track);
-    return () => io.disconnect();
+    preloadMedia(CREATIVE_IMAGES.map((item) => item.url));
+    import('@/components/ui/infinite-gallery');
+    setReady(true);
   }, []);
 
   useEffect(() => {

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { PORTFOLIO_DISCIPLINES } from '@/data/portfolioShowcase';
 import FadeLines from '@/components/FadeLines';
 import { playInline, releaseInline } from '@/lib/inlineVideo';
+import { preloadMedia, whenPageReady } from '@/lib/preloadMedia';
 import styles from './PortfolioShowcase.module.css';
 
 // Scroll distance for one panel transition, as a fraction of the pinned viewport height.
@@ -77,7 +78,7 @@ function PortfolioMedia({ item, index, floatRef, videoRef, isStatic, loadNow }) 
           loop={!start}
           playsInline
           webkit-playsinline="true"
-          preload={loadNow ? 'auto' : 'none'}
+          preload={loadNow ? 'auto' : 'metadata'}
           disablePictureInPicture
           controls={isStatic || undefined}
           controlsList="nodownload noremoteplayback"
@@ -92,8 +93,8 @@ function PortfolioMedia({ item, index, floatRef, videoRef, isStatic, loadNow }) 
           alt={label}
           width={1920}
           height={1080}
-          loading={loadNow && index === 0 ? 'eager' : 'lazy'}
-          fetchPriority={loadNow && index === 0 ? 'high' : 'low'}
+          loading={index < 3 ? 'eager' : 'lazy'}
+          fetchPriority={index === 0 ? 'high' : 'low'}
           decoding="async"
           draggable={false}
         />
@@ -129,9 +130,19 @@ export default function PortfolioShowcase({
   const videoRefs = useRef([]);
   const items = PORTFOLIO_DISCIPLINES;
   const count = items.length;
-  const [armed, setArmed] = useState(() => new Set([0]));
+  const [armed, setArmed] = useState(
+    () => new Set(PORTFOLIO_DISCIPLINES.map((_, index) => index)),
+  );
   const armedRef = useRef(armed);
   armedRef.current = armed;
+
+  useEffect(() => {
+    preloadMedia(
+      items.flatMap((item) =>
+        item.mediaType === 'video' ? [item.posterSrc, item.mediaSrc] : [item.mediaSrc],
+      ),
+    );
+  }, [items]);
 
   useEffect(() => {
     if (reduced) return undefined;
@@ -391,6 +402,10 @@ export default function PortfolioShowcase({
 
     measure();
     render();
+    const stopReady = whenPageReady(() => {
+      measure();
+      schedule();
+    });
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', onResize);
     const ro = new ResizeObserver(onResize);
@@ -399,6 +414,7 @@ export default function PortfolioShowcase({
     document.fonts?.ready?.then(onResize).catch(() => {});
 
     return () => {
+      stopReady();
       window.clearTimeout(settle);
       cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', schedule);

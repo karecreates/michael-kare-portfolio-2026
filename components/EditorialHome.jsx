@@ -181,9 +181,9 @@ function Hero({ data, quiet, reduced }) {
             <a href="#contact" className={styles.ctaFill}>
               Contact me
             </a>
-            <a href="#work" className={styles.ctaStroke}>
+            <Link href="/work" className={styles.ctaStroke}>
               View projects
-            </a>
+            </Link>
           </div>
           <motion.figure
             className={styles.portrait}

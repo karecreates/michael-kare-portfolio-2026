@@ -113,6 +113,9 @@
   position: absolute;
   inset: 0;
   clip-path: inset(0 100% 0 0);
+  transform: translateZ(0);
+  will-change: clip-path;
+  backface-visibility: hidden;
 }
 .media img {
   object-fit: cover;

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FEATURED_FILTERS, FEATURED_WORKS } from '@/data/featuredWorks';
+import { preloadMedia, whenPageReady } from '@/lib/preloadMedia';
 import GooeyNav from './GooeyNav';
 import styles from './FeaturedWorks.module.css';
 
@@ -35,6 +36,10 @@ export default function FeaturedWorks({
     observer.observe(root, { attributes: true, attributeFilter: ['data-theme'] });
     return () => observer.disconnect();
   }, []);
+
+  useEffect(() => {
+    preloadMedia(works.map((item) => item.image));
+  }, [works]);
   const items = useMemo(
     () =>
       !filters || filter === 'All'
@@ -102,6 +107,7 @@ export default function FeaturedWorks({
     };
 
     apply();
+    const stopReady = whenPageReady(apply);
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('resize', schedule);
     let attached = window.__lenis;
@@ -114,6 +120,7 @@ export default function FeaturedWorks({
       attached.on?.('scroll', schedule);
     }, 300);
     return () => {
+      stopReady();
       cancelAnimationFrame(frame);
       frames.forEach((node) => {
         if (node) node.style.clipPath = '';
@@ -159,7 +166,7 @@ export default function FeaturedWorks({
         <div className={styles.spacer} aria-hidden="true" />
       )}
       <ul ref={gridRef} className={styles.grid}>
-        {items.map((item) => (
+        {items.map((item, index) => (
           <li key={item.id}>
             <Link href={item.href} className={styles.card}>
               <div className={styles.media} data-work-media="">
@@ -169,6 +176,8 @@ export default function FeaturedWorks({
                     alt=""
                     fill
                     sizes="(max-width: 767px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                    priority={index < 3}
+                    loading={index < 6 ? 'eager' : 'lazy'}
                   />
                 </div>
               </div>

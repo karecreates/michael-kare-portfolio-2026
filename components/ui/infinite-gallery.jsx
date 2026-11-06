@@ -65,6 +65,7 @@ function buildTiles(images, cellSize, layers) {
       tiles.push({
         ...image,
         key: `${image.url}-${cycle}-${index}`,
+        cycle,
         x: point.x,
         y: point.y,
         z: -36 - zIndex * Z_STRIDE - band * 28,
@@ -157,18 +158,59 @@ function readProgress(props) {
   return Math.min(1, Math.max(0, props.progressRef?.current ?? 0));
 }
 
+function ensureVideoSrc(video) {
+  if (!video.getAttribute('src') && video.dataset.src) {
+    video.src = video.dataset.src;
+  }
+}
+
+function kickPlayback(video) {
+  if (!video.__wantPlay) return;
+  ensureVideoSrc(video);
+  playInline(video).catch(() => {});
+}
+
+function watchPlayback(video) {
+  if (video.__playWatch) return;
+  video.__playWatch = true;
+  video.addEventListener('canplay', () => kickPlayback(video));
+  video.addEventListener('loadeddata', () => kickPlayback(video));
+}
+
 function setTilePlayback(video, shouldPlay) {
   if (video.__wantPlay === shouldPlay) return;
   video.__wantPlay = shouldPlay;
   if (shouldPlay) {
-    if (!video.getAttribute('src') && video.dataset.src) {
-      video.src = video.dataset.src;
-    }
-    playInline(video).catch(() => {});
+    watchPlayback(video);
+    kickPlayback(video);
   } else {
     releaseInline(video);
     if (!video.paused) video.pause();
   }
+}
+
+function primeVideoFrame(video) {
+  if (video.__primed || video.__priming) return Promise.resolve();
+  ensureVideoSrc(video);
+  video.__priming = true;
+  video.muted = true;
+  video.defaultMuted = true;
+  video.playsInline = true;
+  const attempt = video.play();
+  if (!attempt || typeof attempt.then !== 'function') {
+    video.__priming = false;
+    video.__primed = true;
+    return Promise.resolve();
+  }
+  return attempt
+    .then(() => {
+      video.__primed = true;
+      video.__priming = false;
+      if (!video.__wantPlay) video.pause();
+    })
+    .catch(() => {
+      video.__priming = false;
+    });
 }
 
 function stepGallery({ host, world, motion, props }) {
@@ -194,6 +236,7 @@ function stepGallery({ host, world, motion, props }) {
   }
   motion.wasOnScreen = true;
   const compact = host.dataset.compact === '1';
+  motion.compactQueue = [];
   if (autoZoom && !compact) motion.zoom += autoZoomSpeed;
 
   const { pointer, drift, velocity } = motion;
@@ -227,8 +270,15 @@ function stepGallery({ host, world, motion, props }) {
       return;
     }
     const look = depthLook(z);
-    // Clips deep in the fog are invisible anyway; only decode the ones in view.
-    if (isVideo) setTilePlayback(video, compact || look.opacity > 0.06);
+    // Desktop: play clips that are actually readable. Phone: the nearest
+    // few, so seven MP4s are not decoding at once.
+    if (isVideo) {
+      if (compact) {
+        motion.compactQueue.push({ z, video });
+      } else {
+        setTilePlayback(video, look.opacity > 0.06);
+      }
+    }
     node.style.opacity = String(compact ? 1 : look.opacity);
     if (compact) {
       if (node.style.filter) node.style.filter = '';
@@ -238,6 +288,17 @@ function stepGallery({ host, world, motion, props }) {
     node.style.zIndex = String(Math.round(900 + z));
     node.style.transform = planeTransform(tile.x, tile.y, z);
   });
+  if (compact) {
+    const playing = new Set(
+      motion.compactQueue
+        .sort((a, b) => b.z - a.z)
+        .slice(0, 3)
+        .map((item) => item.video),
+    );
+    host.querySelectorAll('video').forEach((video) => {
+      setTilePlayback(video, playing.has(video));
+    });
+  }
 }
 
 function ensureGalleryTimer() {
@@ -302,10 +363,10 @@ export default function InfiniteGallery({
   const propsRef = useRef(null);
   const [compact, setCompact] = useState(false);
   const layers = compact ? 1 : Math.min(3, Math.max(2, Math.round(viewRange)));
-  const tiles = useMemo(() => {
-    const source = compact ? images.filter((image) => !isVideoUrl(image.url)) : images;
-    return buildTiles(source, cellSize, layers);
-  }, [images, cellSize, layers, compact]);
+  const tiles = useMemo(
+    () => buildTiles(images, cellSize, layers),
+    [images, cellSize, layers],
+  );
   const fieldDepth = tiles.length
     ? PASS_Z - Math.min(...tiles.map((tile) => tile.z)) + Z_STRIDE
     : Z_STRIDE * 8;
@@ -381,6 +442,18 @@ export default function InfiniteGallery({
 
     // Playback is driven per tile from stepGallery, based on what is in view.
     const videos = [...host.querySelectorAll('video')];
+    videos.forEach((video) => {
+      ensureVideoSrc(video);
+      watchPlayback(video);
+    });
+    let priming = true;
+    const prime = async () => {
+      for (const video of videos) {
+        if (!priming) return;
+        await primeVideoFrame(video);
+      }
+    };
+    prime();
 
     host.addEventListener('pointerdown', onPointerDown);
     window.addEventListener('pointermove', onPointerMove, { passive: true });
@@ -394,6 +467,7 @@ export default function InfiniteGallery({
       host.removeEventListener('pointerdown', onPointerDown);
       window.removeEventListener('pointermove', onPointerMove);
       window.removeEventListener('pointerup', onPointerUp);
+      priming = false;
       videos.forEach((video) => {
         video.__wantPlay = undefined;
         releaseInline(video);
@@ -434,18 +508,24 @@ export default function InfiniteGallery({
             >
               {isVideoUrl(tile.url) ? (
                 <video
+                  src={tile.cycle === 0 ? tile.url : undefined}
                   data-src={tile.url}
+                  preload={tile.cycle === 0 ? 'auto' : 'none'}
                   muted
                   autoPlay
                   loop
                   playsInline
                   webkit-playsinline="true"
-                  preload="none"
                   disablePictureInPicture
                   aria-label="Creative study"
                 />
               ) : (
-                <img src={tile.url} alt="" loading="lazy" decoding="async" />
+                <img
+                  src={tile.url}
+                  alt=""
+                  loading={tile.cycle === 0 ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
               )}
             </figure>
           );
