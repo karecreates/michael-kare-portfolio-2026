@@ -1,6 +1,21 @@
 const asset = (file) =>
   `/${['CASE STUDIES', 'Sabio', file].map(encodeURIComponent).join('/')}`;
 
+const motionLead = {
+  src: '/showcase/video-animation-1080p.mp4',
+  alt: 'Sabio brand motion',
+  width: 1920,
+  height: 1080,
+  autoPlay: true,
+  muted: true,
+  loop: true,
+  seamless: true,
+  lead: true,
+  priority: true,
+  preload: 'auto',
+  startAt: 60,
+};
+
 const walkthrough = {
   src: asset('scsitesting_ai_sequence.mp4'),
   poster: asset('scsitesting_ai_sequence-poster.jpg'),
@@ -28,9 +43,11 @@ export const sabioCaseStudy = {
   label: 'Case Study',
   projectType: 'Brand Identity & Product Design',
   liveUrl: 'https://scsitesting.ai/',
+  videoFirst: true,
+  leadMedia: motionLead,
   description:
     'A brand identity and digital product design exploration focused on modernizing the experience of online assessments. The work combines bold visual identity concepts with intuitive testing interfaces, transforming complex administrative workflows into clear, structured digital experiences.',
-  disciplines: ['Branding', 'Logo Design', 'UI/UX', 'Web Design', 'Prototyping'],
+  disciplines: ['Branding', 'Logo Design', 'Video Animation', 'UI/UX', 'Web Design', 'Prototyping'],
   cta: {
     label: "Let's Talk",
     href: 'mailto:karecreates@gmail.com',
@@ -46,12 +63,17 @@ export const sabioCaseStudy = {
       type: 'fullBleedMedia',
       spaceBefore: 'follow',
       frame: 'wide',
+      video: motionLead,
+    },
+    {
+      type: 'fullBleedMedia',
+      spaceBefore: 'media',
+      frame: 'wide',
       image: {
         src: asset('sabio_case_study_1.png'),
         alt: 'Sabio wordmark in white on a deep purple gradient, with a small triangular mark',
         width: 1920,
         height: 1080,
-        priority: true,
       },
     },
     {

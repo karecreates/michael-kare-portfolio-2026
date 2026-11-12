@@ -10,7 +10,8 @@ const promoVideo = {
   muted: true,
   loop: true,
   seamless: true,
-  lazy: true,
+  lead: true,
+  priority: true,
   preload: 'auto',
 };
 
@@ -34,7 +35,9 @@ export const in2aiCaseStudy = {
   label: 'Case Study',
   description:
     'in2AI explores the intersection of artificial intelligence, education, and specialized training. The project brings together a contemporary digital experience, intuitive product interfaces, and a cohesive visual identity designed to make complex technology feel more approachable.',
-  disciplines: ['Web Design', 'UI/UX', 'Branding', 'Graphic Design'],
+  videoFirst: true,
+  leadMedia: promoVideo,
+  disciplines: ['Web Design', 'UI/UX', 'Branding', 'Graphic Design', 'Video Animation'],
   year: '2025',
   client: 'in2AI',
   liveUrl: 'https://in2ai.ai',
@@ -52,6 +55,12 @@ export const in2aiCaseStudy = {
     },
     {
       type: 'fullBleedMedia',
+      spaceBefore: 'follow',
+      frame: 'wide',
+      video: promoVideo,
+    },
+    {
+      type: 'fullBleedMedia',
       spaceBefore: 'media',
       frame: 'wide',
       image: {
@@ -59,7 +68,6 @@ export const in2aiCaseStudy = {
         alt: 'in2AI marketing website with a dark canvas, electric blue graphic, and specialized AI messaging',
         width: 1920,
         height: 1080,
-        priority: true,
       },
       caption:
         "A dark visual environment, expressive typography, and electric blue accents establish a confident first impression while giving the platform's specialized capabilities a clear place to live.",
@@ -164,12 +172,6 @@ export const in2aiCaseStudy = {
     {
       type: 'fullBleedMedia',
       spaceBefore: 'media',
-      frame: 'wide',
-      video: promoVideo,
-    },
-    {
-      type: 'fullBleedMedia',
-      spaceBefore: 'tight',
       frame: 'wide',
       video: webAnimation,
     },

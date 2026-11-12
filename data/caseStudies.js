@@ -79,8 +79,8 @@ export function applyVideoLead(study) {
 }
 
 export const CASE_STUDIES = {
-  'in2ai-ai': in2aiCaseStudy,
-  'knowi-ai': knowiCaseStudy,
+  'in2ai-ai': applyVideoLead(in2aiCaseStudy),
+  'knowi-ai': applyVideoLead(knowiCaseStudy),
   'beta-agency': applyVideoLead(betaAgencyCaseStudy),
   'jg-aquatics': applyVideoLead(jgAquaticsCaseStudy),
   folio: folioCaseStudy,
@@ -89,7 +89,7 @@ export const CASE_STUDIES = {
   'kim-kimble': applyVideoLead(kimKimbleCaseStudy),
   'omt-enterprises': omtEnterprisesCaseStudy,
   'portfolio-website': applyVideoLead(portfolioCaseStudy),
-  sabio: sabioCaseStudy,
+  sabio: applyVideoLead(sabioCaseStudy),
   solace: solaceCaseStudy,
   'sushi-enya': applyVideoLead(sushiEnyaCaseStudy),
   teleidoscope: teleidoscopeCaseStudy,

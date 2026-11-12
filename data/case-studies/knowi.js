@@ -1,6 +1,8 @@
 const asset = (file) =>
   `/${['CASE STUDIES', 'Knowi', file].map(encodeURIComponent).join('/')}`;
 
+const cool = (file) => `/${['Cool_Stuff', file].map(encodeURIComponent).join('/')}`;
+
 const screen = (n, alt, extras = {}) => ({
   src: asset(`iPhone 14 & 15 Pro Max - ${n}.png`),
   alt,
@@ -9,15 +11,44 @@ const screen = (n, alt, extras = {}) => ({
   ...extras,
 });
 
+const howToVideo = {
+  src: cool('how_to_video.mp4'),
+  alt: 'Knowi how-to video',
+  width: 1276,
+  height: 720,
+  autoPlay: true,
+  muted: true,
+  loop: true,
+  seamless: true,
+  lead: true,
+  priority: true,
+  preload: 'auto',
+};
+
+const knowiAnimation = {
+  src: cool('knowi_animation_new_web_friendly.mp4'),
+  alt: 'Knowi animation',
+  width: 1920,
+  height: 1080,
+  autoPlay: true,
+  muted: true,
+  loop: true,
+  seamless: true,
+  lazy: false,
+  preload: 'auto',
+};
+
 export const knowiCaseStudy = {
   id: 'knowi-ai',
   slug: 'knowi-ai',
   title: 'Knowi',
   label: 'Case Study',
   projectType: 'Mobile App Design & Prototyping',
+  videoFirst: true,
+  leadMedia: howToVideo,
   description:
     'A mobile learning concept designed to make continuing education more accessible for professional interpreters. Knowi combines AI-supported training, interactive exercises, and progress tracking in an intuitive experience that brings specialized learning into one place.',
-  disciplines: ['UI/UX', 'Mobile App Design', 'Product Design', 'Prototyping'],
+  disciplines: ['UI/UX', 'Mobile App Design', 'Product Design', 'Prototyping', 'Video Animation'],
   cta: {
     label: "Let's Talk",
     href: 'mailto:karecreates@gmail.com',
@@ -30,14 +61,24 @@ export const knowiCaseStudy = {
       heading: 'A smarter way to stay in practice.',
     },
     {
-      type: 'phoneShowcase',
+      type: 'fullBleedMedia',
       spaceBefore: 'follow',
+      frame: 'wide',
+      video: howToVideo,
+    },
+    {
+      type: 'fullBleedMedia',
+      spaceBefore: 'media',
+      frame: 'wide',
+      video: knowiAnimation,
+    },
+    {
+      type: 'phoneShowcase',
+      spaceBefore: 'section',
       heading: 'Learning starts with a friendly introduction.',
       body: 'A playful robot mascot, vibrant purple gradients, and simplified account flows establish an approachable identity, making a specialized educational platform feel intuitive from the very first interaction.',
       images: [
-        screen(26, 'Knowi welcome screen with the robot mascot, Create Account, and Login', {
-          priority: true,
-        }),
+        screen(26, 'Knowi welcome screen with the robot mascot, Create Account, and Login'),
         screen(27, 'Knowi sign up screen'),
         screen(28, 'Knowi sign in screen'),
       ],

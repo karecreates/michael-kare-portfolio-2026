@@ -24,6 +24,8 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
   const showNativeControls = video.controls === true && !video.seamless;
   const canAutoplay = video.autoPlay !== false && !reduceMotion;
   const showButton = !video.seamless && !showNativeControls;
+  const startAt = Number(video.startAt || video.startTime || 0) || 0;
+  const nativeLoop = video.loop !== false && !(startAt > 0);
 
   useEffect(() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -54,13 +56,30 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
     const node = ref.current;
     if (!node || !src) return undefined;
     activePlayers.add(node);
+    const seek = () => {
+      if (startAt > 0 && node.currentTime < startAt - 0.25) {
+        try {
+          node.currentTime = startAt;
+        } catch {
+          // Metadata may not be ready yet; loadedmetadata retries.
+        }
+      }
+    };
     const onPlay = () => {
       releaseOthers(node);
+      seek();
       setPlaying(true);
     };
     const onPause = () => setPlaying(false);
+    const onEnded = () => {
+      if (video.loop === false) return;
+      node.currentTime = startAt;
+      playInline(node).catch(() => {});
+    };
     node.addEventListener('play', onPlay);
     node.addEventListener('pause', onPause);
+    node.addEventListener('loadedmetadata', seek);
+    node.addEventListener('ended', onEnded);
 
     const tryPlay = () => {
       if (!canAutoplay || node.paused === false) return;
@@ -68,6 +87,7 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
       const visible = Math.min(box.bottom, window.innerHeight) - Math.max(box.top, 0);
       if (visible < Math.min(box.height, window.innerHeight) * 0.28) return;
       releaseOthers(node);
+      seek();
       playInline(node).catch(() => setPlaying(false));
     };
     const observer = new IntersectionObserver(
@@ -86,17 +106,20 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
     );
     observer.observe(node);
     node.addEventListener('loadeddata', tryPlay);
+    seek();
     tryPlay();
 
     return () => {
       observer.disconnect();
       node.removeEventListener('loadeddata', tryPlay);
+      node.removeEventListener('loadedmetadata', seek);
+      node.removeEventListener('ended', onEnded);
       node.removeEventListener('play', onPlay);
       node.removeEventListener('pause', onPause);
       activePlayers.delete(node);
       node.pause();
     };
-  }, [canAutoplay, src]);
+  }, [canAutoplay, src, startAt, video.loop]);
 
   const toggle = () => {
     const node = ref.current;
@@ -124,10 +147,15 @@ export default function CaseStudyVideo({ video, surfaceClass }) {
         width={video.width}
         height={video.height}
         muted={video.muted !== false}
-        loop={video.loop !== false}
+        loop={nativeLoop}
         playsInline
         webkit-playsinline="true"
         autoPlay={canAutoplay}
+        onLoadedMetadata={(event) => {
+          if (startAt > 0 && event.currentTarget.currentTime < startAt) {
+            event.currentTarget.currentTime = startAt;
+          }
+        }}
         controls={showNativeControls}
         controlsList="nodownload noremoteplayback"
         disablePictureInPicture

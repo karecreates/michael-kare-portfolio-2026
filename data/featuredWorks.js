@@ -7,7 +7,7 @@ export const FEATURED_WORKS = [
     title: 'Sabio',
     href: '/projects/sabio',
     image: asset('Sabio.png'),
-    pills: ['Branding', 'Logo', 'UI/UX', 'Web Design'],
+    pills: ['Branding', 'Logo', 'Video Animation', 'UI/UX', 'Web Design'],
   },
   {
     id: 'knowi',
