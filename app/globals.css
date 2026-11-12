@@ -181,3 +181,19 @@ summary:focus-visible {
 html {
   position: relative;
 }
+
+/* First visit: cover the page until SiteLoader hydrates. Refresh: skip. */
+html[data-loading] body {
+  overflow: hidden;
+}
+html[data-loading]:not([data-intro='done']) body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 390;
+  background: #ffffff;
+  pointer-events: none;
+}
+html[data-intro='done'] [data-site-loader] {
+  display: none !important;
+}

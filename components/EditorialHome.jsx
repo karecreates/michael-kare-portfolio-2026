@@ -435,6 +435,19 @@ export default function EditorialHome({ data }) {
     window.addEventListener(HERO_REPLAY_EVENT, replay);
     return () => window.removeEventListener(HERO_REPLAY_EVENT, replay);
   }, []);
+
+  useEffect(() => {
+    if (window.location.hash) return undefined;
+    if (document.documentElement.dataset.intro !== 'done') return undefined;
+    history.scrollRestoration = 'manual';
+    const toTop = () => {
+      if (window.__lenis?.scrollTo) window.__lenis.scrollTo(0, { immediate: true });
+      else window.scrollTo(0, 0);
+    };
+    toTop();
+    const frame = window.requestAnimationFrame(toTop);
+    return () => window.cancelAnimationFrame(frame);
+  }, []);
   // Every case study stays reachable from the index now that the featured grid
   // has been replaced by the discipline showcase.
   return (

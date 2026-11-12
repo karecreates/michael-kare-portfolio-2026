@@ -1,11 +1,13 @@
 const asset = (file) =>
   `/${['CASE STUDIES', 'Sabio', file].map(encodeURIComponent).join('/')}`;
 
+const cool = (file) => `/${['Cool_Stuff', file].map(encodeURIComponent).join('/')}`;
+
 const motionLead = {
-  src: '/showcase/video-animation-1080p.mp4',
+  src: cool('SCSI Testing AI Video 4K_2160p.mp4'),
   alt: 'Sabio brand motion',
-  width: 1920,
-  height: 1080,
+  width: 3840,
+  height: 2160,
   autoPlay: true,
   muted: true,
   loop: true,
@@ -13,7 +15,6 @@ const motionLead = {
   lead: true,
   priority: true,
   preload: 'auto',
-  startAt: 60,
 };
 
 const walkthrough = {

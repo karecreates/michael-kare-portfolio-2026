@@ -25,6 +25,7 @@ export default function SpaceSection({ reduced = false }) {
   const stageRef = useRef(null);
   const [play, setPlay] = useState(false);
   const [compact, setCompact] = useState(false);
+  const [showWalker, setShowWalker] = useState(false);
 
   useEffect(() => {
     const query = window.matchMedia('(max-width: 720px)');
@@ -37,6 +38,7 @@ export default function SpaceSection({ reduced = false }) {
   useEffect(() => {
     if (reduced) return undefined;
     const node = stageRef.current;
+    const track = trackRef.current;
     if (!node) return undefined;
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -50,7 +52,35 @@ export default function SpaceSection({ reduced = false }) {
       { threshold: [0, 0.08, 0.38, 0.7] },
     );
     observer.observe(node);
-    return () => observer.disconnect();
+
+    let near = false;
+    let allowed = !document.documentElement.hasAttribute('data-loading');
+    const armWalker = () => {
+      if (near && allowed) setShowWalker(true);
+    };
+    const preload = new IntersectionObserver(
+      ([entry]) => {
+        near = Boolean(entry?.isIntersecting);
+        armWalker();
+      },
+      { rootMargin: '40% 0px' },
+    );
+    if (track) preload.observe(track);
+    const loading = new MutationObserver(() => {
+      allowed = !document.documentElement.hasAttribute('data-loading');
+      armWalker();
+    });
+    loading.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-loading'],
+    });
+    armWalker();
+
+    return () => {
+      observer.disconnect();
+      preload.disconnect();
+      loading.disconnect();
+    };
   }, [reduced]);
 
   return (
@@ -77,7 +107,7 @@ export default function SpaceSection({ reduced = false }) {
           loading="lazy"
           decoding="async"
         />
-        {reduced ? null : (
+        {reduced || !showWalker ? null : (
           <SpaceWalker trackRef={trackRef} stageRef={stageRef} />
         )}
         <h2 id="space-quote" className={styles.quote}>

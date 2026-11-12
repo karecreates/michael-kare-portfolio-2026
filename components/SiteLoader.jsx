@@ -28,7 +28,16 @@ function SiteLoader() {
 
   useEffect(() => {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduced) {
+    const seen = (() => {
+      try {
+        return sessionStorage.getItem('mk-intro') === '1';
+      } catch {
+        return false;
+      }
+    })();
+    if (reduced || seen || document.documentElement.dataset.intro === 'done') {
+      document.documentElement.dataset.intro = 'done';
+      delete document.documentElement.dataset.loading;
       setPhase('done');
       return undefined;
     }
@@ -42,6 +51,12 @@ function SiteLoader() {
     const lenisTimer = window.setInterval(stopLenis, 200);
     const release = () => {
       window.clearInterval(lenisTimer);
+      try {
+        sessionStorage.setItem('mk-intro', '1');
+      } catch {
+        // Private mode can block sessionStorage; skip next load if we can.
+      }
+      root.dataset.intro = 'done';
       delete root.dataset.loading;
       document.body.style.overflow = previousOverflow;
       window.__lenis?.start?.();
@@ -134,6 +149,8 @@ function SiteLoader() {
         }
         mixer.setTime(duration * 0.2);
         model.updateMatrixWorld(true);
+        mixer.update(0);
+        model.updateMatrixWorld(true);
         scene.add(model);
         const lookY = figureHeight * 0.12;
         const spanZ = halfSpan * 2;
@@ -159,6 +176,7 @@ function SiteLoader() {
         };
 
         frameCamera();
+        renderer.render(scene, camera);
         let last = performance.now();
         let raf = 0;
         const draw = (now) => {
@@ -252,6 +270,7 @@ function SiteLoader() {
 
   return (
     <div
+      data-site-loader=""
       className={`${styles.root} ${phase === 'wipe' || phase === 'fade' ? styles.wiping : ''} ${
         phase === 'fade' ? styles.fading : ''
       }`}

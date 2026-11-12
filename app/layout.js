@@ -3,6 +3,7 @@ import '@/app/globals.css';
 import SiteLoader from '@/components/SiteLoader';
 import MediaGuard from '@/components/MediaGuard';
 const themeBoot = `(function(){try{var t=localStorage.getItem('theme');document.documentElement.dataset.theme=t==='light'?'light':'dark';}catch(e){document.documentElement.dataset.theme='dark';}})();`;
+const introBoot = `(function(){try{if(sessionStorage.getItem('mk-intro')==='1'||window.matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.intro='done';}else{document.documentElement.dataset.loading='1';}}catch(e){document.documentElement.dataset.loading='1';}})();`;
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={dmSans.variable} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
+        <script dangerouslySetInnerHTML={{ __html: introBoot }} />
       </head>
       <body id="top">
         {children}
